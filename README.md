@@ -18,7 +18,7 @@ Page de l'équipe de curling : https://pascalgir.github.io/stonetroopers/
 | `data.js` | Données de secours si le Google Sheet ne répond pas |
 | `StoneTroopers_Base.xlsx` | Modèle du Google Sheet d'origine |
 | `CHANGELOG.md` | Historique des versions (version actuelle affichée en bas de la page) |
-| `nouveautes.js` | Liste des nouveautés affichée par le lien « nouveautés » (à régénérer depuis `CHANGELOG.md` à chaque version) |
+| `nouveautes.js` | Liste des nouveautés affichée par le lien « nouveautés » : version publique et générique de `CHANGELOG.md` (sans détails de sécurité ni noms de personnes), à compléter à chaque version |
 
 ## Réglages courants (`config.js`)
 
