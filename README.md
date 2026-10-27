@@ -24,6 +24,7 @@ Page de l'équipe de curling : https://pascalgir.github.io/stonetroopers/
 - `AFFICHER_VACANCES`, `AFFICHER_EQUIPE`, `AFFICHER_STATS` : afficher ou masquer ces blocs.
 - `EDITEURS` : joueurs qui peuvent gérer matchs, scores et compositions.
 - `COMPO_HABITUELLE`, `SKIP_HABITUEL`, `COMPO_SI_ABSENT` : composition proposée par défaut.
+- `DUREE_MATCH_MIN`, `RAPPELS_MIN`, `LIEU` : export calendrier (durée, rappels, adresse de la patinoire).
 
 ## Le Google Sheet « StoneTroopers »
 
