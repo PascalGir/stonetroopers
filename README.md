@@ -1,24 +1,31 @@
-# Les StoneTroopers — Planning
+# StoneTroopers - Planning
 
-Matchs de curling et disponibilités de l'équipe : https://pascalgir.github.io/stonetroopers/
+Page de l'équipe de curling : https://pascalgir.github.io/stonetroopers/
 
-Chaque joueur choisit son nom dans **Je suis**, puis clique sur ses cases pour changer sa réponse (vide → Oui → Incertain → Non). Les données sont stockées dans un Google Sheet.
+## Utilisation
 
-## Mise en place (une seule fois)
+- Chacun choisit son nom dans **Je suis**, puis touche sa pastille pour répondre : vide → Oui → Incertain → Non.
+- **Pascal** (liste `EDITEURS` dans `config.js`) peut en plus ajouter / modifier / supprimer les matchs (bouton « + Match » et ✏️), saisir les scores et les compositions, et voit les statistiques.
+- La page affiche le prochain match en grand, les matchs à venir, les matchs passés à compléter (pour Pascal) et les résultats en vue résumée (toucher une ligne pour le détail).
 
-1. Google Drive → **Nouveau → Importer un fichier** → `StoneTroopers_Base.xlsx`. Ouvre-le, puis **Fichier → Enregistrer au format Google Sheets**.
-2. Dans ce Google Sheet : **Extensions → Apps Script**. Efface le contenu, colle tout `Code.gs`, puis 💾.
-3. **Déployer → Nouveau déploiement** → ⚙️ **Application Web** — Exécuter en tant que : **Moi** · Qui a accès : **Tout le monde** → **Déployer** → **Autoriser l'accès** (si Google affiche « application non validée » : Paramètres avancés → Accéder au projet).
-4. Copie l'URL qui finit par `/exec` et colle-la dans `config.js` (entre les guillemets de `API_URL`).
+## Fichiers
 
-## Le Google Sheet
+| Fichier | Rôle |
+|---|---|
+| `index.html` | La page |
+| `config.js` | Réglages : adresse du script Google, sections affichées, éditeurs, composition habituelle |
+| `Code.gs` | Script Google Apps Script relié au Google Sheet (copie de référence) |
+| `data.js` | Données de secours si le Google Sheet ne répond pas |
+| `StoneTroopers_Base.xlsx` | Modèle du Google Sheet d'origine |
 
-- **Matchs** : ID, Date, Heure, Piste, Adversaire, Score nous, Score eux, Notes, puis une colonne par joueur.
-- **Joueurs** : Nom, Actif (Non = masqué sur la page), Poste.
-- **Vacances** : ID, Joueur, Début, Fin, Commentaire.
+## Réglages courants (`config.js`)
 
-On peut le modifier à la main ; garder les noms d'onglets et de colonnes.
+- `AFFICHER_VACANCES`, `AFFICHER_EQUIPE`, `AFFICHER_STATS` : afficher ou masquer ces blocs.
+- `EDITEURS` : joueurs qui peuvent gérer matchs, scores et compositions.
+- `COMPO_HABITUELLE`, `SKIP_HABITUEL`, `COMPO_SI_ABSENT` : composition proposée par défaut.
 
-Après une modification de `Code.gs` : **Déployer → Gérer les déploiements → ✏️ → Nouvelle version** (l'URL ne change pas).
+## Le Google Sheet « StoneTroopers »
 
-`data.js` ne sert que de secours si le Google Sheet ne répond pas.
+Onglets **Matchs** (une colonne par joueur, puis Lanceur 1-4, Skip, Couleur notes), **Joueurs**, **Vacances**. On peut le modifier à la main en gardant les noms d'onglets et de colonnes.
+
+Après une modification de `Code.gs` : dans Apps Script, coller le nouveau code, enregistrer, puis **Déployer → Gérer les déploiements → ✏️ → Nouvelle version → Déployer** (l'adresse ne change pas).
