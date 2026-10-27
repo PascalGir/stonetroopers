@@ -1,6 +1,15 @@
 // Liste des nouveautés affichée sur la page (version publique : sans détails de sécurité ni noms de personnes)
 window.NOUVEAUTES = [
  {
+  "v": "3.8",
+  "date": "27 octobre 2026",
+  "titre": "",
+  "items": [
+   "Réponse <b>Absent</b> affichée en <b>rouge</b>, bien distincte de « Pas de réponse ».",
+   "Libellé « Pas de réponse » utilisé partout (aide en haut et légende en bas)."
+  ]
+ },
+ {
   "v": "3.7",
   "date": "27 octobre 2026",
   "titre": "",
