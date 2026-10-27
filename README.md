@@ -5,7 +5,7 @@ Page de l'équipe de curling : https://pascalgir.github.io/stonetroopers/
 ## Utilisation
 
 - Chacun choisit son nom dans **Je suis**, puis touche sa pastille pour répondre : vide → Oui → Incertain → Non.
-- **Pascal** (liste `EDITEURS` dans `config.js`) peut en plus ajouter / modifier / supprimer les matchs (bouton « + Match » et ✏️), saisir les scores et les compositions, et voit les statistiques.
+- **Pascal** (liste `EDITEURS` dans `config.js`) peut en plus ajouter / modifier / supprimer les matchs (bouton « + Match » et ✏️), saisir les scores et les compositions, et voit les statistiques. Ces modifications demandent un **mot de passe**, saisi une fois par appareil (bouton 🔒 sinon).
 - La page affiche le prochain match en grand, les matchs à venir, les matchs passés à compléter (pour Pascal) et les résultats en vue résumée (toucher une ligne pour le détail).
 
 ## Fichiers
@@ -29,5 +29,7 @@ Page de l'équipe de curling : https://pascalgir.github.io/stonetroopers/
 ## Le Google Sheet « StoneTroopers »
 
 Onglets **Matchs** (une colonne par joueur, puis Lanceur 1-4, Skip, Couleur notes), **Joueurs**, **Vacances**. On peut le modifier à la main en gardant les noms d'onglets et de colonnes.
+
+Le mot de passe de Pascal est rangé dans Apps Script : **Paramètres du projet → Propriétés du script → `CODE_CAPITAINE`** (jamais dans un fichier public). Pour le changer, modifier cette valeur puis enregistrer (pas besoin de redéployer). Supprimer la propriété retire le mot de passe.
 
 Après une modification de `Code.gs` : dans Apps Script, coller le nouveau code, enregistrer, puis **Déployer → Gérer les déploiements → ✏️ → Nouvelle version → Déployer** (l'adresse ne change pas).
