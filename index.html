@@ -16,7 +16,7 @@
   --ok:#1f7a4d; --ok-bg:#dff3e8; --warn:#8a5a00; --warn-bg:#fff1cc;
   --bad:#a52a2a; --bad-bg:#fbe1df; --plus:#9a4a00; --plus-bg:#ffe5cc;
   --c-oui:#1f8a55; --c-oui-ink:#ffffff; --c-inc:#e2a514; --c-inc-ink:#2a1d00;
-  --c-non:#c4ccd4; --c-non-ink:#3f4a55; --c-vide:#ffffff; --c-vide-ink:#8a97a3; --vac-bg:#cfd6dc;
+  --c-non:#d64545; --c-non-ink:#ffffff; --c-vide:#ffffff; --c-vide-ink:#8a97a3; --vac-bg:#cfd6dc;
   --shadow:0 1px 2px rgba(20,40,60,.06),0 6px 20px rgba(20,40,60,.07);
 }
 @media (prefers-color-scheme: dark){
@@ -27,7 +27,7 @@
     --ok:#6fd3a0; --ok-bg:#163a2a; --warn:#f2c35c; --warn-bg:#3a2f12;
     --bad:#f08a80; --bad-bg:#3d1c1a; --plus:#f5a35c; --plus-bg:#3d2714;
     --c-oui:#2fa56b; --c-oui-ink:#ffffff; --c-inc:#d8a428; --c-inc-ink:#1e1500;
-    --c-non:#33424f; --c-non-ink:#c3cdd6; --c-vide:#142029; --c-vide-ink:#7f909f; --vac-bg:#3a4652;
+    --c-non:#c74850; --c-non-ink:#ffffff; --c-vide:#142029; --c-vide-ink:#7f909f; --vac-bg:#3a4652;
     --shadow:none;
   }
 }
@@ -38,7 +38,7 @@
   --ok:#6fd3a0; --ok-bg:#163a2a; --warn:#f2c35c; --warn-bg:#3a2f12;
   --bad:#f08a80; --bad-bg:#3d1c1a; --plus:#f5a35c; --plus-bg:#3d2714;
   --c-oui:#2fa56b; --c-oui-ink:#ffffff; --c-inc:#d8a428; --c-inc-ink:#1e1500;
-  --c-non:#33424f; --c-non-ink:#c3cdd6; --c-vide:#142029; --c-vide-ink:#7f909f; --vac-bg:#3a4652;
+  --c-non:#c74850; --c-non-ink:#ffffff; --c-vide:#142029; --c-vide-ink:#7f909f; --vac-bg:#3a4652;
   --shadow:none;
 }
 
@@ -135,7 +135,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-
 .chip.v-incertain .av{background:var(--c-inc);color:var(--c-inc-ink);border:2px solid transparent}
 .chip.v-incertain .ic{background:rgba(255,255,255,.75);color:var(--c-inc-ink)}
 .chip.v-non .av{background:var(--c-non);color:var(--c-non-ink);border:2px solid transparent}
-.chip.v-non .ic{background:var(--surface);color:var(--c-non-ink)}
+.chip.v-non .ic{background:rgba(255,255,255,.9);color:var(--c-non)}
 .chip.vac .av{background:var(--vac-bg)}
 .chip.me .av{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--accent)}
 button.chip{cursor:pointer}
@@ -313,7 +313,7 @@ dialog .actions .spacer{flex:1}
   <div class="panel" id="stats"></div>
   </section>
 
-  <footer id="foot">StoneTroopers · version 3.7 · <button type="button" class="linkbtn" id="newsBtn">nouveautés</button></footer>
+  <footer id="foot">StoneTroopers · version 3.8 · <button type="button" class="linkbtn" id="newsBtn">nouveautés</button></footer>
 </div>
 
 <dialog id="news" aria-labelledby="newsTitle">
@@ -364,7 +364,7 @@ dialog .actions .spacer{flex:1}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="data.js?v=6"></script>
 <script src="config.js?v=6"></script>
-<script src="nouveautes.js?v=2"></script>
+<script src="nouveautes.js?v=3"></script>
 
 <script>
 (function(){
@@ -374,8 +374,8 @@ const API = ((window.STONETROOPERS_CONFIG||{}).API_URL||"").trim();
 const CYCLE = ["", "Oui", "Incertain", "Non"];
 const ICON = {"Oui":"✓", "Incertain":"…", "Non":"✕", "":"–"};
 // Libellés affichés (les valeurs enregistrées dans le Sheet restent Oui / Incertain / Non)
-const LIBELLE = {"Oui":"Présent", "Incertain":"Incertain", "Non":"Absent", "":"vide"};
-// Pastilles de l'aide « vide → Présent → Incertain → Absent » (mêmes que la légende)
+const LIBELLE = {"Oui":"Présent", "Incertain":"Incertain", "Non":"Absent", "":"Pas de réponse"};
+// Pastilles de l'aide « Pas de réponse → Présent → Incertain → Absent » (mêmes que la légende)
 const SEQ_HINT = [["vide",""],["oui","Oui"],["incertain","Incertain"],["non","Non"]].map(([c,v])=>[c,LIBELLE[v],v])
   .map(([c,t,v])=>`<span class="chip v-${c}"><span class="av">${t}<i class="ic" aria-hidden="true">${ICON[v]}</i></span></span>`)
   .join('<span class="arr" aria-hidden="true">→</span>');
