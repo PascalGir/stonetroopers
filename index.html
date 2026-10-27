@@ -51,6 +51,18 @@ h2{font-size:13px;margin:26px 0 10px;color:var(--muted);font-weight:700;text-tra
 .empty{color:var(--muted);text-align:center;padding:24px 0}
 footer{margin-top:30px;font-size:12px;color:var(--muted);text-align:center}
 footer a{color:inherit}
+.linkbtn{font:inherit;color:inherit;background:none;border:0;padding:0;text-decoration:underline;cursor:pointer}
+#news{width:min(560px,calc(100% - 24px))}
+.news-body{padding:18px;display:grid;gap:10px;max-height:min(70vh,640px);overflow:auto}
+.news-head{display:flex;align-items:center;gap:8px}
+.news-head h3{flex:1}
+.news-v{border:1px solid var(--line);border-radius:12px;padding:10px 14px;background:var(--surface)}
+.news-v summary{cursor:pointer;font-weight:700}
+.news-v summary .d{font-weight:400;color:var(--muted);font-size:13px;margin-left:6px}
+.news-v summary .t{font-weight:600;color:var(--accent);font-size:13px;margin-left:6px}
+.news-v ul{margin:8px 0 2px;padding-left:20px;display:grid;gap:5px;font-size:14px}
+.news-v.cur{border-color:var(--accent)}
+.news-v code{font-size:12.5px;background:var(--surface-2);padding:0 4px;border-radius:4px}
 
 /* ============ 1. En-tête ============ */
 .hero{color:var(--hero-ink);border-bottom:4px solid var(--house);
@@ -301,8 +313,15 @@ dialog .actions .spacer{flex:1}
   <div class="panel" id="stats"></div>
   </section>
 
-  <footer id="foot">StoneTroopers · version 3.5 · <a href="https://github.com/PascalGir/stonetroopers/blob/main/CHANGELOG.md" target="_blank" rel="noopener">nouveautés</a></footer>
+  <footer id="foot">StoneTroopers · version 3.6 · <button type="button" class="linkbtn" id="newsBtn">nouveautés</button></footer>
 </div>
+
+<dialog id="news" aria-labelledby="newsTitle">
+  <div class="news-body">
+    <div class="news-head"><h3 id="newsTitle">Nouveautés</h3><button type="button" class="btn" id="newsClose">Fermer</button></div>
+    <div id="newsList"></div>
+  </div>
+</dialog>
 
 <dialog id="dlg">
   <form method="dialog" id="matchForm">
@@ -345,6 +364,7 @@ dialog .actions .spacer{flex:1}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="data.js?v=6"></script>
 <script src="config.js?v=6"></script>
+<script src="nouveautes.js?v=1"></script>
 
 <script>
 (function(){
@@ -898,6 +918,25 @@ if (API){
   setInterval(()=>{ if(!document.hidden && !dlg.open && !typing()) refresh(); }, 60000);
   document.addEventListener("visibilitychange", ()=>{ if(!document.hidden && !dlg.open && !typing()) refresh(); });
 }
+
+/* ---------- Nouveautés (liste dans nouveautes.js, disponible même hors ligne) ---------- */
+(function(){
+  const N = Array.isArray(window.NOUVEAUTES) ? window.NOUVEAUTES : [];
+  const dlgN = $("#news");
+  if (N.length) $("#foot").firstChild.textContent = `StoneTroopers · version ${N[0].v} · `;
+  function openNews(){
+    $("#newsList").innerHTML = N.length ? N.map((x,i)=>`
+      <details class="news-v${i===0?" cur":""}"${i<2?" open":""}>
+        <summary>Version ${esc(x.v)}<span class="d">${esc(x.date)}</span>${x.titre?`<span class="t">${esc(x.titre)}</span>`:""}</summary>
+        <ul>${x.items.map(it=>`<li>${it}</li>`).join("")}</ul>
+      </details>`).join("") : "<p>Liste indisponible.</p>";
+    if (dlgN.showModal) dlgN.showModal(); else dlgN.setAttribute("open","");
+  }
+  function closeNews(){ if (dlgN.close) dlgN.close(); else dlgN.removeAttribute("open"); }
+  $("#newsBtn").addEventListener("click", openNews);
+  $("#newsClose").addEventListener("click", closeNews);
+  dlgN.addEventListener("click", e=>{ if (e.target===dlgN) closeNews(); });
+})();
 })();
 </script>
 </body>
