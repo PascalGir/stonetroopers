@@ -10,9 +10,13 @@
  * Après chaque modification de ce script : Déployer > Gérer les déploiements > ✏️ > Nouvelle version.
  */
 
-// Laisser vide = tout le monde peut gérer les matchs, joueurs et vacances.
-// Mettre un code (ex. 'skip2026') = ces actions demandent ce code sur la page.
+// Mot de passe des éditeurs (Pascal) : il n'est PAS écrit ici (ce fichier est public sur GitHub).
+// Il est rangé dans Apps Script > Paramètres du projet > Propriétés du script > CODE_CAPITAINE.
+// Sans cette propriété, tout le monde peut gérer les matchs, scores et compositions.
 const CODE_CAPITAINE = '';
+function codeCapitaine_() {
+  return PropertiesService.getScriptProperties().getProperty('CODE_CAPITAINE') || CODE_CAPITAINE;
+}
 
 const ONGLET_MATCHS = 'Matchs';
 const ONGLET_JOUEURS = 'Joueurs';
@@ -80,7 +84,7 @@ function lireTout_() {
     };
   });
 
-  return { joueurs: joueurs, matches: matches, vacances: vacances, capitaine: CODE_CAPITAINE !== '' };
+  return { joueurs: joueurs, matches: matches, vacances: vacances, capitaine: codeCapitaine_() !== '' };
 }
 
 /* ---------- Écriture ---------- */
@@ -105,7 +109,8 @@ function action_(b) {
     case 'setDispo': return setDispo_(b);
     case 'addVacances': return addVacances_(b);
     case 'deleteVacances': return deleteVacances_(b);
-    case 'setScore': return setScore_(b);
+    case 'setScore': capitaine_(b); return setScore_(b);
+    case 'checkCode': capitaine_(b); return {};
     case 'saveMatch': capitaine_(b); return saveMatch_(b);
     case 'deleteMatch': capitaine_(b); return deleteMatch_(b);
     case 'savePlayer': capitaine_(b); return savePlayer_(b);
@@ -261,7 +266,8 @@ function savePlayer_(b) {
 /* ---------- Outils ---------- */
 
 function capitaine_(b) {
-  if (CODE_CAPITAINE && b.code !== CODE_CAPITAINE) throw new Error('code capitaine incorrect');
+  const code = codeCapitaine_();
+  if (code && String(b.code || '') !== code) throw new Error('code capitaine incorrect');
 }
 function feuille_(nom) {
   const sh = SpreadsheetApp.getActive().getSheetByName(nom);
