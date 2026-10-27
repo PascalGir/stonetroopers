@@ -17,6 +17,7 @@ Page de l'équipe de curling : https://pascalgir.github.io/stonetroopers/
 | `Code.gs` | Script Google Apps Script relié au Google Sheet (copie de référence) |
 | `data.js` | Données de secours si le Google Sheet ne répond pas |
 | `StoneTroopers_Base.xlsx` | Modèle du Google Sheet d'origine |
+| `CHANGELOG.md` | Historique des versions (version actuelle affichée en bas de la page) |
 
 ## Réglages courants (`config.js`)
 
