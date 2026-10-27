@@ -1,11 +1,16 @@
 # Historique des versions — StoneTroopers - Planning
 
 Site : https://pascalgir.github.io/stonetroopers/
-Version actuelle : **3.2** (27 octobre 2026)
+Version actuelle : **3.3** (27 octobre 2026)
 
 Numérotation : le premier chiffre change lors d'une refonte importante, le second pour chaque série d'améliorations.
 
 ---
+
+## 3.3 — 27 octobre 2026
+- **Mot de passe** pour les modifications de Pascal (matchs, scores, compositions) : demandé une fois par appareil, bouton 🔒 « Mot de passe pour modifier » si on choisit « Plus tard ».
+- Le mot de passe est vérifié par le script Google et rangé dans ses propriétés (il n'est écrit dans aucun fichier sur GitHub).
+- Les disponibilités restent modifiables par chacun sans mot de passe.
 
 ## 3.2 — 27 octobre 2026
 - **Export calendrier rétabli** : il avait été effacé par erreur lors de la refonte 3.0 (bouton 📅 sur chaque match et « 📅 Exporter tous les matchs »).
