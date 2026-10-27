@@ -112,23 +112,22 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-
 .countdown{font-size:12px;font-weight:700;background:var(--house);color:#fff;padding:3px 9px;border-radius:99px;text-transform:uppercase;letter-spacing:.04em}
 
 /* ============ 3. Joueurs : pastilles ============ */
-.players{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}
-.chip{font:inherit;color:var(--ink);background:transparent;border:0;padding:4px 0;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0;border-radius:10px}
-.chip .av{position:relative;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:14px;letter-spacing:.02em;background:var(--c-vide);color:var(--c-vide-ink);border:2px dashed var(--line);transition:transform .08s}
-.chip .ic{position:absolute;right:-4px;bottom:-4px;width:19px;height:19px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:800;background:var(--surface);color:var(--muted);border:1.5px solid var(--line)}
-.chip .who{font-size:11.5px;color:var(--muted);max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.players{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:inherit;color:var(--ink);background:transparent;border:0;padding:0;display:inline-flex;min-width:0;border-radius:99px}
+.chip .av{display:inline-flex;align-items:center;gap:7px;border-radius:99px;padding:5px 7px 5px 13px;font-weight:650;font-size:13.5px;line-height:1.2;white-space:nowrap;background:var(--c-vide);color:var(--c-vide-ink);border:2px dashed var(--line);transition:transform .08s}
+.chip .ic{width:19px;height:19px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-style:normal;font-weight:800;background:var(--surface-2);color:var(--muted);flex:none}
 .chip.v-oui .av{background:var(--c-oui);color:var(--c-oui-ink);border:2px solid transparent}
-.chip.v-oui .ic{color:var(--c-oui);border-color:var(--c-oui)}
+.chip.v-oui .ic{background:rgba(255,255,255,.9);color:var(--c-oui)}
 .chip.v-incertain .av{background:var(--c-inc);color:var(--c-inc-ink);border:2px solid transparent}
-.chip.v-incertain .ic{color:var(--c-inc-ink);background:var(--c-inc);border-color:var(--surface)}
+.chip.v-incertain .ic{background:rgba(255,255,255,.75);color:var(--c-inc-ink)}
 .chip.v-non .av{background:var(--c-non);color:var(--c-non-ink);border:2px solid transparent}
+.chip.v-non .ic{background:var(--surface);color:var(--c-non-ink)}
 .chip.vac .av{background:var(--vac-bg)}
-.chip.me .av{box-shadow:0 0 0 3px var(--surface),0 0 0 5px var(--accent)}
-.chip.me .who{color:var(--ink);font-weight:700}
+.chip.me .av{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--accent)}
 button.chip{cursor:pointer}
-button.chip:hover .av{transform:scale(1.06)}
-button.chip:active .av{transform:scale(.94)}
-button.chip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button.chip:hover .av{transform:scale(1.04)}
+button.chip:active .av{transform:scale(.96)}
+button.chip:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .chip.saving .av{opacity:.55}
 
 /* ============ Score et composition ============ */
@@ -176,10 +175,9 @@ td.num{font-variant-numeric:tabular-nums;text-align:right}
 .stats-sum b{font-size:16px}
 .legend{display:grid;gap:6px;font-size:13px;color:var(--muted)}
 .legend span.badge{display:inline-block;min-width:118px;text-align:center;margin-right:8px}
-.legend .dots{display:flex;flex-wrap:wrap;gap:14px;margin-top:6px}
-.legend .dots .chip{flex-direction:row;padding:0;gap:6px}
-.legend .dots .av{width:24px;height:24px;font-size:0}
-.legend .dots .ic{width:15px;height:15px;font-size:9px;right:-5px;bottom:-5px}
+.legend .dots{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.legend .dots .av{font-size:12.5px;padding:3px 6px 3px 11px}
+.legend .dots .ic{width:16px;height:16px;font-size:10px}
 
 /* ============ Fenêtre match, toast ============ */
 dialog{border:1px solid var(--line);border-radius:16px;padding:0;background:var(--surface);color:var(--ink);width:min(440px,calc(100% - 32px));box-shadow:0 10px 40px rgba(0,0,0,.25)}
@@ -205,8 +203,7 @@ dialog .actions .spacer{flex:1}
   .datebox,.hero-card .datebox{display:flex;gap:8px;align-items:baseline;justify-content:flex-start;padding:6px 10px;text-align:left;width:max-content}
   .datebox .n,.hero-card .datebox .n{font-size:18px}
   .hero-card .opp{font-size:19px}
-  .chip .av{width:38px;height:38px;font-size:13px}
-  .chip .who{font-size:10.5px}
+  .chip .av{font-size:13px;padding:5px 6px 5px 11px;gap:6px}
   .res-row{grid-template-columns:58px 1fr auto auto;padding:10px 12px;gap:8px}
 }
 </style>
@@ -277,10 +274,10 @@ dialog .actions .spacer{flex:1}
     <div><span class="badge" style="background:var(--bad-bg);color:var(--bad)">⚠ Incomplet</span>même avec les incertains, moins de 3 joueurs</div>
     <div><span class="badge" style="background:var(--plus-bg);color:var(--plus)">➕ Surplus</span>les 5 ont confirmé : il faudra tourner</div>
     <div class="dots">
-      <span class="chip v-oui"><span class="av"><i class="ic">✓</i></span>Oui</span>
-      <span class="chip v-incertain"><span class="av"><i class="ic">?</i></span>Incertain</span>
-      <span class="chip v-non"><span class="av"><i class="ic">✕</i></span>Non</span>
-      <span class="chip v-vide"><span class="av"><i class="ic">–</i></span>Pas de réponse</span>
+      <span class="chip v-oui"><span class="av">Oui<i class="ic">✓</i></span></span>
+      <span class="chip v-incertain"><span class="av">Incertain<i class="ic">?</i></span></span>
+      <span class="chip v-non"><span class="av">Non<i class="ic">✕</i></span></span>
+      <span class="chip v-vide"><span class="av">Pas de réponse<i class="ic">–</i></span></span>
     </div>
   </div>
 
@@ -361,11 +358,6 @@ const fmtDay = new Intl.DateTimeFormat("fr-FR",{weekday:"short"});
 const fmtMon = new Intl.DateTimeFormat("fr-FR",{month:"short"});
 const fmtLong = new Intl.DateTimeFormat("fr-FR",{weekday:"long",day:"numeric",month:"long"});
 const fmtShort = new Intl.DateTimeFormat("fr-FR",{day:"numeric",month:"short"});
-function initiales(nom){
-  const parts = String(nom).split(/[\s-]+/).filter(Boolean);
-  if (parts.length > 1) return (parts[0][0] + parts[1][0]).toUpperCase();
-  return nom.slice(0,1).toUpperCase() + nom.slice(1,2).toLowerCase();
-}
 function countdown(dateStr){
   const n = Math.round((parseDate(dateStr) - today()) / 86400000);
   return n<=0 ? "Aujourd'hui" : n===1 ? "Demain" : `Dans ${n} jours`;
@@ -475,7 +467,7 @@ function chipHTML(m, p, past){
   const v = m.dispo[p]||"", vac = onVacation(p,m.date);
   const cls = ["chip","v-"+(v?v.toLowerCase():"vide"), vac?"vac":"", me===p?"me":""].join(" ");
   const label = `${esc(p)} : ${v||"pas de réponse"}${vac?" (en congé)":""}`;
-  const inner = `<span class="av">${esc(initiales(p))}<i class="ic" aria-hidden="true">${ICON[v]}</i></span><span class="who">${esc(p)}</span>`;
+  const inner = `<span class="av">${esc(p)}<i class="ic" aria-hidden="true">${ICON[v]}</i></span>`;
   if (me===p && !past)
     return `<button type="button" class="${cls}" data-id="${esc(m.id)}" data-p="${esc(p)}" aria-label="${label} — toucher pour changer" title="Toucher pour changer">${inner}</button>`;
   return `<div class="${cls}" role="img" aria-label="${label}">${inner}</div>`;
@@ -535,7 +527,7 @@ function render(){
 
   $("#addMatch").hidden = !canEdit();
   $("#hint").innerHTML = me
-    ? `Touche ta pastille <b>${esc(me)}</b> pour changer ta réponse : vide → Oui → Incertain → Non.`
+    ? `Touche ta capsule <b>${esc(me)}</b> pour changer ta réponse : vide → Oui → Incertain → Non.`
     : `Choisis ton nom dans <b>Je suis</b> pour donner tes disponibilités.`;
   renderVacances(); renderTeam(); renderStats();
   $("#secStats").hidden = CFG.AFFICHER_STATS === false || !canEdit();
