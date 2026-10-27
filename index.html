@@ -289,9 +289,9 @@ dialog .actions .spacer{flex:1}
     <div><span class="badge" style="background:var(--bad-bg);color:var(--bad)">⚠ Incomplet</span>même avec les incertains, moins de 3 joueurs</div>
     <div><span class="badge" style="background:var(--plus-bg);color:var(--plus)">➕ Surplus</span>les 5 ont confirmé : il faudra tourner</div>
     <div class="dots">
-      <span class="chip v-oui"><span class="av">Oui<i class="ic">✓</i></span></span>
+      <span class="chip v-oui"><span class="av">Présent<i class="ic">✓</i></span></span>
       <span class="chip v-incertain"><span class="av">Incertain<i class="ic">…</i></span></span>
-      <span class="chip v-non"><span class="av">Non<i class="ic">✕</i></span></span>
+      <span class="chip v-non"><span class="av">Absent<i class="ic">✕</i></span></span>
       <span class="chip v-vide"><span class="av">Pas de réponse<i class="ic">–</i></span></span>
     </div>
   </div>
@@ -301,7 +301,7 @@ dialog .actions .spacer{flex:1}
   <div class="panel" id="stats"></div>
   </section>
 
-  <footer id="foot">StoneTroopers · version 3.4 · <a href="https://github.com/PascalGir/stonetroopers/blob/main/CHANGELOG.md" target="_blank" rel="noopener">nouveautés</a></footer>
+  <footer id="foot">StoneTroopers · version 3.5 · <a href="https://github.com/PascalGir/stonetroopers/blob/main/CHANGELOG.md" target="_blank" rel="noopener">nouveautés</a></footer>
 </div>
 
 <dialog id="dlg">
@@ -353,8 +353,10 @@ let PLAYERS = [];
 const API = ((window.STONETROOPERS_CONFIG||{}).API_URL||"").trim();
 const CYCLE = ["", "Oui", "Incertain", "Non"];
 const ICON = {"Oui":"✓", "Incertain":"…", "Non":"✕", "":"–"};
-// Pastilles de l'aide « vide → Oui → Incertain → Non » (mêmes que la légende)
-const SEQ_HINT = [["vide","vide",""],["oui","Oui","Oui"],["incertain","Incertain","Incertain"],["non","Non","Non"]]
+// Libellés affichés (les valeurs enregistrées dans le Sheet restent Oui / Incertain / Non)
+const LIBELLE = {"Oui":"Présent", "Incertain":"Incertain", "Non":"Absent", "":"vide"};
+// Pastilles de l'aide « vide → Présent → Incertain → Absent » (mêmes que la légende)
+const SEQ_HINT = [["vide",""],["oui","Oui"],["incertain","Incertain"],["non","Non"]].map(([c,v])=>[c,LIBELLE[v],v])
   .map(([c,t,v])=>`<span class="chip v-${c}"><span class="av">${t}<i class="ic" aria-hidden="true">${ICON[v]}</i></span></span>`)
   .join('<span class="arr" aria-hidden="true">→</span>');
 
@@ -501,7 +503,7 @@ function renderStats(){
 function chipHTML(m, p, past){
   const v = m.dispo[p]||"", vac = onVacation(p,m.date);
   const cls = ["chip","v-"+(v?v.toLowerCase():"vide"), vac?"vac":"", me===p?"me":""].join(" ");
-  const label = `${esc(p)} : ${v||"pas de réponse"}${vac?" (en congé)":""}`;
+  const label = `${esc(p)} : ${v?LIBELLE[v].toLowerCase():"pas de réponse"}${vac?" (en congé)":""}`;
   const inner = `<span class="av">${esc(p)}<i class="ic" aria-hidden="true">${ICON[v]}</i></span>`;
   if (me===p && !past)
     return `<button type="button" class="${cls}" data-id="${esc(m.id)}" data-p="${esc(p)}" aria-label="${label} — toucher pour changer" title="Toucher pour changer">${inner}</button>`;
