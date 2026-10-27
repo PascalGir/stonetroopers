@@ -5,107 +5,71 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>StoneTroopers - Planning</title>
 <meta name="description" content="Matchs de curling et disponibilités de l'équipe StoneTroopers, saison 2026-27">
+<meta name="theme-color" content="#1d4e89">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23d6e9f5'/%3E%3Ccircle cx='16' cy='16' r='10' fill='%23c8323c'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%23fff'/%3E%3Ccircle cx='16' cy='16' r='2' fill='%231d4e89'/%3E%3C/svg%3E">
 <style>
+/* ============ Couleurs (clair / sombre) ============ */
 :root{
-  --bg:#f3f7fa; --surface:#ffffff; --surface-2:#eaf1f6; --ink:#15212b; --muted:#5d6b78;
-  --line:#d7e1e8; --accent:#1d4e89; --accent-ink:#ffffff; --house:#c8323c;
+  --bg:#f1f5f9; --surface:#ffffff; --surface-2:#e9f0f6; --ink:#14202b; --muted:#5b6977;
+  --line:#d6e0e8; --accent:#1d4e89; --accent-ink:#ffffff; --house:#c8323c;
+  --hero-a:#1d4e89; --hero-b:#0e2c52; --hero-ink:#ffffff; --hero-sub:#c9dcf0;
   --ok:#1f7a4d; --ok-bg:#dff3e8; --warn:#8a5a00; --warn-bg:#fff1cc;
   --bad:#a52a2a; --bad-bg:#fbe1df; --plus:#9a4a00; --plus-bg:#ffe5cc;
-  --unk:#7a5a00; --unk-bg:#fff6d6; --no:#6b7680; --no-bg:#eceff2; --vac-bg:#d3d8dd;
-  --shadow:0 1px 2px rgba(20,40,60,.06),0 4px 16px rgba(20,40,60,.06);
+  --c-oui:#1f8a55; --c-oui-ink:#ffffff; --c-inc:#e2a514; --c-inc-ink:#2a1d00;
+  --c-non:#c4ccd4; --c-non-ink:#3f4a55; --c-vide:#ffffff; --c-vide-ink:#8a97a3; --vac-bg:#cfd6dc;
+  --shadow:0 1px 2px rgba(20,40,60,.06),0 6px 20px rgba(20,40,60,.07);
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#0e161d; --surface:#16212b; --surface-2:#1d2a36; --ink:#e6eef4; --muted:#93a3b1;
-    --line:#2a3a48; --accent:#6aa7e8; --accent-ink:#0e161d; --house:#e2525b;
+    --bg:#0c141b; --surface:#142029; --surface-2:#1b2935; --ink:#e7eef4; --muted:#95a5b3;
+    --line:#26364a; --accent:#6aa7e8; --accent-ink:#0c141b; --house:#ec5f68;
+    --hero-a:#173a63; --hero-b:#0a1a2d; --hero-ink:#f2f7fb; --hero-sub:#a9c2dc;
     --ok:#6fd3a0; --ok-bg:#163a2a; --warn:#f2c35c; --warn-bg:#3a2f12;
     --bad:#f08a80; --bad-bg:#3d1c1a; --plus:#f5a35c; --plus-bg:#3d2714;
-    --unk:#f2cf6a; --unk-bg:#3a3214; --no:#9aa6b1; --no-bg:#24313d; --vac-bg:#2f3a44;
+    --c-oui:#2fa56b; --c-oui-ink:#ffffff; --c-inc:#d8a428; --c-inc-ink:#1e1500;
+    --c-non:#33424f; --c-non-ink:#c3cdd6; --c-vide:#142029; --c-vide-ink:#7f909f; --vac-bg:#3a4652;
     --shadow:none;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#0e161d; --surface:#16212b; --surface-2:#1d2a36; --ink:#e6eef4; --muted:#93a3b1;
-  --line:#2a3a48; --accent:#6aa7e8; --accent-ink:#0e161d; --house:#e2525b;
+  --bg:#0c141b; --surface:#142029; --surface-2:#1b2935; --ink:#e7eef4; --muted:#95a5b3;
+  --line:#26364a; --accent:#6aa7e8; --accent-ink:#0c141b; --house:#ec5f68;
+  --hero-a:#173a63; --hero-b:#0a1a2d; --hero-ink:#f2f7fb; --hero-sub:#a9c2dc;
   --ok:#6fd3a0; --ok-bg:#163a2a; --warn:#f2c35c; --warn-bg:#3a2f12;
   --bad:#f08a80; --bad-bg:#3d1c1a; --plus:#f5a35c; --plus-bg:#3d2714;
-  --unk:#f2cf6a; --unk-bg:#3a3214; --no:#9aa6b1; --no-bg:#24313d; --vac-bg:#2f3a44;
+  --c-oui:#2fa56b; --c-oui-ink:#ffffff; --c-inc:#d8a428; --c-inc-ink:#1e1500;
+  --c-non:#33424f; --c-non-ink:#c3cdd6; --c-vide:#142029; --c-vide-ink:#7f909f; --vac-bg:#3a4652;
   --shadow:none;
 }
+
+/* ============ Base ============ */
 *{box-sizing:border-box}
 html,body{margin:0}
 body{background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
 .wrap{max-width:880px;margin:0 auto;padding:0 16px 48px}
-header{padding:28px 0 18px;display:flex;gap:14px;align-items:center}
-.logo{width:46px;height:46px;flex:none}
-h1{font-size:24px;line-height:1.15;margin:0;letter-spacing:-.01em}
-.sub{color:var(--muted);font-size:13px;margin-top:2px}
-.sync{margin-left:auto;font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px;white-space:nowrap}
-
-.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:16px}
-.toolbar label{font-size:13px;color:var(--muted)}
-select,.seg button{font:inherit;font-size:14px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:7px 10px}
-.seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;background:var(--surface)}
-.seg button{border:0;border-radius:0;cursor:pointer;background:transparent;padding:7px 12px}
-.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
-.spacer{flex:1}
-
-.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:14px;display:grid;grid-template-columns:64px 1fr;gap:14px;margin-bottom:10px;position:relative;overflow:hidden}
-.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--st,transparent)}
-.card.past{opacity:.55}
-.card.next{border-color:var(--accent);border-width:2px;padding:13px}
-.datebox{text-align:center;border-radius:10px;background:var(--surface-2);padding:8px 0;align-self:start}
-.datebox .d{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
-.datebox .n{font-size:24px;font-weight:700;line-height:1.1}
-.datebox .m{font-size:12px;color:var(--muted)}
-.top{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:baseline}
-.opp{font-size:17px;font-weight:650}
-.meta{color:var(--muted);font-size:13px}
-.tag-next{font-size:11px;font-weight:600;background:var(--accent);color:var(--accent-ink);padding:2px 7px;border-radius:99px;text-transform:uppercase;letter-spacing:.04em}
-.statusline{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0 10px}
-.badge{font-size:12.5px;font-weight:600;padding:3px 9px;border-radius:99px}
-.counts{font-size:12.5px;color:var(--muted)}
-.s-ok{--st:var(--ok)} .s-ok .badge{background:var(--ok-bg);color:var(--ok)}
-.s-warn{--st:var(--warn)} .s-warn .badge{background:var(--warn-bg);color:var(--warn)}
-.s-bad{--st:var(--bad)} .s-bad .badge{background:var(--bad-bg);color:var(--bad)}
-.s-plus{--st:var(--plus)} .s-plus .badge{background:var(--plus-bg);color:var(--plus)}
-.s-none{--st:var(--line)} .s-none .badge{background:var(--surface-2);color:var(--muted)}
-
-.players{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
-.chip{font:inherit;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:6px 4px;text-align:center;min-width:0;transition:transform .08s}
-.chip .who{display:block;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.chip .val{display:block;font-size:13.5px;font-weight:600}
-.chip.v-oui{background:var(--ok-bg);border-color:transparent}.chip.v-oui .val{color:var(--ok)}
-.chip.v-incertain{background:var(--unk-bg);border-color:transparent}.chip.v-incertain .val{color:var(--unk)}
-.chip.v-non{background:var(--no-bg);border-color:transparent}.chip.v-non .val{color:var(--no)}
-.chip.v-vide .val{color:var(--muted);font-weight:500}
-.chip.vac{background:var(--vac-bg)}
-.chip.vac .who::after{content:" 🏖"}
-.chip.me{outline:2px solid var(--accent);outline-offset:1px}
-
-h2{font-size:15px;margin:28px 0 10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
-.tablewrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:14px}
-table{border-collapse:collapse;width:100%;font-size:14px}
-th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
-tr:last-child td{border-bottom:0}
-th{font-size:12px;color:var(--muted);font-weight:600}
-td.num{font-variant-numeric:tabular-nums;text-align:right}
-.bar{height:6px;border-radius:3px;background:var(--surface-2);min-width:80px;overflow:hidden}
-.bar i{display:block;height:100%;background:var(--ok)}
-.legend{display:grid;gap:6px;font-size:13px;color:var(--muted)}
-.legend span.badge{display:inline-block;min-width:118px;text-align:center;margin-right:8px}
-.empty{color:var(--muted);text-align:center;padding:30px 0}
+h2{font-size:13px;margin:26px 0 10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.07em}
+.empty{color:var(--muted);text-align:center;padding:24px 0}
 footer{margin-top:30px;font-size:12px;color:var(--muted);text-align:center}
-button.chip{cursor:pointer}
-button.chip:hover{filter:brightness(.96)}
-button.chip:active{transform:scale(.96)}
-button.chip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.chip.saving{opacity:.55}
-.hint{font-size:13px;color:var(--muted);margin:-6px 0 14px}
+
+/* ============ 1. En-tête ============ */
+.hero{color:var(--hero-ink);border-bottom:4px solid var(--house);
+  background:
+    radial-gradient(circle at calc(100% - 70px) 50%, rgba(255,255,255,.95) 0 8px, var(--house) 8px 22px, rgba(255,255,255,.9) 22px 34px, #6aa7e8 34px 48px, transparent 49px),
+    linear-gradient(135deg,var(--hero-a),var(--hero-b));}
+.hero-in{max-width:880px;margin:0 auto;padding:22px 150px 20px 16px;display:flex;gap:14px;align-items:center;min-height:116px}
+.logo{width:54px;height:54px;flex:none;filter:drop-shadow(0 2px 6px rgba(0,0,0,.25))}
+.hero h1{font-size:26px;line-height:1.1;margin:0;letter-spacing:-.01em;font-weight:800}
+.hero .sub{color:var(--hero-sub);font-size:13.5px;margin-top:4px}
+.sync{font-size:12px;color:var(--hero-sub);margin-top:6px}
+
+/* ============ Barre d'outils ============ */
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:16px 0 6px}
+.toolbar label{font-size:13px;color:var(--muted)}
+.spacer{flex:1}
+select,input,textarea{font:inherit;font-size:14px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:7px 9px;min-width:0}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:0;border-color:transparent}
+.hint{font-size:13px;color:var(--muted);margin:4px 0 0}
 .hint b{color:var(--ink)}
-.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s;max-width:calc(100% - 32px)}
-.toast.show{opacity:1}
 .btn{font:inherit;font-size:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:7px 12px;cursor:pointer}
 .btn:hover{filter:brightness(.97)}
 .btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
@@ -115,24 +79,82 @@ button.chip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .btn:disabled{opacity:.5;cursor:default}
 .icon-btn{margin-left:auto;font:inherit;border:0;background:transparent;color:var(--muted);cursor:pointer;padding:2px 6px;border-radius:6px;font-size:15px;line-height:1}
 .icon-btn:hover{background:var(--surface-2);color:var(--ink)}
-.icon-btn + .icon-btn{margin-left:0}
-.top{width:100%}
+
+/* ============ Cartes de match ============ */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:14px;display:grid;grid-template-columns:64px 1fr;gap:14px;margin-bottom:10px;position:relative;overflow:hidden}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--st,transparent)}
+.datebox{text-align:center;border-radius:10px;background:var(--surface-2);padding:8px 0;align-self:start}
+.datebox .d{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.datebox .n{font-size:24px;font-weight:700;line-height:1.1}
+.datebox .m{font-size:12px;color:var(--muted)}
+.top{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:baseline;width:100%}
+.opp{font-size:17px;font-weight:650}
+.meta{color:var(--muted);font-size:13px}
+.note{color:var(--ink);font-weight:600}
+.note.rouge{color:var(--house)}
+.statusline{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0 10px}
+.badge{font-size:12.5px;font-weight:600;padding:3px 9px;border-radius:99px}
+.counts{font-size:12.5px;color:var(--muted)}
 .tag-score{font-size:11px;font-weight:600;background:var(--warn-bg);color:var(--warn);padding:2px 7px;border-radius:99px}
+.s-ok{--st:var(--ok)} .s-ok .badge{background:var(--ok-bg);color:var(--ok)}
+.s-warn{--st:var(--warn)} .s-warn .badge{background:var(--warn-bg);color:var(--warn)}
+.s-bad{--st:var(--bad)} .s-bad .badge{background:var(--bad-bg);color:var(--bad)}
+.s-plus{--st:var(--plus)} .s-plus .badge{background:var(--plus-bg);color:var(--plus)}
+.s-none{--st:var(--line)} .s-none .badge{background:var(--surface-2);color:var(--muted)}
+
+/* ============ 2. Prochain match ============ */
+.card.hero-card{border:2px solid var(--accent);padding:18px;grid-template-columns:84px 1fr;gap:18px}
+.hero-card .datebox{background:var(--accent);color:var(--accent-ink);padding:10px 0}
+.hero-card .datebox .d,.hero-card .datebox .m{color:inherit;opacity:.85}
+.hero-card .datebox .n{font-size:32px}
+.hero-card .opp{font-size:21px;font-weight:750}
+.hero-card .badge{font-size:14px;padding:5px 12px}
+.countdown{font-size:12px;font-weight:700;background:var(--house);color:#fff;padding:3px 9px;border-radius:99px;text-transform:uppercase;letter-spacing:.04em}
+
+/* ============ 3. Joueurs : pastilles ============ */
+.players{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}
+.chip{font:inherit;color:var(--ink);background:transparent;border:0;padding:4px 0;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0;border-radius:10px}
+.chip .av{position:relative;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:14px;letter-spacing:.02em;background:var(--c-vide);color:var(--c-vide-ink);border:2px dashed var(--line);transition:transform .08s}
+.chip .ic{position:absolute;right:-4px;bottom:-4px;width:19px;height:19px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:800;background:var(--surface);color:var(--muted);border:1.5px solid var(--line)}
+.chip .who{font-size:11.5px;color:var(--muted);max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chip.v-oui .av{background:var(--c-oui);color:var(--c-oui-ink);border:2px solid transparent}
+.chip.v-oui .ic{color:var(--c-oui);border-color:var(--c-oui)}
+.chip.v-incertain .av{background:var(--c-inc);color:var(--c-inc-ink);border:2px solid transparent}
+.chip.v-incertain .ic{color:var(--c-inc-ink);background:var(--c-inc);border-color:var(--surface)}
+.chip.v-non .av{background:var(--c-non);color:var(--c-non-ink);border:2px solid transparent}
+.chip.vac .av{background:var(--vac-bg)}
+.chip.me .av{box-shadow:0 0 0 3px var(--surface),0 0 0 5px var(--accent)}
+.chip.me .who{color:var(--ink);font-weight:700}
+button.chip{cursor:pointer}
+button.chip:hover .av{transform:scale(1.06)}
+button.chip:active .av{transform:scale(.94)}
+button.chip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.chip.saving .av{opacity:.55}
+
+/* ============ Score et composition ============ */
 .score,.compo{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);font-size:13.5px}
 .compo{margin-top:0;border-top:0;padding-top:8px}
 .compo label{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--muted)}
 .compo select{padding:5px 6px;max-width:130px}
 .compo .res{font-weight:600}
-.note{color:var(--ink);font-weight:600}
-.note.rouge{color:var(--house)}
-.stats-sum{font-size:14px;margin:0 0 10px}
-.stats-sum b{font-size:16px}
-.score input{width:54px;text-align:center}
+.score input{width:66px;text-align:center}
 .score .res{font-weight:700}
-.score .win{color:var(--ok)} .score .loss{color:var(--bad)} .score .draw{color:var(--muted)}
-.card.past.scored{opacity:.75}
-input,select,textarea{font:inherit;font-size:14px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:7px 9px;min-width:0}
-input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:0;border-color:transparent}
+.win{color:var(--ok)} .loss{color:var(--bad)} .draw{color:var(--muted)}
+
+/* ============ 4. Résultats (vue résumée) ============ */
+.results{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.res-row{display:grid;grid-template-columns:70px 1fr auto auto;gap:10px;align-items:center;width:100%;font:inherit;color:inherit;text-align:left;background:transparent;border:0;border-top:1px solid var(--line);padding:10px 14px;cursor:pointer}
+.res-row:first-child{border-top:0}
+.res-row:hover{background:var(--surface-2)}
+.res-row .rd{font-size:12.5px;color:var(--muted)}
+.res-row .ro{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.res-row .rs{font-weight:700;font-variant-numeric:tabular-nums}
+.res-row .rb{font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:99px;min-width:30px;text-align:center}
+.rb.win{background:var(--ok-bg)} .rb.loss{background:var(--bad-bg)} .rb.draw{background:var(--surface-2)}
+.res-detail{padding:0 10px 10px;border-top:1px solid var(--line);background:var(--surface-2)}
+.res-detail .card{margin:10px 0 0}
+
+/* ============ Panneaux, vacances, équipe, stats ============ */
 .panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px}
 .panel p{margin:0 0 10px;font-size:13px;color:var(--muted)}
 .form-row{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end}
@@ -144,6 +166,22 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-
 .rows li .grow{flex:1;min-width:0}
 .rows li.off .grow{opacity:.55}
 .pill{font-size:11.5px;padding:2px 7px;border-radius:99px;background:var(--surface-2);color:var(--muted)}
+.tablewrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:14px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+th{font-size:12px;color:var(--muted);font-weight:600}
+td.num{font-variant-numeric:tabular-nums;text-align:right}
+.stats-sum{font-size:14px;margin:0 0 10px;color:var(--ink)!important}
+.stats-sum b{font-size:16px}
+.legend{display:grid;gap:6px;font-size:13px;color:var(--muted)}
+.legend span.badge{display:inline-block;min-width:118px;text-align:center;margin-right:8px}
+.legend .dots{display:flex;flex-wrap:wrap;gap:14px;margin-top:6px}
+.legend .dots .chip{flex-direction:row;padding:0;gap:6px}
+.legend .dots .av{width:24px;height:24px;font-size:0}
+.legend .dots .ic{width:15px;height:15px;font-size:9px;right:-5px;bottom:-5px}
+
+/* ============ Fenêtre match, toast ============ */
 dialog{border:1px solid var(--line);border-radius:16px;padding:0;background:var(--surface);color:var(--ink);width:min(440px,calc(100% - 32px));box-shadow:0 10px 40px rgba(0,0,0,.25)}
 dialog::backdrop{background:rgba(10,20,30,.45)}
 dialog form{padding:18px;display:grid;gap:12px}
@@ -152,19 +190,30 @@ dialog .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 dialog label{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--muted)}
 dialog .actions{display:flex;gap:8px;align-items:center;margin-top:4px}
 dialog .actions .spacer{flex:1}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s;max-width:calc(100% - 32px);z-index:10}
+.toast.show{opacity:1}
+
+/* ============ 3. Téléphone ============ */
 @media (max-width:560px){
-  header{flex-wrap:wrap}
-  .sync{margin-left:0;width:100%}
-  .card{grid-template-columns:1fr;gap:10px}
-  .datebox{display:flex;gap:8px;align-items:baseline;justify-content:flex-start;padding:6px 10px;background:none;text-align:left}
-  .datebox .n{font-size:18px}
-  .chip .who{font-size:11px}
+  .hero-in{padding:18px 16px 16px;min-height:0;background:none}
+  .hero{background:
+    radial-gradient(circle at calc(100% + 10px) 0, rgba(255,255,255,.9) 0 8px, var(--house) 8px 22px, rgba(255,255,255,.85) 22px 34px, #6aa7e8 34px 50px, transparent 51px),
+    linear-gradient(135deg,var(--hero-a),var(--hero-b));}
+  .hero h1{font-size:21px}
+  .logo{width:44px;height:44px}
+  .card,.card.hero-card{grid-template-columns:1fr;gap:10px}
+  .datebox,.hero-card .datebox{display:flex;gap:8px;align-items:baseline;justify-content:flex-start;padding:6px 10px;text-align:left;width:max-content}
+  .datebox .n,.hero-card .datebox .n{font-size:18px}
+  .hero-card .opp{font-size:19px}
+  .chip .av{width:38px;height:38px;font-size:13px}
+  .chip .who{font-size:10.5px}
+  .res-row{grid-template-columns:58px 1fr auto auto;padding:10px 12px;gap:8px}
 }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
+<header class="hero">
+  <div class="hero-in">
     <svg class="logo" viewBox="0 0 48 48" aria-hidden="true">
       <circle cx="24" cy="24" r="23" fill="#d6e9f5"/><circle cx="24" cy="24" r="16" fill="#1d4e89"/>
       <circle cx="24" cy="24" r="11" fill="#fff"/><circle cx="24" cy="24" r="6" fill="#c8323c"/>
@@ -173,25 +222,26 @@ dialog .actions .spacer{flex:1}
     <div>
       <h1>StoneTroopers - Planning</h1>
       <div class="sub">Planning de présence · saison 2026-27</div>
+      <div class="sync" id="maj"></div>
     </div>
-    <div class="sync" id="maj"></div>
-  </header>
+  </div>
+</header>
 
+<div class="wrap">
   <div class="toolbar">
     <label for="me">Je suis</label>
     <select id="me"><option value="">—</option></select>
     <span class="spacer"></span>
-    <button type="button" class="btn" id="icsAll" title="Ajouter tous les matchs à ton calendrier (fichier .ics)">📅 Exporter tous les matchs</button>
     <button type="button" class="btn primary" id="addMatch" hidden>+ Match</button>
-    <div class="seg" role="group" aria-label="Filtre">
-      <button type="button" data-f="upcoming" aria-pressed="true">À venir</button>
-      <button type="button" data-f="all" aria-pressed="false">Tous</button>
-    </div>
   </div>
-
   <div class="hint" id="hint"></div>
 
-  <main id="list"></main>
+  <main id="main">
+    <section id="secNext"><h2>Prochain match</h2><div id="next"></div></section>
+    <section id="secTodo" hidden><h2>À compléter</h2><div id="todo"></div></section>
+    <section id="secUp"><h2>À venir</h2><div id="list"></div></section>
+    <section id="secRes" hidden><h2>Résultats</h2><div class="results" id="results"></div></section>
+  </main>
 
   <!-- Sections masquées par défaut : pour les réafficher, mettre true dans config.js -->
   <section id="secVacances" hidden>
@@ -226,6 +276,12 @@ dialog .actions .spacer{flex:1}
     <div><span class="badge" style="background:var(--warn-bg);color:var(--warn)">▲ Jouable / ❓</span>3 confirmés, ou 3 possibles en comptant les « Incertain »</div>
     <div><span class="badge" style="background:var(--bad-bg);color:var(--bad)">⚠ Incomplet</span>même avec les incertains, moins de 3 joueurs</div>
     <div><span class="badge" style="background:var(--plus-bg);color:var(--plus)">➕ Surplus</span>les 5 ont confirmé : il faudra tourner</div>
+    <div class="dots">
+      <span class="chip v-oui"><span class="av"><i class="ic">✓</i></span>Oui</span>
+      <span class="chip v-incertain"><span class="av"><i class="ic">?</i></span>Incertain</span>
+      <span class="chip v-non"><span class="av"><i class="ic">✕</i></span>Non</span>
+      <span class="chip v-vide"><span class="av"><i class="ic">–</i></span>Pas de réponse</span>
+    </div>
   </div>
 
   <section id="secStats" hidden>
@@ -261,8 +317,8 @@ dialog .actions .spacer{flex:1}
 </dialog>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<script src="data.js?v=5"></script>
-<script src="config.js?v=5"></script>
+<script src="data.js"></script>
+<script src="config.js"></script>
 
 <script>
 (function(){
@@ -270,6 +326,7 @@ dialog .actions .spacer{flex:1}
 let PLAYERS = [];
 const API = ((window.STONETROOPERS_CONFIG||{}).API_URL||"").trim();
 const CYCLE = ["", "Oui", "Incertain", "Non"];
+const ICON = {"Oui":"✓", "Incertain":"?", "Non":"✕", "":"–"};
 
 const $ = s => document.querySelector(s);
 const CFG = window.STONETROOPERS_CONFIG || {};
@@ -279,7 +336,7 @@ $("#secEquipe").hidden = CFG.AFFICHER_EQUIPE !== true;
 const COMPO_HAB = Array.isArray(CFG.COMPO_HABITUELLE) ? CFG.COMPO_HABITUELLE : [];
 const SKIP_HAB = CFG.SKIP_HABITUEL || "";
 const COMPO_ABS = CFG.COMPO_SI_ABSENT || {};
-// Joueurs autorisés à ajouter / modifier / supprimer des matchs (liste dans config.js)
+// Joueurs autorisés à ajouter / modifier / supprimer des matchs, scores et compositions (config.js)
 const EDITEURS = Array.isArray(CFG.EDITEURS) ? CFG.EDITEURS : ["Pascal"];
 const canEdit = () => !!me && EDITEURS.includes(me);
 const store = {
@@ -287,8 +344,8 @@ const store = {
   set(k,v){ try{ localStorage.setItem("st_"+k, JSON.stringify(v)); }catch(e){} }
 };
 let state = { matches:[], vacances:[], joueurs:[], capitaine:false };
-let filter = store.get("filter","upcoming");
 let me = store.get("me","");
+const openRes = new Set();   // résultats dépliés
 
 function norm(v){
   v = String(v==null?"":v).trim().toLowerCase();
@@ -304,11 +361,21 @@ const fmtDay = new Intl.DateTimeFormat("fr-FR",{weekday:"short"});
 const fmtMon = new Intl.DateTimeFormat("fr-FR",{month:"short"});
 const fmtLong = new Intl.DateTimeFormat("fr-FR",{weekday:"long",day:"numeric",month:"long"});
 const fmtShort = new Intl.DateTimeFormat("fr-FR",{day:"numeric",month:"short"});
+function initiales(nom){
+  const parts = String(nom).split(/[\s-]+/).filter(Boolean);
+  if (parts.length > 1) return (parts[0][0] + parts[1][0]).toUpperCase();
+  return nom.slice(0,1).toUpperCase() + nom.slice(1,2).toLowerCase();
+}
+function countdown(dateStr){
+  const n = Math.round((parseDate(dateStr) - today()) / 86400000);
+  return n<=0 ? "Aujourd'hui" : n===1 ? "Demain" : `Dans ${n} jours`;
+}
 
 function onVacation(player, dateStr){
   return state.vacances.some(v => v.joueur===player && v.debut && v.fin && dateStr>=v.debut && dateStr<=v.fin);
 }
 function hasScore(m){ return String(m.scoreNous)!=="" && String(m.scoreEux)!==""; }
+function result(m){ const a=Number(m.scoreNous), b=Number(m.scoreEux); return a>b?["win","Victoire","V"]:a<b?["loss","Défaite","D"]:["draw","Égalité","N"]; }
 function status(m){
   const vals = PLAYERS.map(p=>m.dispo[p]||"");
   const yes = vals.filter(v=>v==="Oui").length;
@@ -364,6 +431,22 @@ function compoBlock(m){
       <button type="submit" class="btn small primary">Enregistrer</button>
     </form>`;
 }
+function scoreBlock(m){
+  if (hasScore(m) && !editingScore.has(m.id)){
+    const [cls,txt] = result(m);
+    return `<div class="score"><span>Score :</span><span class="res ${cls}">${Number(m.scoreNous)} – ${Number(m.scoreEux)} · ${txt}</span>
+      ${canEdit()?`<button type="button" class="btn small" data-act="editScore" data-id="${esc(m.id)}">Modifier</button>`:""}</div>`;
+  }
+  // Saisie du score réservée aux éditeurs (config.js)
+  if (!canEdit()) return "";
+  return `<form class="score" data-act="score" data-id="${esc(m.id)}">
+      <span>Score :</span>
+      <input type="number" name="nous" min="0" max="99" inputmode="numeric" placeholder="Nous" aria-label="Score StoneTroopers" value="${esc(m.scoreNous)}">
+      <span>–</span>
+      <input type="number" name="eux" min="0" max="99" inputmode="numeric" placeholder="Eux" aria-label="Score adversaire" value="${esc(m.scoreEux)}">
+      <button type="submit" class="btn small primary">Enregistrer</button>
+    </form>`;
+}
 
 // Statistiques simples, calculées à partir des scores et compositions saisis
 function renderStats(){
@@ -386,52 +469,29 @@ function renderStats(){
   }
   $("#stats").innerHTML = html;
 }
-function scoreBlock(m){
-  if (hasScore(m) && !editingScore.has(m.id)){
-    const a=Number(m.scoreNous), b=Number(m.scoreEux);
-    const [cls,txt] = a>b?["win","Victoire"]:a<b?["loss","Défaite"]:["draw","Égalité"];
-    return `<div class="score"><span>Score :</span><span class="res ${cls}">${a} – ${b} · ${txt}</span>
-      ${canEdit()?`<button type="button" class="btn small" data-act="editScore" data-id="${esc(m.id)}">Modifier</button>`:""}</div>`;
-  }
-  // Saisie du score réservée aux éditeurs (config.js)
-  if (!canEdit()) return "";
-  return `<form class="score" data-act="score" data-id="${esc(m.id)}">
-      <span>Score :</span>
-      <input type="number" name="nous" min="0" max="99" inputmode="numeric" placeholder="Nous" aria-label="Score StoneTroopers" value="${esc(m.scoreNous)}">
-      <span>–</span>
-      <input type="number" name="eux" min="0" max="99" inputmode="numeric" placeholder="Eux" aria-label="Score adversaire" value="${esc(m.scoreEux)}">
-      <button type="submit" class="btn small primary">Enregistrer</button>
-    </form>`;
-}
 
-function render(){
-  const t = today(), tIso = iso(t);
-  const sorted = [...state.matches].sort((a,b)=>a.date.localeCompare(b.date));
-  const nextM = sorted.find(m=>m.date>=tIso);
-  // « À venir » garde aussi les matchs passés à compléter (score manquant, ou composition manquante pour un éditeur)
-  const shown = filter==="all" ? sorted : sorted.filter(m=>m.date>=tIso || (canEdit() && (!hasScore(m) || !hasCompo(m))));
-  const list = $("#list");
-  if (!shown.length){ list.innerHTML = '<div class="empty">Aucun match à venir.</div>'; }
-  else list.innerHTML = shown.map(m=>{
-    const d = parseDate(m.date), past = m.date<tIso, played = m.date<=tIso, st = status(m), isNext = nextM===m;
-    const chips = PLAYERS.map(p=>{
-      const v = m.dispo[p]||"", vac = onVacation(p,m.date);
-      const cls = ["chip","v-"+(v?v.toLowerCase():"vide"), vac?"vac":"", me===p?"me":""].join(" ");
-      const label = `${esc(p)} : ${v||"pas de réponse"}${vac?" (en congé)":""}`;
-      const inner = `<span class="who">${esc(p)}</span><span class="val">${v||"—"}</span>`;
-      if (me===p && !past)
-        return `<button type="button" class="${cls}" data-id="${esc(m.id)}" data-p="${esc(p)}" aria-label="${label} — cliquer pour changer" title="Cliquer pour changer">${inner}</button>`;
-      return `<div class="${cls}" aria-label="${label}">${inner}</div>`;
-    }).join("");
-    const vacList = PLAYERS.filter(p=>onVacation(p,m.date));
-    return `<article class="card ${st.cls} ${past?"past":""} ${past&&hasScore(m)?"scored":""} ${isNext?"next":""}">
+/* ---------- Affichage ---------- */
+function chipHTML(m, p, past){
+  const v = m.dispo[p]||"", vac = onVacation(p,m.date);
+  const cls = ["chip","v-"+(v?v.toLowerCase():"vide"), vac?"vac":"", me===p?"me":""].join(" ");
+  const label = `${esc(p)} : ${v||"pas de réponse"}${vac?" (en congé)":""}`;
+  const inner = `<span class="av">${esc(initiales(p))}<i class="ic" aria-hidden="true">${ICON[v]}</i></span><span class="who">${esc(p)}</span>`;
+  if (me===p && !past)
+    return `<button type="button" class="${cls}" data-id="${esc(m.id)}" data-p="${esc(p)}" aria-label="${label} — toucher pour changer" title="Toucher pour changer">${inner}</button>`;
+  return `<div class="${cls}" role="img" aria-label="${label}">${inner}</div>`;
+}
+function cardHTML(m, opt){
+  opt = opt || {};
+  const tIso = iso(today());
+  const d = parseDate(m.date), past = m.date<tIso, played = m.date<=tIso, st = status(m);
+  const vacList = PLAYERS.filter(p=>onVacation(p,m.date));
+  return `<article class="card ${st.cls} ${opt.hero?"hero-card":""}">
       <div class="datebox"><div class="d">${fmtDay.format(d)}</div><div class="n">${d.getDate()}</div><div class="m">${fmtMon.format(d)}</div></div>
       <div>
         <div class="top">
           <span class="opp">vs ${esc(m.adversaire)}</span>
-          ${isNext?'<span class="tag-next">Prochain match</span>':""}
+          ${opt.hero?`<span class="countdown">${countdown(m.date)}</span>`:""}
           ${past&&!hasScore(m)&&canEdit()?'<span class="tag-score">Score à saisir</span>':""}
-          <button type="button" class="icon-btn" data-act="ics" data-id="${esc(m.id)}" aria-label="Ajouter ce match à mon calendrier" title="Ajouter ce match à mon calendrier (.ics)">📅</button>
           ${canEdit()?`<button type="button" class="icon-btn" data-act="edit" data-id="${esc(m.id)}" aria-label="Modifier ce match" title="Modifier ce match">✏️</button>`:""}
         </div>
         <div class="meta">${fmtLong.format(d)} · ${esc(m.heure)} · Piste ${esc(m.piste)}${m.notes?` · <span class="note${m.notesCouleur==="rouge"?" rouge":""}">${esc(m.notes)}</span>`:""}</div>
@@ -439,17 +499,44 @@ function render(){
           <span class="badge">${st.label}</span>
           <span class="counts">${st.yes} confirmé${st.yes>1?"s":""} · ${st.pot} potentiel${st.pot>1?"s":""}${vacList.length?" · En congé : "+vacList.map(esc).join(", "):""}</span>
         </div>
-        <div class="players">${chips}</div>
+        <div class="players">${PLAYERS.map(p=>chipHTML(m,p,past)).join("")}</div>
         ${played?scoreBlock(m)+compoBlock(m):""}
       </div>
     </article>`;
-  }).join("");
+}
+function resultRow(m){
+  const d = parseDate(m.date), open = openRes.has(m.id);
+  const sc = hasScore(m) ? result(m) : null;
+  return `<button type="button" class="res-row" data-act="toggleRes" data-id="${esc(m.id)}" aria-expanded="${open}">
+      <span class="rd">${fmtShort.format(d)}</span>
+      <span class="ro">vs ${esc(m.adversaire)}</span>
+      <span class="rs ${sc?sc[0]:"draw"}">${sc?`${Number(m.scoreNous)} – ${Number(m.scoreEux)}`:"—"}</span>
+      <span class="rb ${sc?sc[0]:"draw"}">${sc?sc[2]:"·"}</span>
+    </button>${open?`<div class="res-detail">${cardHTML(m)}</div>`:""}`;
+}
 
-  document.querySelectorAll(".seg button").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.f===filter)));
+function render(){
+  const tIso = iso(today());
+  const sorted = [...state.matches].sort((a,b)=>a.date.localeCompare(b.date));
+  const avenir = sorted.filter(m=>m.date>=tIso);
+  const nextM = avenir[0];
+  // Matchs passés à compléter (score ou composition manquants) : visibles pour les éditeurs
+  const todo = canEdit() ? sorted.filter(m=>m.date<tIso && (!hasScore(m) || !hasCompo(m))) : [];
+  const passes = sorted.filter(m=>m.date<tIso && !todo.includes(m)).reverse();
+
+  $("#secNext").hidden = !nextM;
+  $("#next").innerHTML = nextM ? cardHTML(nextM, {hero:true}) : "";
+  $("#secTodo").hidden = !todo.length;
+  $("#todo").innerHTML = todo.map(m=>cardHTML(m)).join("");
+  const rest = avenir.slice(1);
+  $("#list").innerHTML = rest.length ? rest.map(m=>cardHTML(m)).join("") : '<div class="empty">Aucun autre match prévu.</div>';
+  $("#secRes").hidden = !passes.length;
+  $("#results").innerHTML = passes.map(resultRow).join("");
+
   $("#addMatch").hidden = !canEdit();
   $("#hint").innerHTML = me
-    ? `Clique sur tes cases <b>${esc(me)}</b> pour changer ta réponse : vide → Oui → Incertain → Non.`
-    : `Choisis ton nom dans <b>Je suis</b> pour pouvoir modifier tes disponibilités.`;
+    ? `Touche ta pastille <b>${esc(me)}</b> pour changer ta réponse : vide → Oui → Incertain → Non.`
+    : `Choisis ton nom dans <b>Je suis</b> pour donner tes disponibilités.`;
   renderVacances(); renderTeam(); renderStats();
   $("#secStats").hidden = CFG.AFFICHER_STATS === false || !canEdit();
 }
@@ -477,6 +564,7 @@ function renderTeam(){
 let toastT;
 function toast(msg){ const el=$("#toast"); el.textContent=msg; el.classList.add("show"); clearTimeout(toastT); toastT=setTimeout(()=>el.classList.remove("show"),3000); }
 
+/* ---------- Échanges avec le Google Sheet ---------- */
 async function post(payload){
   if (!API) throw new Error("la page n'est pas encore reliée au Google Sheet");
   const r = await fetch(API, {method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"},
@@ -510,13 +598,21 @@ async function refresh(force){
     render();
   }catch(e){ $("#maj").textContent = "Hors ligne — dernières données connues"; }
 }
-// Lance une action d'écriture : bouton désactivé pendant l'envoi, puis rechargement
+// Écriture avec attente (bouton bloqué), puis rechargement : utilisé pour les ajouts
 async function run(btn, fn, okMsg){
   if (btn) btn.disabled = true;
   busy++;
   try{ await fn(); busy--; await refresh(true); if (okMsg) toast(okMsg); return true; }
   catch(err){ busy--; toast("Pas enregistré : "+err.message); return false; }
   finally{ if (btn) btn.disabled = false; }
+}
+// 11. Écriture instantanée : l'écran est mis à jour tout de suite, l'envoi se fait en arrière-plan.
+// En cas d'échec, message d'erreur et retour aux données du Sheet.
+function later(fn, okMsg){
+  busy++;
+  fn().then(()=>{ if (okMsg) toast(okMsg + " ✓"); })
+      .catch(err=>{ toast("Pas enregistré : "+err.message); refresh(true); })
+      .finally(()=>{ busy=Math.max(0,busy-1); });
 }
 
 function applyData(data){
@@ -533,78 +629,6 @@ function fillMe(){
   if (!PLAYERS.includes(me)) me = "";
   sel.value = me;
 }
-
-/* ---------- Export calendrier (.ics) ---------- */
-const ICS_DUREE = Number(CFG.DUREE_MATCH_MIN) > 0 ? Number(CFG.DUREE_MATCH_MIN) : 120;
-// Rappels en minutes avant le match (modifiable dans config.js)
-const ICS_RAPPELS = Array.isArray(CFG.RAPPELS_MIN) ? CFG.RAPPELS_MIN : [1440, 120];
-const ICS_LIEU = CFG.LIEU || "Patinoire des Eaux-Minérales, Avenue Henry-Warnery 8, 1110 Morges";
-const ICS_TZ = [
-  "BEGIN:VTIMEZONE","TZID:Europe/Zurich",
-  "BEGIN:DAYLIGHT","TZOFFSETFROM:+0100","TZOFFSETTO:+0200","TZNAME:CEST","DTSTART:19700329T020000","RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU","END:DAYLIGHT",
-  "BEGIN:STANDARD","TZOFFSETFROM:+0200","TZOFFSETTO:+0100","TZNAME:CET","DTSTART:19701025T030000","RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU","END:STANDARD",
-  "END:VTIMEZONE"];
-const icsEsc = s => String(s==null?"":s).replace(/\\/g,"\\\\").replace(/;/g,"\;").replace(/,/g,"\\,").replace(/\r?\n/g,"\\n");
-// Lignes de 75 octets max (norme iCalendar)
-function icsFold(line){
-  const out=[]; let cur="", n=0;
-  for (const ch of line){
-    const b = new TextEncoder().encode(ch).length;
-    if (n + b > (out.length?74:75)){ out.push(cur); cur=""; n=0; }
-    cur+=ch; n+=b;
-  }
-  out.push(cur);
-  return out.join("\r\n ");
-}
-const icsDate = d => iso(d).replace(/-/g,"");
-const icsStamp = () => new Date().toISOString().replace(/[-:]/g,"").replace(/\.\d+/,"");
-function icsEvent(m){
-  const d = parseDate(m.date);
-  const h = /^(\d{1,2})[:hH](\d{2})/.exec(String(m.heure||"").trim());
-  const ev = ["BEGIN:VEVENT", "UID:"+icsEsc(m.id)+"@stonetroopers", "DTSTAMP:"+icsStamp()];
-  if (h){
-    const start = new Date(d.getFullYear(), d.getMonth(), d.getDate(), +h[1], +h[2]);
-    const end = new Date(start.getTime() + ICS_DUREE*60000);
-    const hm = x => String(x.getHours()).padStart(2,"0")+String(x.getMinutes()).padStart(2,"0")+"00";
-    ev.push("DTSTART;TZID=Europe/Zurich:"+icsDate(start)+"T"+hm(start), "DTEND;TZID=Europe/Zurich:"+icsDate(end)+"T"+hm(end));
-  } else {
-    const next = new Date(d.getFullYear(), d.getMonth(), d.getDate()+1);
-    ev.push("DTSTART;VALUE=DATE:"+icsDate(d), "DTEND;VALUE=DATE:"+icsDate(next));
-  }
-  const desc = ["Hello les StoneTroopers,", "Jour de match !", "",
-    "Heure : "+(m.heure||"à confirmer"), "Piste : "+(m.piste||"à confirmer"), "Adversaire : "+m.adversaire,
-    ...(ICS_LIEU?["Lieu : "+ICS_LIEU]:[]), "Planning : "+location.href.split(/[?#]/)[0], "", "Bonne pierre !"].join("\n");
-  ev.push("SUMMARY:"+icsEsc("🥌 StoneTroopers vs "+m.adversaire+(m.piste?" - Piste "+m.piste:"")));
-  if (ICS_LIEU) ev.push("LOCATION:"+icsEsc(ICS_LIEU));
-  ev.push("DESCRIPTION:"+icsEsc(desc));
-  ICS_RAPPELS.filter(n=>Number(n)>0).forEach(n=>{
-    const txt = n%1440===0 ? (n/1440)+" jour"+(n>1440?"s":"") : n%60===0 ? (n/60)+" h" : n+" min";
-    ev.push("BEGIN:VALARM","ACTION:DISPLAY","DESCRIPTION:"+icsEsc("Match StoneTroopers vs "+m.adversaire+" dans "+txt),"TRIGGER:-"+(n%1440===0?"P"+(n/1440)+"D":n%60===0?"PT"+(n/60)+"H":"PT"+n+"M"),"END:VALARM");
-  });
-  ev.push("END:VEVENT");
-  return ev;
-}
-function icsBuild(ms){
-  const lines = ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//StoneTroopers//Planning//FR","CALSCALE:GREGORIAN","METHOD:PUBLISH",
-    "X-WR-CALNAME:StoneTroopers","X-WR-TIMEZONE:Europe/Zurich", ...ICS_TZ];
-  ms.forEach(m=>lines.push(...icsEvent(m)));
-  lines.push("END:VCALENDAR");
-  // Le lieu n'est jamais replié sur plusieurs lignes : certaines versions d'Outlook l'ignorent sinon
-  return lines.map(l=>l.startsWith("LOCATION:")?l:icsFold(l)).join("\r\n")+"\r\n";
-}
-function icsDownload(ms, nom){
-  const blob = new Blob([icsBuild(ms)], {type:"text/calendar;charset=utf-8"});
-  const url = URL.createObjectURL(blob), a = document.createElement("a");
-  a.href = url; a.download = nom; document.body.appendChild(a); a.click(); a.remove();
-  setTimeout(()=>URL.revokeObjectURL(url), 2000);
-}
-const fileSafe = s => String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^A-Za-z0-9]+/g,"-").replace(/^-|-$/g,"");
-$("#icsAll").addEventListener("click", ()=>{
-  const ms = [...state.matches].sort((a,b)=>a.date.localeCompare(b.date));
-  if (!ms.length){ toast("Aucun match à exporter"); return; }
-  icsDownload(ms, "StoneTroopers-matchs.ics");
-  toast(ms.length+" match"+(ms.length>1?"s":"")+" exporté"+(ms.length>1?"s":""));
-});
 
 /* ---------- Fenêtre match ---------- */
 const dlg = $("#dlg"), mf = $("#matchForm");
@@ -632,14 +656,23 @@ mf.addEventListener("submit", async e=>{
   const match = { id: editId||undefined, date: mf.date.value, heure: mf.heure.value, piste: mf.piste.value,
     adversaire: mf.adversaire.value.trim(), notes: mf.notes.value.trim(), notesCouleur: mf.notesCouleur.value };
   if (!match.date || !match.adversaire) return;
-  const ok = await run($("#saveMatch"), ()=>postCapitaine({action:"saveMatch", match}), editId?"Match modifié":"Match ajouté");
-  if (ok) closeMatch();
+  if (editId){
+    const m = state.matches.find(x=>x.id===editId);
+    if (m) Object.assign(m, {date:match.date, heure:match.heure, piste:match.piste, adversaire:match.adversaire, notes:match.notes, notesCouleur:match.notesCouleur});
+    closeMatch(); render();
+    later(()=>postCapitaine({action:"saveMatch", match}), "Match modifié");
+  } else {
+    const ok = await run($("#saveMatch"), ()=>postCapitaine({action:"saveMatch", match}), "Match ajouté ✓");
+    if (ok) closeMatch();
+  }
 });
-$("#delMatch").addEventListener("click", async e=>{
+$("#delMatch").addEventListener("click", e=>{
   const b = e.currentTarget;
   if (!b.classList.contains("armed")){ b.classList.add("armed"); b.textContent = "Confirmer la suppression"; return; }
-  const ok = await run(b, ()=>postCapitaine({action:"deleteMatch", id: editId}), "Match supprimé");
-  if (ok) closeMatch();
+  const id = editId;
+  state.matches = state.matches.filter(x=>x.id!==id);
+  closeMatch(); render();
+  later(()=>postCapitaine({action:"deleteMatch", id}), "Match supprimé");
 });
 
 /* ---------- Vacances et équipe ---------- */
@@ -648,7 +681,7 @@ $("#vacForm").addEventListener("submit", async e=>{
   const f = e.currentTarget;
   if (!me) return;
   if (f.fin.value < f.debut.value){ toast("La date de fin est avant la date de début"); return; }
-  const ok = await run(f.querySelector("button"), ()=>post({action:"addVacances", joueur:me, debut:f.debut.value, fin:f.fin.value, commentaire:f.commentaire.value.trim()}), "Absence ajoutée");
+  const ok = await run(f.querySelector("button"), ()=>post({action:"addVacances", joueur:me, debut:f.debut.value, fin:f.fin.value, commentaire:f.commentaire.value.trim()}), "Absence ajoutée ✓");
   if (ok) f.reset();
 });
 $("#playerForm").addEventListener("submit", async e=>{
@@ -656,25 +689,23 @@ $("#playerForm").addEventListener("submit", async e=>{
   const f = e.currentTarget, nom = f.nom.value.trim();
   if (!nom) return;
   if (state.joueurs.some(j=>j.nom.toLowerCase()===nom.toLowerCase())){ toast("Ce joueur existe déjà"); return; }
-  const ok = await run(f.querySelector("button"), ()=>postCapitaine({action:"savePlayer", nom, poste:f.poste.value, actif:true}), nom+" ajouté à l'équipe");
+  const ok = await run(f.querySelector("button"), ()=>postCapitaine({action:"savePlayer", nom, poste:f.poste.value, actif:true}), nom+" ajouté à l'équipe ✓");
   if (ok) f.reset();
 });
 
 document.addEventListener("click", e=>{
-  const seg = e.target.closest(".seg button");
-  if (seg){ filter=seg.dataset.f; store.set("filter",filter); render(); return; }
   const act = e.target.closest("[data-act]");
   if (act && act.tagName==="BUTTON"){
     const a = act.dataset.act;
-    if (a==="ics"){ const m = state.matches.find(x=>x.id===act.dataset.id); if (m) icsDownload([m], "StoneTroopers-"+m.date+"-"+fileSafe(m.adversaire)+".ics"); return; }
+    if (a==="toggleRes"){ const id=act.dataset.id; openRes.has(id)?openRes.delete(id):openRes.add(id); render(); return; }
     if (a==="edit"){ openMatch(state.matches.find(m=>m.id===act.dataset.id)); return; }
     if (a==="editScore"){ editingScore.add(act.dataset.id); render(); return; }
     if (a==="editCompo"){ editingCompo.add(act.dataset.id); render(); return; }
-    if (a==="delVac"){ run(act, ()=>post({action:"deleteVacances", id:act.dataset.id}), "Absence retirée"); return; }
+    if (a==="delVac"){ run(act, ()=>post({action:"deleteVacances", id:act.dataset.id}), "Absence retirée ✓"); return; }
     if (a==="togglePlayer"){
       const j = state.joueurs.find(x=>x.nom===act.dataset.nom); if (!j) return;
       const actif = j.actif===false;
-      run(act, ()=>postCapitaine({action:"savePlayer", nom:j.nom, poste:j.poste||"", actif}), j.nom+(actif?" réintégré":" retiré de l'équipe"));
+      run(act, ()=>postCapitaine({action:"savePlayer", nom:j.nom, poste:j.poste||"", actif}), j.nom+(actif?" réintégré ✓":" retiré de l'équipe ✓"));
       return;
     }
   }
@@ -686,15 +717,15 @@ document.addEventListener("click", e=>{
   const before = m.dispo[p]||"";
   const after = CYCLE[(CYCLE.indexOf(before)+1)%CYCLE.length];
   m.dispo[p] = after; busy++; render();
-  const el = document.querySelector(`button.chip[data-id="${CSS.escape(id)}"]`);
-  el && el.classList.add("saving");
+  const els = document.querySelectorAll(`button.chip[data-id="${CSS.escape(id)}"]`);
+  els.forEach(el=>el.classList.add("saving"));
   post({action:"setDispo", id, joueur:p, value:after})
-    .then(()=>{ el && el.classList.remove("saving"); })
+    .then(()=>{ document.querySelectorAll(`button.chip[data-id="${CSS.escape(id)}"]`).forEach(el=>el.classList.remove("saving")); })
     .catch(err=>{ m.dispo[p]=before; render(); toast("Pas enregistré : "+err.message); })
     .finally(()=>{ busy--; });
 });
 
-document.addEventListener("submit", async e=>{
+document.addEventListener("submit", e=>{
   const fc = e.target.closest('form[data-act="compo"]');
   if (fc){
     e.preventDefault();
@@ -703,9 +734,10 @@ document.addEventListener("submit", async e=>{
     if (pris.length < 3){ toast("Indique au moins 3 lanceurs"); return; }
     if (new Set(pris).size !== pris.length){ toast("Un joueur apparaît deux fois"); return; }
     if (!pris.includes(skip)){ toast("Le skip doit faire partie des lanceurs"); return; }
-    const id = fc.dataset.id;
-    const ok = await run(fc.querySelector("button"), ()=>postCapitaine({action:"setCompo", id, lanceurs, skip}), "Composition enregistrée");
-    if (ok){ editingCompo.delete(id); render(); }
+    const id = fc.dataset.id, m = state.matches.find(x=>x.id===id);
+    if (m){ m.lanceurs = lanceurs; m.skip = skip; }
+    editingCompo.delete(id); render();
+    later(()=>postCapitaine({action:"setCompo", id, lanceurs, skip}), "Composition enregistrée");
     return;
   }
   const f = e.target.closest('form[data-act="score"]');
@@ -713,9 +745,10 @@ document.addEventListener("submit", async e=>{
   e.preventDefault();
   const nous = f.nous.value.trim(), eux = f.eux.value.trim();
   if (nous==="" || eux===""){ toast("Indique les deux scores"); return; }
-  const id = f.dataset.id;
-  const ok = await run(f.querySelector("button"), ()=>postCapitaine({action:"setScore", id, scoreNous:nous, scoreEux:eux}), "Score enregistré");
-  if (ok){ editingScore.delete(id); render(); }
+  const id = f.dataset.id, m = state.matches.find(x=>x.id===id);
+  if (m){ m.scoreNous = nous; m.scoreEux = eux; }
+  editingScore.delete(id); render();
+  later(()=>postCapitaine({action:"setScore", id, scoreNous:nous, scoreEux:eux}), "Score enregistré");
 });
 
 const sel = $("#me");
@@ -727,9 +760,9 @@ $("#maj").textContent = API ? "Chargement…" : "Lecture seule";
 render();
 if (API){
   refresh();
-  const typing = ()=>{ const a=document.activeElement; return a && a.closest && a.closest("#list form"); };
+  const typing = ()=>{ const a=document.activeElement; return a && a.closest && a.closest("#main form"); };
   setInterval(()=>{ if(!document.hidden && !dlg.open && !typing()) refresh(); }, 60000);
-  document.addEventListener("visibilitychange", ()=>{ if(!document.hidden && !(dlg.open)) refresh(); });
+  document.addEventListener("visibilitychange", ()=>{ if(!document.hidden && !dlg.open && !typing()) refresh(); });
 }
 })();
 </script>
