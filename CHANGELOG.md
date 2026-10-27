@@ -1,11 +1,14 @@
 # Historique des versions — StoneTroopers - Planning
 
 Site : https://pascalgir.github.io/stonetroopers/
-Version actuelle : **3.4** (27 octobre 2026)
+Version actuelle : **3.5** (27 octobre 2026)
 
 Numérotation : le premier chiffre change lors d'une refonte importante, le second pour chaque série d'améliorations.
 
 ---
+
+## 3.5 — 27 octobre 2026
+- Légende et aide : **Présent** à la place de « Oui », **Absent** à la place de « Non » (les valeurs du Google Sheet ne changent pas).
 
 ## 3.4 — 27 octobre 2026
 - Aide « Touche ta capsule… » : les réponses vide → Oui → Incertain → Non s'affichent avec les mêmes pastilles que la légende.
