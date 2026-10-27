@@ -190,6 +190,8 @@ dialog .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 dialog label{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--muted)}
 dialog .actions{display:flex;gap:8px;align-items:center;margin-top:4px}
 dialog .actions .spacer{flex:1}
+.dlg-p{margin:0;font-size:13px;color:var(--muted)}
+.dlg-err{margin:0;color:var(--bad);font-size:13px;font-weight:600}
 .toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s;max-width:calc(100% - 32px);z-index:10}
 .toast.show{opacity:1}
 
@@ -289,7 +291,7 @@ dialog .actions .spacer{flex:1}
   <div class="panel" id="stats"></div>
   </section>
 
-  <footer id="foot">StoneTroopers · version 3.2 · <a href="https://github.com/PascalGir/stonetroopers/blob/main/CHANGELOG.md" target="_blank" rel="noopener">nouveautés</a></footer>
+  <footer id="foot">StoneTroopers · version 3.3 · <a href="https://github.com/PascalGir/stonetroopers/blob/main/CHANGELOG.md" target="_blank" rel="noopener">nouveautés</a></footer>
 </div>
 
 <dialog id="dlg">
@@ -316,6 +318,20 @@ dialog .actions .spacer{flex:1}
   </form>
 </dialog>
 
+<dialog id="pwd">
+  <form method="dialog" id="pwdForm">
+    <h3>Mot de passe</h3>
+    <p class="dlg-p">Pour modifier les matchs, les scores et les compositions.</p>
+    <label>Mot de passe<input type="password" name="code" inputmode="numeric" autocomplete="current-password" required></label>
+    <p class="dlg-err" id="pwdErr" hidden>Mot de passe incorrect</p>
+    <div class="actions">
+      <span class="spacer"></span>
+      <button type="button" class="btn" id="pwdCancel">Plus tard</button>
+      <button type="submit" class="btn primary" id="pwdOk">Valider</button>
+    </div>
+  </form>
+</dialog>
+
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="data.js?v=6"></script>
 <script src="config.js?v=6"></script>
@@ -338,7 +354,9 @@ const SKIP_HAB = CFG.SKIP_HABITUEL || "";
 const COMPO_ABS = CFG.COMPO_SI_ABSENT || {};
 // Joueurs autorisés à ajouter / modifier / supprimer des matchs, scores et compositions (config.js)
 const EDITEURS = Array.isArray(CFG.EDITEURS) ? CFG.EDITEURS : ["Pascal"];
-const canEdit = () => !!me && EDITEURS.includes(me);
+const isEditor = () => !!me && EDITEURS.includes(me);
+// Si un mot de passe est défini côté Google (propriété CODE_CAPITAINE), il faut l'avoir saisi sur cet appareil
+const canEdit = () => isEditor() && (!state.capitaine || !!store.get("code",""));
 const store = {
   get(k,d){ try{ const v=localStorage.getItem("st_"+k); return v==null?d:JSON.parse(v);}catch(e){return d;} },
   set(k,v){ try{ localStorage.setItem("st_"+k, JSON.stringify(v)); }catch(e){} }
@@ -533,6 +551,8 @@ function render(){
   $("#hint").innerHTML = me
     ? `Touche ta capsule <b>${esc(me)}</b> pour changer ta réponse : vide → Oui → Incertain → Non.`
     : `Choisis ton nom dans <b>Je suis</b> pour donner tes disponibilités.`;
+  if (isEditor() && !canEdit())
+    $("#hint").innerHTML += ` <button type="button" class="btn small" data-act="unlock">🔒 Mot de passe pour modifier</button>`;
   renderVacances(); renderTeam(); renderStats();
   $("#secStats").hidden = CFG.AFFICHER_STATS === false || !canEdit();
 }
@@ -572,14 +592,41 @@ async function post(payload){
 // Actions réservées au capitaine si un code est défini dans le script
 async function postCapitaine(payload){
   if (state.capitaine){
-    let code = store.get("code","");
-    if (!code){ code = window.prompt("Code capitaine :","") || ""; if (!code) throw new Error("code capitaine requis"); }
+    const code = store.get("code","");
+    if (!code){ askCode(); throw new Error("mot de passe requis"); }
     payload.code = code;
-    try{ const r = await post(payload); store.set("code",code); return r; }
-    catch(e){ if (/code capitaine/.test(e.message)) store.set("code",""); throw e; }
+    try{ return await post(payload); }
+    catch(e){
+      if (/code capitaine/.test(e.message)){ store.set("code",""); render(); askCode(); throw new Error("mot de passe incorrect"); }
+      throw e;
+    }
   }
   return post(payload);
 }
+
+/* ---------- Mot de passe des éditeurs ---------- */
+const pwd = $("#pwd"), pf = $("#pwdForm");
+let askedOnce = false;
+function askCode(){
+  if (pwd.open) return;
+  $("#pwdErr").hidden = true; pf.code.value = "";
+  if (pwd.showModal) pwd.showModal(); else pwd.setAttribute("open","");
+  pf.code.focus();
+}
+function closeCode(){ if (pwd.close) pwd.close(); else pwd.removeAttribute("open"); }
+$("#pwdCancel").addEventListener("click", closeCode);
+pf.addEventListener("submit", async e=>{
+  e.preventDefault();
+  const code = pf.code.value.trim(); if (!code) return;
+  const b = $("#pwdOk"); b.disabled = true;
+  try{
+    await post({action:"checkCode", code});
+    store.set("code", code); closeCode(); render(); toast("Modifications déverrouillées ✓");
+  }catch(err){
+    $("#pwdErr").textContent = /code capitaine/.test(err.message) ? "Mot de passe incorrect" : "Vérification impossible : "+err.message;
+    $("#pwdErr").hidden = false; pf.code.select();
+  }finally{ b.disabled = false; }
+});
 
 let busy = 0;
 async function refresh(force){
@@ -590,6 +637,7 @@ async function refresh(force){
     if (data.error) throw new Error(data.error);
     if (busy && !force) return;
     applyData(data);
+    if (!askedOnce && isEditor() && state.capitaine && !store.get("code","")){ askedOnce = true; askCode(); }
     $("#maj").textContent = "À jour · " + new Date().toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"});
     render();
   }catch(e){ $("#maj").textContent = "Hors ligne — dernières données connues"; }
@@ -765,6 +813,7 @@ document.addEventListener("click", e=>{
   const act = e.target.closest("[data-act]");
   if (act && act.tagName==="BUTTON"){
     const a = act.dataset.act;
+    if (a==="unlock"){ askCode(); return; }
     if (a==="toggleRes"){ const id=act.dataset.id; openRes.has(id)?openRes.delete(id):openRes.add(id); render(); return; }
     if (a==="ics"){ const m = state.matches.find(x=>x.id===act.dataset.id); if (m) icsDownload([m], "StoneTroopers-"+m.date+"-"+fileSafe(m.adversaire)+".ics"); return; }
     if (a==="edit"){ openMatch(state.matches.find(m=>m.id===act.dataset.id)); return; }
@@ -821,7 +870,7 @@ document.addEventListener("submit", e=>{
 });
 
 const sel = $("#me");
-sel.addEventListener("change", ()=>{ me=sel.value; store.set("me",me); render(); });
+sel.addEventListener("change", ()=>{ me=sel.value; store.set("me",me); render(); if (isEditor() && state.capitaine && !store.get("code","")) askCode(); });
 
 const DATA = window.PLANNING || {matches:[],vacances:[]};
 applyData(DATA);
