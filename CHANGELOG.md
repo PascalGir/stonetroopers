@@ -1,11 +1,15 @@
 # Historique des versions — StoneTroopers - Planning
 
 Site : https://pascalgir.github.io/stonetroopers/
-Version actuelle : **3.1** (27 octobre 2026)
+Version actuelle : **3.2** (27 octobre 2026)
 
 Numérotation : le premier chiffre change lors d'une refonte importante, le second pour chaque série d'améliorations.
 
 ---
+
+## 3.2 — 27 octobre 2026
+- **Export calendrier rétabli** : il avait été effacé par erreur lors de la refonte 3.0 (bouton 📅 sur chaque match et « 📅 Exporter tous les matchs »).
+- Correction : les points-virgules dans les titres et descriptions sont maintenant bien pris en compte dans le fichier calendrier.
 
 ## 3.1 — 27 octobre 2026
 - Joueurs affichés dans des **capsules avec le prénom complet** (au lieu des initiales).
@@ -22,6 +26,14 @@ Numérotation : le premier chiffre change lors d'une refonte importante, le seco
 - **Mode sombre** revu.
 - **Enregistrement instantané** : score, composition, modification et suppression de match s'affichent tout de suite, l'envoi au Google Sheet se fait en arrière-plan.
 - Nettoyage : Google Sheet renommé **StoneTroopers**, script **StoneTroopers API**, README à jour.
+
+## 2.5 — 23 octobre 2026 · Export calendrier
+- Bouton **📅** sur chaque match : ajoute le match à son agenda (fichier .ics, compatible iPhone, Google, Outlook).
+- Bouton **« 📅 Exporter tous les matchs »** : tous les matchs en un seul fichier.
+- Titre de l'événement : « 🥌 StoneTroopers vs adversaire - Piste X », avec un message d'équipe dans la description.
+- Lieu par défaut : Patinoire des Eaux-Minérales, Avenue Henry-Warnery 8, 1110 Morges (compatible Outlook).
+- **Rappels** 1 jour et 2 h avant le match.
+- Réglages dans `config.js` : `DUREE_MATCH_MIN`, `RAPPELS_MIN`, `LIEU`.
 
 ## 2.4 — 22 octobre 2026
 - **Notes de match en couleur** : noir ou rouge (colonne « Couleur notes » dans le Sheet).
