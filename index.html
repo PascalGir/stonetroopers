@@ -214,6 +214,11 @@ dialog .actions .spacer{flex:1}
   .hero-card .opp{font-size:19px}
   .chip .av{font-size:13px;padding:5px 6px 5px 11px;gap:6px}
   .res-row{grid-template-columns:58px 1fr auto auto;padding:10px 12px;gap:8px}
+  .toolbar{gap:6px}
+  .toolbar .spacer{display:none}
+  #me{padding:7px 2px 7px 7px}
+  #icsAll{padding:7px 8px;font-size:13px}
+  #addMatch{margin-left:auto}
 }
 </style>
 </head>
@@ -238,7 +243,7 @@ dialog .actions .spacer{flex:1}
     <label for="me">Je suis</label>
     <select id="me"><option value="">—</option></select>
     <span class="spacer"></span>
-    <button type="button" class="btn" id="icsAll" title="Ajouter tous les matchs à ton calendrier (fichier .ics)">📅 Exporter tous les matchs</button>
+    <button type="button" class="btn" id="icsAll" title="Ajouter tous les matchs à ton calendrier (fichier .ics)">📅 Exporter les matchs</button>
     <button type="button" class="btn primary" id="addMatch" hidden>+ Match</button>
   </div>
   <div class="hint" id="hint"></div>
