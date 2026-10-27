@@ -180,6 +180,11 @@ td.num{font-variant-numeric:tabular-nums;text-align:right}
 .legend .dots{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
 .legend .dots .av{font-size:12.5px;padding:3px 6px 3px 11px}
 .legend .dots .ic{width:16px;height:16px;font-size:10px}
+.hint .seq{display:inline-flex;flex-wrap:wrap;align-items:center;gap:4px 5px;vertical-align:middle;margin-left:2px}
+.hint .seq .av{font-size:12px;padding:2px 5px 2px 9px;gap:5px;border-width:1.5px}
+.hint .seq .ic{width:15px;height:15px;font-size:9.5px}
+.hint .seq .arr{color:var(--muted);font-weight:700}
+#icsAll{margin-left:auto}
 
 /* ============ Fenêtre match, toast ============ */
 dialog{border:1px solid var(--line);border-radius:16px;padding:0;background:var(--surface);color:var(--ink);width:min(440px,calc(100% - 32px));box-shadow:0 10px 40px rgba(0,0,0,.25)}
@@ -291,7 +296,7 @@ dialog .actions .spacer{flex:1}
   <div class="panel" id="stats"></div>
   </section>
 
-  <footer id="foot">StoneTroopers · version 3.3 · <a href="https://github.com/PascalGir/stonetroopers/blob/main/CHANGELOG.md" target="_blank" rel="noopener">nouveautés</a></footer>
+  <footer id="foot">StoneTroopers · version 3.4 · <a href="https://github.com/PascalGir/stonetroopers/blob/main/CHANGELOG.md" target="_blank" rel="noopener">nouveautés</a></footer>
 </div>
 
 <dialog id="dlg">
@@ -343,6 +348,10 @@ let PLAYERS = [];
 const API = ((window.STONETROOPERS_CONFIG||{}).API_URL||"").trim();
 const CYCLE = ["", "Oui", "Incertain", "Non"];
 const ICON = {"Oui":"✓", "Incertain":"…", "Non":"✕", "":"–"};
+// Pastilles de l'aide « vide → Oui → Incertain → Non » (mêmes que la légende)
+const SEQ_HINT = [["vide","vide",""],["oui","Oui","Oui"],["incertain","Incertain","Incertain"],["non","Non","Non"]]
+  .map(([c,t,v])=>`<span class="chip v-${c}"><span class="av">${t}<i class="ic" aria-hidden="true">${ICON[v]}</i></span></span>`)
+  .join('<span class="arr" aria-hidden="true">→</span>');
 
 const $ = s => document.querySelector(s);
 const CFG = window.STONETROOPERS_CONFIG || {};
@@ -549,7 +558,7 @@ function render(){
 
   $("#addMatch").hidden = !canEdit();
   $("#hint").innerHTML = me
-    ? `Touche ta capsule <b>${esc(me)}</b> pour changer ta réponse : vide → Oui → Incertain → Non.`
+    ? `Touche ta capsule <b>${esc(me)}</b> pour changer ta réponse : <span class="seq">${SEQ_HINT}</span>`
     : `Choisis ton nom dans <b>Je suis</b> pour donner tes disponibilités.`;
   if (isEditor() && !canEdit())
     $("#hint").innerHTML += ` <button type="button" class="btn small" data-act="unlock">🔒 Mot de passe pour modifier</button>`;
