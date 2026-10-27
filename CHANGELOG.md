@@ -9,7 +9,7 @@ Numérotation : le premier chiffre change lors d'une refonte importante, le seco
 
 ## 3.4 — 27 octobre 2026
 - Aide « Touche ta capsule… » : les réponses vide → Oui → Incertain → Non s'affichent avec les mêmes pastilles que la légende.
-- Bouton « 📅 Exporter tous les matchs » aligné à droite (aussi sur téléphone).
+- Bouton renommé « 📅 Exporter les matchs », aligné à droite ; sur téléphone il tient sur la même ligne que « Je suis ».
 
 ## 3.3 — 27 octobre 2026
 - **Mot de passe** pour les modifications de Pascal (matchs, scores, compositions) : demandé une fois par appareil, bouton 🔒 « Mot de passe pour modifier » si on choisit « Plus tard ».
