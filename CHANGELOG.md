@@ -1,11 +1,14 @@
 # Historique des versions — StoneTroopers - Planning
 
 Site : https://pascalgir.github.io/stonetroopers/
-Version actuelle : **3.13** (28 octobre 2026)
+Version actuelle : **3.14** (28 octobre 2026)
 
 Numérotation : le premier chiffre change lors d'une refonte importante, le second pour chaque série d'améliorations.
 
 ---
+
+## 3.14 — 28 octobre 2026
+- Journal des présences en **texte simple, regroupé par match** (le match en titre, puis « date · joueur : avant → après »).
 
 ## 3.13 — 28 octobre 2026 · Journal des présences
 - **Journal des présences** : chaque changement de réponse est enregistré (date et heure, joueur, match, avant → après) dans un nouvel onglet **Journal** du Google Sheet.
