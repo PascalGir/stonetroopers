@@ -242,6 +242,12 @@ th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);white
 tr:last-child td{border-bottom:0}
 th{font-size:12px;color:var(--muted);font-weight:600}
 td.num{font-variant-numeric:tabular-nums;text-align:right}
+.picker-css{}
+#picker{position:absolute;z-index:20;display:flex;flex-wrap:wrap;gap:6px;max-width:min(360px,calc(100vw - 16px));padding:8px;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.18)}
+#picker[hidden]{display:none}
+#picker .chip{cursor:pointer}
+#picker .chip.cur .av{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--accent)}
+#picker .chip:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .log-m{font-size:13.5px;font-weight:700;margin-top:10px}
 .log-m:first-of-type{margin-top:0}
 .log-r{font-size:13px;color:var(--muted);padding:2px 0 2px 10px}
@@ -393,7 +399,7 @@ dialog .actions .spacer{flex:1}
   <div class="panel" id="log"><button type="button" class="btn" data-act="loadLog">Afficher le journal</button></div>
   </section>
 
-  <footer id="foot">StoneTroopers · version 3.21 · <button type="button" class="linkbtn" id="newsBtn">nouveautés</button></footer>
+  <footer id="foot">StoneTroopers · version 3.22 · <button type="button" class="linkbtn" id="newsBtn">nouveautés</button></footer>
 </div>
 
 <dialog id="news" aria-labelledby="newsTitle">
@@ -445,7 +451,7 @@ dialog .actions .spacer{flex:1}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="data.js?v=7"></script>
 <script src="config.js?v=6"></script>
-<script src="nouveautes.js?v=16"></script>
+<script src="nouveautes.js?v=17"></script>
 
 <script>
 (function(){
@@ -623,7 +629,7 @@ function chipHTML(m, p, past){
   const label = `${esc(p)} : ${v?LIBELLE[v].toLowerCase():"pas de réponse"}${vac?" (en congé)":""}`;
   const inner = `<span class="av">${esc(p)}<i class="ic" aria-hidden="true">${ICON[v]}</i></span>`;
   if (me===p && !past)
-    return `<button type="button" class="${cls}${popKey===m.id+"|"+p?" pop":""}" data-id="${esc(m.id)}" data-p="${esc(p)}" aria-label="${label} — toucher pour changer" title="Toucher pour changer">${inner}</button>`;
+    return `<button type="button" class="${cls}${popKey===m.id+"|"+p?" pop":""}" data-id="${esc(m.id)}" data-p="${esc(p)}" aria-label="${label} — toucher pour choisir" aria-haspopup="menu" title="Toucher pour choisir ta réponse">${inner}</button>`;
   return `<div class="${cls}" role="img" aria-label="${label}">${inner}</div>`;
 }
 function cardHTML(m, opt){
@@ -703,7 +709,7 @@ function render(){
 
   $("#addMatch").hidden = !canEdit();
   $("#hint").innerHTML = me
-    ? `Touche ta capsule <b>${esc(me)}</b> pour changer ta réponse : <span class="seq">${SEQ_HINT}</span>`
+    ? `Touche ta capsule <b>${esc(me)}</b> pour choisir ta réponse.`
     : `Choisis ton nom dans <b>Je suis</b> pour donner tes disponibilités.`;
   if (isEditor() && !canEdit())
     $("#hint").innerHTML += ` <button type="button" class="btn small" data-act="unlock">🔒 Mot de passe pour modifier</button>`;
@@ -1014,13 +1020,41 @@ document.addEventListener("click", e=>{
       return;
     }
   }
+  const pk = e.target.closest("#picker button[data-v]");
+  if (pk){ const {id, p} = picker.dataset; closePicker(); setDispo(id, p, pk.dataset.v); return; }
+  if (!e.target.closest("#picker")) closePicker();
   const chip = e.target.closest("button.chip");
   if (!chip) return;
   const id = chip.dataset.id, p = chip.dataset.p;
   if (p!==me) return;
+  openPicker(chip, id, p);
+});
+document.addEventListener("keydown", e=>{ if (e.key==="Escape") closePicker(); });
+window.addEventListener("resize", ()=>closePicker());
+
+/* ---------- Choix direct de la réponse (petit menu sous la capsule) ---------- */
+const picker = document.createElement("div");
+picker.id = "picker"; picker.setAttribute("role","menu"); picker.hidden = true;
+document.body.appendChild(picker);
+function openPicker(chip, id, p){
+  const m = state.matches.find(x=>x.id===id); if (!m) return;
+  const cur = m.dispo[p]||"";
+  picker.dataset.id = id; picker.dataset.p = p;
+  picker.innerHTML = [["Oui","oui"],["Incertain","incertain"],["Non","non"],["","vide"]].map(([v,c])=>
+    `<button type="button" role="menuitemradio" aria-checked="${v===cur}" class="chip v-${c}${v===cur?" cur":""}" data-v="${v}"><span class="av">${LIBELLE[v]}<i class="ic" aria-hidden="true">${ICON[v]}</i></span></button>`).join("");
+  picker.hidden = false;
+  const r = chip.getBoundingClientRect(), w = picker.offsetWidth, h = picker.offsetHeight;
+  let left = r.left + window.scrollX, top = r.bottom + window.scrollY + 6;
+  left = Math.max(8 + window.scrollX, Math.min(left, window.scrollX + document.documentElement.clientWidth - w - 8));
+  if (r.bottom + h + 12 > window.innerHeight) top = r.top + window.scrollY - h - 6;
+  picker.style.left = left+"px"; picker.style.top = top+"px";
+  const first = picker.querySelector(".cur") || picker.querySelector("button"); if (first) first.focus({preventScroll:true});
+}
+function closePicker(){ if (!picker.hidden){ picker.hidden = true; picker.innerHTML = ""; } }
+function setDispo(id, p, after){
   const m = state.matches.find(x=>x.id===id); if (!m) return;
   const before = m.dispo[p]||"";
-  const after = CYCLE[(CYCLE.indexOf(before)+1)%CYCLE.length];
+  if (after===before) return;
   m.dispo[p] = after; busy++; if (GRAPH.rebond) popKey = id+"|"+p; render(); popKey = "";
   const els = document.querySelectorAll(`button.chip[data-id="${CSS.escape(id)}"]`);
   els.forEach(el=>el.classList.add("saving"));
@@ -1028,7 +1062,7 @@ document.addEventListener("click", e=>{
     .then(()=>{ saveCache(); document.querySelectorAll(`button.chip[data-id="${CSS.escape(id)}"]`).forEach(el=>el.classList.remove("saving")); })
     .catch(err=>{ m.dispo[p]=before; render(); toast("Pas enregistré : "+err.message); })
     .finally(()=>{ busy--; });
-});
+}
 
 document.addEventListener("submit", e=>{
   const fc = e.target.closest('form[data-act="compo"]');
