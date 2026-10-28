@@ -1,9 +1,17 @@
 // Liste des nouveautés affichée sur la page (version publique : sans détails de sécurité ni noms de personnes)
 window.NOUVEAUTES = [
  {
+  "v": "3.21",
+  "date": "28 octobre 2026",
+  "titre": "Améliorations",
+  "items": [
+   "Chaque version indique son type : Nouveautés, Améliorations ou Corrections."
+  ]
+ },
+ {
   "v": "3.20",
   "date": "28 octobre 2026",
-  "titre": "",
+  "titre": "Améliorations",
   "items": [
    "Fenêtre des nouveautés plus lisible : seule la dernière version est dépliée."
   ]
@@ -11,7 +19,7 @@ window.NOUVEAUTES = [
  {
   "v": "3.19",
   "date": "28 octobre 2026",
-  "titre": "",
+  "titre": "Améliorations",
   "items": [
    "Les matchs à replanifier sont regroupés tout en haut de la page."
   ]
@@ -19,7 +27,7 @@ window.NOUVEAUTES = [
  {
   "v": "3.18",
   "date": "28 octobre 2026",
-  "titre": "",
+  "titre": "Nouveautés",
   "items": [
    "Les matchs <b>à replanifier</b> sont signalés clairement, avec leur date initiale barrée."
   ]
@@ -27,7 +35,7 @@ window.NOUVEAUTES = [
  {
   "v": "3.17",
   "date": "28 octobre 2026",
-  "titre": "",
+  "titre": "Améliorations",
   "items": [
    "Nettoyage technique."
   ]
@@ -35,7 +43,7 @@ window.NOUVEAUTES = [
  {
   "v": "3.16",
   "date": "28 octobre 2026",
-  "titre": "",
+  "titre": "Améliorations",
   "items": [
    "Bas de page réorganisé pour l'administrateur."
   ]
@@ -43,7 +51,7 @@ window.NOUVEAUTES = [
  {
   "v": "3.15",
   "date": "28 octobre 2026",
-  "titre": "",
+  "titre": "Améliorations",
   "items": [
    "Journal des présences affiché directement."
   ]
@@ -51,7 +59,7 @@ window.NOUVEAUTES = [
  {
   "v": "3.14",
   "date": "28 octobre 2026",
-  "titre": "",
+  "titre": "Améliorations",
   "items": [
    "Journal des présences plus simple, regroupé par match."
   ]
@@ -59,7 +67,7 @@ window.NOUVEAUTES = [
  {
   "v": "3.13",
   "date": "28 octobre 2026",
-  "titre": "",
+  "titre": "Nouveautés",
   "items": [
    "<b>Journal des présences</b> pour l'administrateur : historique des changements de réponse."
   ]
@@ -67,7 +75,7 @@ window.NOUVEAUTES = [
  {
   "v": "3.12",
   "date": "28 octobre 2026",
-  "titre": "",
+  "titre": "Améliorations",
   "items": [
    "Compteur des présences plus clair : « potentiel » ne compte que les réponses <b>Incertain</b> et n'apparaît que s'il y en a."
   ]
@@ -83,7 +91,7 @@ window.NOUVEAUTES = [
  {
   "v": "3.10",
   "date": "28 octobre 2026",
-  "titre": "",
+  "titre": "Améliorations",
   "items": [
    "Couleurs <b>pastel</b> pour les capsules et les badges : la page est plus douce à l'œil."
   ]
@@ -107,7 +115,7 @@ window.NOUVEAUTES = [
  {
   "v": "3.8",
   "date": "27 octobre 2026",
-  "titre": "",
+  "titre": "Améliorations",
   "items": [
    "Réponse <b>Absent</b> affichée en <b>rouge</b>, bien distincte de « Pas de réponse ».",
    "Libellé « Pas de réponse » utilisé partout (aide en haut et légende en bas)."
@@ -116,7 +124,7 @@ window.NOUVEAUTES = [
  {
   "v": "3.7",
   "date": "27 octobre 2026",
-  "titre": "",
+  "titre": "Améliorations",
   "items": [
    "Liste des nouveautés simplifiée."
   ]
@@ -124,7 +132,7 @@ window.NOUVEAUTES = [
  {
   "v": "3.6",
   "date": "27 octobre 2026",
-  "titre": "",
+  "titre": "Nouveautés",
   "items": [
    "Lien <b>« nouveautés »</b> en bas de page : la liste des nouveautés par version s'ouvre directement sur la page (dernière version en premier)."
   ]
@@ -132,7 +140,7 @@ window.NOUVEAUTES = [
  {
   "v": "3.5",
   "date": "27 octobre 2026",
-  "titre": "",
+  "titre": "Améliorations",
   "items": [
    "Légende et aide : <b>Présent</b> à la place de « Oui », <b>Absent</b> à la place de « Non »."
   ]
@@ -140,7 +148,7 @@ window.NOUVEAUTES = [
  {
   "v": "3.4",
   "date": "27 octobre 2026",
-  "titre": "",
+  "titre": "Améliorations",
   "items": [
    "Aide « Touche ta capsule… » : les réponses s'affichent avec les mêmes pastilles que la légende.",
    "Bouton renommé « 📅 Exporter les matchs », aligné à droite ; sur téléphone il tient sur la même ligne que « Je suis »."
@@ -149,7 +157,7 @@ window.NOUVEAUTES = [
  {
   "v": "3.3",
   "date": "27 octobre 2026",
-  "titre": "",
+  "titre": "Nouveautés",
   "items": [
    "Accès aux modifications réservées renforcé.",
    "Les disponibilités restent modifiables par chacun comme avant."
@@ -158,7 +166,7 @@ window.NOUVEAUTES = [
  {
   "v": "3.2",
   "date": "27 octobre 2026",
-  "titre": "",
+  "titre": "Corrections",
   "items": [
    "<b>Export calendrier rétabli</b> (bouton 📅 sur chaque match et export de tous les matchs).",
    "Correction de l'affichage de certains titres dans le fichier calendrier."
@@ -167,7 +175,7 @@ window.NOUVEAUTES = [
  {
   "v": "3.1",
   "date": "27 octobre 2026",
-  "titre": "",
+  "titre": "Améliorations",
   "items": [
    "Joueurs affichés dans des <b>capsules avec le prénom complet</b> (au lieu des initiales).",
    "Icône <b>…</b> pour « Incertain » (au lieu de « ? »), légende mise à jour.",
@@ -201,7 +209,7 @@ window.NOUVEAUTES = [
  {
   "v": "2.4",
   "date": "22 octobre 2026",
-  "titre": "",
+  "titre": "Nouveautés",
   "items": [
    "<b>Notes de match en couleur</b> : noir ou rouge.",
    "Nouveau titre : « StoneTroopers - Planning »."
@@ -210,7 +218,7 @@ window.NOUVEAUTES = [
  {
   "v": "2.3",
   "date": "22 octobre 2026",
-  "titre": "",
+  "titre": "Nouveautés",
   "items": [
    "<b>Composition d'équipe</b> sur les matchs terminés : ordre de lancer (1 à 4) et skip (©).",
    "Composition proposée par défaut selon la formation habituelle.",
@@ -220,7 +228,7 @@ window.NOUVEAUTES = [
  {
   "v": "2.2",
   "date": "22 octobre 2026",
-  "titre": "",
+  "titre": "Améliorations",
   "items": [
    "Gestion des matchs réservée à l'administrateur.",
    "Blocs Vacances et Équipe masqués.",
@@ -230,7 +238,7 @@ window.NOUVEAUTES = [
  {
   "v": "2.1",
   "date": "21 octobre 2026",
-  "titre": "",
+  "titre": "Nouveautés",
   "items": [
    "Ajout et modification des matchs depuis la page.",
    "<b>Score</b> des matchs (Victoire / Défaite / Égalité).",
