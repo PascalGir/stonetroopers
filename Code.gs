@@ -27,9 +27,24 @@ const COLS_COMPO = ['Lanceur 1', 'Lanceur 2', 'Lanceur 3', 'Lanceur 4', 'Skip'];
 
 /* ---------- Lecture ---------- */
 
+// Mémoire du script : évite de relire le Sheet à chaque visite.
+// Elle est vidée à chaque enregistrement depuis la page et à chaque modification à la main dans le Sheet.
+const CACHE_CLE = 'data';
+const CACHE_SECONDES = 3600;
+function viderCache_() {
+  try { CacheService.getScriptCache().remove(CACHE_CLE); } catch (x) {}
+}
+// Déclencheur simple : modification à la main dans le Google Sheet
+function onEdit(e) { viderCache_(); }
+
 function doGet() {
   try {
-    return json_(lireTout_());
+    const cache = CacheService.getScriptCache();
+    const enCache = cache.get(CACHE_CLE);
+    if (enCache) return ContentService.createTextOutput(enCache).setMimeType(ContentService.MimeType.JSON);
+    const txt = JSON.stringify(lireTout_());
+    try { cache.put(CACHE_CLE, txt, CACHE_SECONDES); } catch (x) {}
+    return ContentService.createTextOutput(txt).setMimeType(ContentService.MimeType.JSON);
   } catch (err) {
     return json_({ error: String(err) });
   }
@@ -96,6 +111,7 @@ function doPost(e) {
     lock.waitLock(10000);
     const res = action_(b);
     SpreadsheetApp.flush();
+    if (b.action !== 'checkCode') viderCache_();
     return json_(Object.assign({ ok: true }, res || {}));
   } catch (err) {
     return json_({ ok: false, error: String(err.message || err) });
