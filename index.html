@@ -382,7 +382,7 @@ dialog .actions .spacer{flex:1}
   <div class="panel" id="log"><button type="button" class="btn" data-act="loadLog">Afficher le journal</button></div>
   </section>
 
-  <footer id="foot">StoneTroopers · version 3.14 · <button type="button" class="linkbtn" id="newsBtn">nouveautés</button></footer>
+  <footer id="foot">StoneTroopers · version 3.15 · <button type="button" class="linkbtn" id="newsBtn">nouveautés</button></footer>
 </div>
 
 <dialog id="news" aria-labelledby="newsTitle">
@@ -433,7 +433,7 @@ dialog .actions .spacer{flex:1}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="data.js?v=6"></script>
 <script src="config.js?v=6"></script>
-<script src="nouveautes.js?v=9"></script>
+<script src="nouveautes.js?v=10"></script>
 
 <script>
 (function(){
@@ -692,6 +692,8 @@ function render(){
   $("#secStats").hidden = CFG.AFFICHER_STATS === false || !canEdit();
   // Le journal n'existe que si un mot de passe protège les modifications
   $("#secLog").hidden = !(canEdit() && state.capitaine);
+  // Journal ouvert d'office dès qu'il est visible (une fois par visite, bouton « Actualiser » ensuite)
+  if (!$("#secLog").hidden && !logLoaded && loaded) loadLog();
 }
 
 function renderVacances(){
@@ -802,7 +804,10 @@ function saveCache(){
 }
 // Journal des présences (demande le mot de passe au script), regroupé par match
 const court = t => String(t).replace(/^(\d\d\.\d\d)\.\d{4}/, "$1");
+let logLoaded = false, logLoading = false;
 async function loadLog(btn){
+  if (logLoading) return;
+  logLoading = true;
   if (btn) btn.disabled = true;
   try{
     const res = await postCapitaine({action:"getLog"});
@@ -814,7 +819,9 @@ async function loadLog(btn){
       html += `<div class="log-m">${esc(court(match))}</div>` + rows.map(x=>`<div class="log-r">${esc(court(x.date))} · <b>${esc(x.joueur)}</b> : ${esc(x.avant)} → ${esc(x.apres)}</div>`).join("");
     });
     $("#log").innerHTML = html;
+    logLoaded = true;
   }catch(err){ toast("Journal indisponible : "+err.message); if (btn) btn.disabled = false; }
+  finally{ logLoading = false; }
 }
 function applyData(data){
   state.joueurs = data.joueurs||[];
