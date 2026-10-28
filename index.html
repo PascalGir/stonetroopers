@@ -76,7 +76,7 @@ footer a{color:inherit}
 .news-head h3{flex:1}
 .news-v{border:1px solid var(--line);border-radius:12px;padding:10px 14px;background:var(--surface)}
 .news-v summary{cursor:pointer;font-weight:700}
-.news-v summary .d{font-weight:400;color:var(--muted);font-size:13px;margin-left:6px}
+.news-v summary .d{display:block;font-weight:400;color:var(--muted);font-size:12.5px;margin:2px 0 0 18px}
 .news-v summary .t{font-weight:600;color:var(--accent);font-size:13px;margin-left:6px}
 .news-v ul{margin:8px 0 2px;padding-left:20px;display:grid;gap:5px;font-size:14px}
 .news-v.cur{border-color:var(--accent)}
@@ -393,7 +393,7 @@ dialog .actions .spacer{flex:1}
   <div class="panel" id="log"><button type="button" class="btn" data-act="loadLog">Afficher le journal</button></div>
   </section>
 
-  <footer id="foot">StoneTroopers · version 3.19 · <button type="button" class="linkbtn" id="newsBtn">nouveautés</button></footer>
+  <footer id="foot">StoneTroopers · version 3.20 · <button type="button" class="linkbtn" id="newsBtn">nouveautés</button></footer>
 </div>
 
 <dialog id="news" aria-labelledby="newsTitle">
@@ -445,7 +445,7 @@ dialog .actions .spacer{flex:1}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="data.js?v=7"></script>
 <script src="config.js?v=6"></script>
-<script src="nouveautes.js?v=14"></script>
+<script src="nouveautes.js?v=15"></script>
 
 <script>
 (function(){
@@ -1085,8 +1085,8 @@ if (API){
   if (N.length) $("#foot").firstChild.textContent = `StoneTroopers · version ${N[0].v} · `;
   function openNews(){
     $("#newsList").innerHTML = N.length ? N.map((x,i)=>`
-      <details class="news-v${i===0?" cur":""}"${i<2?" open":""}>
-        <summary>Version ${esc(x.v)}<span class="d">${esc(x.date)}</span>${x.titre?`<span class="t">${esc(x.titre)}</span>`:""}</summary>
+      <details class="news-v${i===0?" cur":""}"${i===0?" open":""}>
+        <summary>Version ${esc(x.v)}<span class="t">${esc(x.titre||"Améliorations")}</span><span class="d">${esc(x.date)}</span></summary>
         <ul>${x.items.map(it=>`<li>${it}</li>`).join("")}</ul>
       </details>`).join("") : "<p>Liste indisponible.</p>";
     if (dlgN.showModal) dlgN.showModal(); else dlgN.setAttribute("open","");
