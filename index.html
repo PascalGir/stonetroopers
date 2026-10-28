@@ -357,6 +357,7 @@ dialog .actions .spacer{flex:1}
   </div>
   </section>
 
+  <section id="secLegende">
   <h2>Légende</h2>
   <div class="legend">
     <div><span class="badge" style="background:var(--ok-bg);color:var(--ok)">✓ Complet</span>4 joueurs confirmés</div>
@@ -370,6 +371,7 @@ dialog .actions .spacer{flex:1}
       <span class="chip v-vide"><span class="av">Pas de réponse<i class="ic">–</i></span></span>
     </div>
   </div>
+  </section>
 
   <section id="secStats" hidden>
   <h2>Statistiques</h2>
@@ -382,7 +384,7 @@ dialog .actions .spacer{flex:1}
   <div class="panel" id="log"><button type="button" class="btn" data-act="loadLog">Afficher le journal</button></div>
   </section>
 
-  <footer id="foot">StoneTroopers · version 3.15 · <button type="button" class="linkbtn" id="newsBtn">nouveautés</button></footer>
+  <footer id="foot">StoneTroopers · version 3.16 · <button type="button" class="linkbtn" id="newsBtn">nouveautés</button></footer>
 </div>
 
 <dialog id="news" aria-labelledby="newsTitle">
@@ -433,7 +435,7 @@ dialog .actions .spacer{flex:1}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="data.js?v=6"></script>
 <script src="config.js?v=6"></script>
-<script src="nouveautes.js?v=10"></script>
+<script src="nouveautes.js?v=11"></script>
 
 <script>
 (function(){
@@ -690,6 +692,8 @@ function render(){
     $("#hint").innerHTML += ` <button type="button" class="btn small" data-act="unlock">🔒 Mot de passe pour modifier</button>`;
   renderVacances(); renderTeam(); renderStats();
   $("#secStats").hidden = CFG.AFFICHER_STATS === false || !canEdit();
+  // Légende masquée pour les éditeurs (Pascal) : Résultats, Statistiques puis Journal se suivent
+  $("#secLegende").hidden = isEditor();
   // Le journal n'existe que si un mot de passe protège les modifications
   $("#secLog").hidden = !(canEdit() && state.capitaine);
   // Journal ouvert d'office dès qu'il est visible (une fois par visite, bouton « Actualiser » ensuite)
