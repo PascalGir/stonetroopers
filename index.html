@@ -268,6 +268,14 @@ dialog form{padding:18px;display:grid;gap:12px}
 dialog h3{margin:0;font-size:18px}
 dialog .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 dialog label{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--muted)}
+dialog label.check{flex-direction:row;align-items:center;gap:8px;font-size:14px;color:var(--ink)}
+dialog label.check input{width:18px;height:18px;margin:0}
+/* Match à replanifier */
+.replan-tag{font-size:12px;font-weight:700;background:var(--p-inc-bg);color:var(--p-inc-ink);border:1.5px solid var(--p-inc-line);padding:2px 9px;border-radius:99px}
+.card.replan::before{background:var(--c-inc)}
+.card.replan .datebox{opacity:.55}
+.card.replan .datebox .n{text-decoration:line-through}
+.card.replan .meta s{text-decoration-thickness:1.5px}
 dialog .actions{display:flex;gap:8px;align-items:center;margin-top:4px}
 dialog .actions .spacer{flex:1}
 .dlg-p{margin:0;font-size:13px;color:var(--muted)}
@@ -384,7 +392,7 @@ dialog .actions .spacer{flex:1}
   <div class="panel" id="log"><button type="button" class="btn" data-act="loadLog">Afficher le journal</button></div>
   </section>
 
-  <footer id="foot">StoneTroopers · version 3.17 · <button type="button" class="linkbtn" id="newsBtn">nouveautés</button></footer>
+  <footer id="foot">StoneTroopers · version 3.18 · <button type="button" class="linkbtn" id="newsBtn">nouveautés</button></footer>
 </div>
 
 <dialog id="news" aria-labelledby="newsTitle">
@@ -409,6 +417,7 @@ dialog .actions .spacer{flex:1}
       <label>Notes<input type="text" name="notes" maxlength="120" placeholder="facultatif"></label>
       <label>Couleur<select name="notesCouleur"><option value="">Noir</option><option value="rouge">Rouge</option></select></label>
     </div>
+    <label class="check"><input type="checkbox" name="replanifier"> À replanifier (date à revoir)</label>
     <div class="actions">
       <button type="button" class="btn danger" id="delMatch">Supprimer</button>
       <span class="spacer"></span>
@@ -435,7 +444,7 @@ dialog .actions .spacer{flex:1}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="data.js?v=7"></script>
 <script src="config.js?v=6"></script>
-<script src="nouveautes.js?v=12"></script>
+<script src="nouveautes.js?v=13"></script>
 
 <script>
 (function(){
@@ -619,20 +628,22 @@ function chipHTML(m, p, past){
 function cardHTML(m, opt){
   opt = opt || {};
   const tIso = iso(today());
-  const d = parseDate(m.date), past = m.date<tIso, played = m.date<=tIso, st = status(m);
+  const rp = !!m.replanifier;  // match à replanifier : reste « à venir », date barrée
+  const d = parseDate(m.date), past = m.date<tIso && !rp, played = m.date<=tIso && !rp, st = status(m);
   const vacList = PLAYERS.filter(p=>onVacation(p,m.date));
-  return `<article class="card ${st.cls} ${opt.hero?"hero-card":""}">
+  return `<article class="card ${st.cls} ${opt.hero?"hero-card":""} ${rp?"replan":""}">
       <div class="datebox"><div class="d">${fmtDay.format(d)}</div><div class="n">${d.getDate()}</div><div class="m">${fmtMon.format(d)}</div></div>
       <div>
         <div class="top">
           <span class="opp">vs ${esc(m.adversaire)}</span>
-          ${opt.hero?`<span class="countdown">${countdown(m.date)}</span>`:""}
-          ${GRAPH.aRepondre && me && PLAYERS.includes(me) && !past && !m.dispo[me]?'<span class="todo-me">À toi de répondre</span>':""}
+          ${rp?'<span class="replan-tag">⟳ À replanifier</span>':""}
+          ${opt.hero&&!rp?`<span class="countdown">${countdown(m.date)}</span>`:""}
+          ${GRAPH.aRepondre && !rp && me && PLAYERS.includes(me) && !past && !m.dispo[me]?'<span class="todo-me">À toi de répondre</span>':""}
           ${past&&!hasScore(m)&&canEdit()?'<span class="tag-score">Score à saisir</span>':""}
-          <button type="button" class="icon-btn" data-act="ics" data-id="${esc(m.id)}" aria-label="Ajouter ce match à mon calendrier" title="Ajouter ce match à mon calendrier (.ics)">📅</button>
+          ${rp?"":`<button type="button" class="icon-btn" data-act="ics" data-id="${esc(m.id)}" aria-label="Ajouter ce match à mon calendrier" title="Ajouter ce match à mon calendrier (.ics)">📅</button>`}
           ${canEdit()?`<button type="button" class="icon-btn" data-act="edit" data-id="${esc(m.id)}" aria-label="Modifier ce match" title="Modifier ce match">✏️</button>`:""}
         </div>
-        <div class="meta">${fmtLong.format(d)} · ${esc(m.heure)} · Piste ${esc(m.piste)}${m.notes?` · <span class="note${m.notesCouleur==="rouge"?" rouge":""}">${esc(m.notes)}</span>`:""}</div>
+        <div class="meta">${rp?`Initialement prévu le <s>${fmtLong.format(d)} · ${esc(m.heure)}</s>`:`${fmtLong.format(d)} · ${esc(m.heure)}`} · Piste ${esc(m.piste)}${m.notes?` · <span class="note${m.notesCouleur==="rouge"?" rouge":""}">${esc(m.notes)}</span>`:""}</div>
         <div class="statusline">
           <span class="badge">${st.label}</span>
           ${GRAPH.jauge && !past?gaugeHTML(m):""}
@@ -657,11 +668,12 @@ function resultRow(m){
 function render(){
   const tIso = iso(today());
   const sorted = [...state.matches].sort((a,b)=>a.date.localeCompare(b.date));
-  const avenir = sorted.filter(m=>m.date>=tIso);
-  const nextM = avenir[0];
+  // Les matchs à replanifier restent dans « À venir » (même si la date initiale est passée) et ne sont jamais « Prochain match »
+  const avenir = sorted.filter(m=>m.date>=tIso || m.replanifier);
+  const nextM = avenir.find(m=>!m.replanifier);
   // Matchs passés à compléter (score ou composition manquants) : visibles pour les éditeurs
-  const todo = canEdit() ? sorted.filter(m=>m.date<tIso && (!hasScore(m) || !hasCompo(m))) : [];
-  const passes = sorted.filter(m=>m.date<tIso && !todo.includes(m)).reverse();
+  const todo = canEdit() ? sorted.filter(m=>m.date<tIso && !m.replanifier && (!hasScore(m) || !hasCompo(m))) : [];
+  const passes = sorted.filter(m=>m.date<tIso && !m.replanifier && !todo.includes(m)).reverse();
 
   if (GRAPH.chargement && API && !loaded){
     // H · cartes grisées tant que le Google Sheet n'a pas répondu
@@ -672,7 +684,7 @@ function render(){
   $("#next").innerHTML = nextM ? cardHTML(nextM, {hero:true}) : "";
   $("#secTodo").hidden = !todo.length;
   $("#todo").innerHTML = todo.map(m=>cardHTML(m)).join("");
-  const rest = avenir.slice(1);
+  const rest = avenir.filter(m=>m!==nextM);
   let lastMonth = "";
   $("#list").innerHTML = rest.length ? rest.map(m=>{
     const mo = fmtMonth.format(parseDate(m.date));
@@ -908,7 +920,7 @@ function icsDownload(ms, nom){
 }
 const fileSafe = s => String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^A-Za-z0-9]+/g,"-").replace(/^-|-$/g,"");
 $("#icsAll").addEventListener("click", ()=>{
-  const ms = [...state.matches].sort((a,b)=>a.date.localeCompare(b.date));
+  const ms = state.matches.filter(m=>!m.replanifier).sort((a,b)=>a.date.localeCompare(b.date));
   if (!ms.length){ toast("Aucun match à exporter"); return; }
   icsDownload(ms, "StoneTroopers-matchs.ics");
   toast(ms.length+" match"+(ms.length>1?"s":"")+" exporté"+(ms.length>1?"s":""));
@@ -927,6 +939,7 @@ function openMatch(m){
   mf.adversaire.value = m ? m.adversaire : "";
   mf.notes.value = m ? (m.notes||"") : "";
   mf.notesCouleur.value = m && m.notesCouleur==="rouge" ? "rouge" : "";
+  mf.replanifier.checked = !!(m && m.replanifier);
   const del = $("#delMatch");
   del.hidden = !m; del.classList.remove("armed"); del.textContent = "Supprimer";
   if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open","");
@@ -938,11 +951,11 @@ $("#cancelDlg").addEventListener("click", closeMatch);
 mf.addEventListener("submit", async e=>{
   e.preventDefault();
   const match = { id: editId||undefined, date: mf.date.value, heure: mf.heure.value, piste: mf.piste.value,
-    adversaire: mf.adversaire.value.trim(), notes: mf.notes.value.trim(), notesCouleur: mf.notesCouleur.value };
+    adversaire: mf.adversaire.value.trim(), notes: mf.notes.value.trim(), notesCouleur: mf.notesCouleur.value, replanifier: mf.replanifier.checked };
   if (!match.date || !match.adversaire) return;
   if (editId){
     const m = state.matches.find(x=>x.id===editId);
-    if (m) Object.assign(m, {date:match.date, heure:match.heure, piste:match.piste, adversaire:match.adversaire, notes:match.notes, notesCouleur:match.notesCouleur});
+    if (m) Object.assign(m, {date:match.date, heure:match.heure, piste:match.piste, adversaire:match.adversaire, notes:match.notes, notesCouleur:match.notesCouleur, replanifier:match.replanifier});
     closeMatch(); render();
     later(()=>postCapitaine({action:"saveMatch", match}), "Match modifié");
   } else {
