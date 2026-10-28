@@ -1,6 +1,14 @@
 // Liste des nouveautés affichée sur la page (version publique : sans détails de sécurité ni noms de personnes)
 window.NOUVEAUTES = [
  {
+  "v": "3.13",
+  "date": "28 octobre 2026",
+  "titre": "",
+  "items": [
+   "<b>Journal des présences</b> pour l'administrateur : historique des changements de réponse."
+  ]
+ },
+ {
   "v": "3.12",
   "date": "28 octobre 2026",
   "titre": "",
