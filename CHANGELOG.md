@@ -1,11 +1,14 @@
 # Historique des versions — StoneTroopers - Planning
 
 Site : https://pascalgir.github.io/stonetroopers/
-Version actuelle : **3.20** (28 octobre 2026)
+Version actuelle : **3.21** (28 octobre 2026)
 
 Numérotation : le premier chiffre change lors d'une refonte importante, le second pour chaque série d'améliorations.
 
 ---
+
+## 3.21 — 28 octobre 2026
+- Fenêtre « Nouveautés » : chaque version sans titre particulier indique son type (**Nouveautés**, **Améliorations** ou **Corrections**) ; les titres existants sont conservés.
 
 ## 3.20 — 28 octobre 2026
 - Fenêtre « Nouveautés » : les versions sans titre affichent « Améliorations » ; seule la dernière version est dépliée.
