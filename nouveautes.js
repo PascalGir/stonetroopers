@@ -1,6 +1,14 @@
 // Liste des nouveautés affichée sur la page (version publique : sans détails de sécurité ni noms de personnes)
 window.NOUVEAUTES = [
  {
+  "v": "3.12",
+  "date": "28 octobre 2026",
+  "titre": "",
+  "items": [
+   "Compteur des présences plus clair : « potentiel » ne compte que les réponses <b>Incertain</b> et n'apparaît que s'il y en a."
+  ]
+ },
+ {
   "v": "3.11",
   "date": "28 octobre 2026",
   "titre": "Affichage plus rapide",
