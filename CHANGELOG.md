@@ -1,14 +1,17 @@
 # Historique des versions — StoneTroopers - Planning
 
 Site : https://pascalgir.github.io/stonetroopers/
-Version actuelle : **3.16** (28 octobre 2026)
+Version actuelle : **3.17** (28 octobre 2026)
 
 Numérotation : le premier chiffre change lors d'une refonte importante, le second pour chaque série d'améliorations.
 
 ---
 
+## 3.17 — 28 octobre 2026
+- Nettoyage des fichiers publics du dépôt : plus de prénoms dans l'historique, le README et les commentaires ; données de secours (`data.js`) vidées.
+
 ## 3.16 — 28 octobre 2026
-- Profil **Pascal** : la légende n'est plus affichée en bas de page ; l'ordre est Résultats, Statistiques, puis Journal des présences. Les autres joueurs voient toujours la légende.
+- Profil **administrateur** : la légende n'est plus affichée en bas de page ; l'ordre est Résultats, Statistiques, puis Journal des présences. Les autres joueurs voient toujours la légende.
 
 ## 3.15 — 28 octobre 2026
 - Journal des présences **ouvert d'office** (plus besoin de cliquer sur « Afficher le journal ») ; bouton « Actualiser » pour le recharger.
@@ -18,7 +21,7 @@ Numérotation : le premier chiffre change lors d'une refonte importante, le seco
 
 ## 3.13 — 28 octobre 2026 · Journal des présences
 - **Journal des présences** : chaque changement de réponse est enregistré (date et heure, joueur, match, avant → après) dans un nouvel onglet **Journal** du Google Sheet.
-- Bloc « Journal des présences » en bas de la page, visible **seulement par Pascal avec le mot de passe** ; le script refuse de le transmettre sans le mot de passe. Les 500 dernières modifications, les plus récentes en premier.
+- Bloc « Journal des présences » en bas de la page, visible **seulement par l'administrateur avec le mot de passe** ; le script refuse de le transmettre sans le mot de passe. Les 500 dernières modifications, les plus récentes en premier.
 - Une réponse identique à la précédente n'est pas enregistrée en double.
 
 ## 3.12 — 28 octobre 2026
@@ -63,7 +66,7 @@ Numérotation : le premier chiffre change lors d'une refonte importante, le seco
 - Bouton renommé « 📅 Exporter les matchs », aligné à droite ; sur téléphone il tient sur la même ligne que « Je suis ».
 
 ## 3.3 — 27 octobre 2026
-- **Mot de passe** pour les modifications de Pascal (matchs, scores, compositions) : demandé une fois par appareil, bouton 🔒 « Mot de passe pour modifier » si on choisit « Plus tard ».
+- **Mot de passe** pour les modifications de l'administrateur (matchs, scores, compositions) : demandé une fois par appareil, bouton 🔒 « Mot de passe pour modifier » si on choisit « Plus tard ».
 - Le mot de passe est vérifié par le script Google et rangé dans ses propriétés (il n'est écrit dans aucun fichier sur GitHub).
 - Les disponibilités restent modifiables par chacun sans mot de passe.
 
@@ -81,7 +84,7 @@ Numérotation : le premier chiffre change lors d'une refonte importante, le seco
 - **Prochain match** mis en avant en haut de page, avec compte à rebours (« Demain », « Dans 2 jours »…).
 - Réponses des joueurs en **pastilles de couleur** avec icône (✓ / ? / ✕), légende ajoutée.
 - **Résultats** : matchs terminés en vue résumée (date, adversaire, score, V/D/N), dépliables.
-- Bloc **« À compléter »** (Pascal) pour les matchs passés sans score ou sans composition.
+- Bloc **« À compléter »** (administrateur) pour les matchs passés sans score ou sans composition.
 - Bouton « À venir / Tous » retiré (les matchs passés sont toujours visibles dans « Résultats »).
 - **Mode sombre** revu.
 - **Enregistrement instantané** : score, composition, modification et suppression de match s'affichent tout de suite, l'envoi au Google Sheet se fait en arrière-plan.
@@ -100,14 +103,14 @@ Numérotation : le premier chiffre change lors d'une refonte importante, le seco
 - Titre de l'onglet du navigateur : « StoneTroopers - Planning ».
 
 ## 2.3 — 22 octobre 2026
-- **Composition d'équipe** sur les matchs terminés : ordre de lancer (1 à 4) et skip (©), réservée à Pascal.
-- Composition proposée par défaut : 1 Suettania · 2 Pascal · 3 Océane · 4 Adélie (skip Suettania) ; si Suettania est absente : 1 Pascal · 2 remplaçant · 3 Océane · 4 Adélie (skip Océane).
-- Bloc **Statistiques** (bilan V/D, matchs joués, skip, victoires par joueur), visible seulement par Pascal.
-- **Saisie et modification des scores réservées à Pascal**.
+- **Composition d'équipe** sur les matchs terminés : ordre de lancer (1 à 4) et skip (©), réservée à l'administrateur.
+- Composition proposée par défaut selon la formation habituelle, avec une variante si la skip habituelle est absente (réglages dans `config.js`).
+- Bloc **Statistiques** (bilan V/D, matchs joués, skip, victoires par joueur), visible seulement par l'administrateur.
+- **Saisie et modification des scores réservées à l'administrateur**.
 - Titre de la page : « StoneTroopers - Planning ».
 
 ## 2.2 — 22 octobre 2026
-- Ajout, modification et suppression des matchs **réservés à Pascal** (liste `EDITEURS` dans `config.js`).
+- Ajout, modification et suppression des matchs **réservés à l'administrateur** (liste `EDITEURS` dans `config.js`).
 - Blocs **Vacances** et **Équipe** masqués (réactivables dans `config.js`).
 - Ligne « En congé » retirée de la légende.
 
