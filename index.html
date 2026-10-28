@@ -370,7 +370,7 @@ dialog .actions .spacer{flex:1}
   <div class="panel" id="stats"></div>
   </section>
 
-  <footer id="foot">StoneTroopers · version 3.10 · <button type="button" class="linkbtn" id="newsBtn">nouveautés</button></footer>
+  <footer id="foot">StoneTroopers · version 3.11 · <button type="button" class="linkbtn" id="newsBtn">nouveautés</button></footer>
 </div>
 
 <dialog id="news" aria-labelledby="newsTitle">
@@ -421,7 +421,7 @@ dialog .actions .spacer{flex:1}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="data.js?v=6"></script>
 <script src="config.js?v=6"></script>
-<script src="nouveautes.js?v=5"></script>
+<script src="nouveautes.js?v=6"></script>
 
 <script>
 (function(){
@@ -759,7 +759,7 @@ async function refresh(force){
     const data = await r.json();
     if (data.error) throw new Error(data.error);
     if (busy && !force) return;
-    applyData(data); loaded = true;
+    applyData(data); loaded = true; saveCache();
     if (!askedOnce && isEditor() && state.capitaine && !store.get("code","")){ askedOnce = true; askCode(); }
     $("#maj").textContent = "À jour · " + new Date().toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"});
     render();
@@ -777,11 +777,15 @@ async function run(btn, fn, okMsg){
 // En cas d'échec, message d'erreur et retour aux données du Sheet.
 function later(fn, okMsg){
   busy++;
-  fn().then(()=>{ if (okMsg) toast(okMsg + " ✓"); })
+  fn().then(()=>{ saveCache(); if (okMsg) toast(okMsg + " ✓"); })
       .catch(err=>{ toast("Pas enregistré : "+err.message); refresh(true); })
       .finally(()=>{ busy=Math.max(0,busy-1); });
 }
 
+// Dernières données connues, gardées sur l'appareil pour un affichage immédiat à la prochaine visite
+function saveCache(){
+  if (API) store.set("cache", {joueurs:state.joueurs, capitaine:state.capitaine, matches:state.matches, vacances:state.vacances});
+}
 function applyData(data){
   state.joueurs = data.joueurs||[];
   state.capitaine = !!data.capitaine;
@@ -961,7 +965,7 @@ document.addEventListener("click", e=>{
   const els = document.querySelectorAll(`button.chip[data-id="${CSS.escape(id)}"]`);
   els.forEach(el=>el.classList.add("saving"));
   post({action:"setDispo", id, joueur:p, value:after})
-    .then(()=>{ document.querySelectorAll(`button.chip[data-id="${CSS.escape(id)}"]`).forEach(el=>el.classList.remove("saving")); })
+    .then(()=>{ saveCache(); document.querySelectorAll(`button.chip[data-id="${CSS.escape(id)}"]`).forEach(el=>el.classList.remove("saving")); })
     .catch(err=>{ m.dispo[p]=before; render(); toast("Pas enregistré : "+err.message); })
     .finally(()=>{ busy--; });
 });
@@ -1001,8 +1005,11 @@ if (GRAPH.barreCollee){
 sel.addEventListener("change", ()=>{ me=sel.value; store.set("me",me); render(); if (isEditor() && state.capitaine && !store.get("code","")) askCode(); });
 
 const DATA = window.PLANNING || {matches:[],vacances:[]};
-applyData(DATA);
-$("#maj").textContent = API ? "Chargement…" : "Lecture seule";
+// Affichage immédiat des dernières données reçues sur cet appareil, mise à jour en arrière-plan
+const CACHE = API ? store.get("cache", null) : null;
+if (CACHE && Array.isArray(CACHE.matches)){ applyData(CACHE); loaded = true; }
+else applyData(DATA);
+$("#maj").textContent = API ? (CACHE ? "Mise à jour…" : "Chargement…") : "Lecture seule";
 render();
 if (API){
   refresh();
