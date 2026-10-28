@@ -1,11 +1,23 @@
 # Historique des versions — StoneTroopers - Planning
 
 Site : https://pascalgir.github.io/stonetroopers/
-Version actuelle : **3.8** (27 octobre 2026)
+Version actuelle : **3.9** (28 octobre 2026)
 
 Numérotation : le premier chiffre change lors d'une refonte importante, le second pour chaque série d'améliorations.
 
 ---
+
+## 3.9 — 28 octobre 2026 · Bannière Glace
+- Nouvelle **bannière « Glace »** : fond bleu glace strié, ligne rouge et cible de curling (version bleu nuit en mode sombre).
+- Badge **« À toi de répondre »** sur les matchs où la personne choisie n'a pas encore répondu.
+- **Jauge de réponses** sur chaque match à venir (ex. 3/5 ont répondu).
+- **Séparateurs par mois** dans « À venir ».
+- **Forme de l'équipe** : 5 derniers résultats en pastilles V / D / N au-dessus des Résultats.
+- Petit **rebond** de la capsule quand on change sa réponse (désactivé si le téléphone réduit les animations).
+- **Icône** pour l'écran d'accueil du téléphone (`icon-180.png`) et barre du navigateur aux couleurs de la bannière.
+- Barre **« Je suis »** qui reste en haut de l'écran quand on fait défiler.
+- **Cartes grisées** pendant le chargement au lieu d'anciennes données.
+- Chaque amélioration peut être désactivée dans `index.html` (`const GRAPH`).
 
 ## 3.8 — 27 octobre 2026
 - Réponse **Absent** affichée en **rouge** (vert / jaune / rouge), bien distincte de « Pas de réponse ».
