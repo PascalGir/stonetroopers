@@ -1,11 +1,15 @@
 # Historique des versions — StoneTroopers - Planning
 
 Site : https://pascalgir.github.io/stonetroopers/
-Version actuelle : **3.21** (28 octobre 2026)
+Version actuelle : **3.22** (28 octobre 2026)
 
 Numérotation : le premier chiffre change lors d'une refonte importante, le second pour chaque série d'améliorations.
 
 ---
+
+## 3.22 — 28 octobre 2026
+- **Choix direct de la réponse** : toucher sa capsule ouvre un petit menu Présent / Incertain / Absent / Pas de réponse (au lieu de faire défiler les réponses à chaque toucher). Le menu se ferme en touchant ailleurs ou avec Échap.
+- **Sauvegarde automatique du Google Sheet** chaque lundi vers 3 h dans le dossier Drive « StoneTroopers - sauvegardes » (8 dernières copies gardées). Mise en route une seule fois avec `installerSauvegarde` dans Apps Script.
 
 ## 3.21 — 28 octobre 2026
 - Fenêtre « Nouveautés » : chaque version sans titre particulier indique son type (**Nouveautés**, **Améliorations** ou **Corrections**) ; les titres existants sont conservés.
