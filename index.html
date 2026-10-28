@@ -384,7 +384,7 @@ dialog .actions .spacer{flex:1}
   <div class="panel" id="log"><button type="button" class="btn" data-act="loadLog">Afficher le journal</button></div>
   </section>
 
-  <footer id="foot">StoneTroopers · version 3.16 · <button type="button" class="linkbtn" id="newsBtn">nouveautés</button></footer>
+  <footer id="foot">StoneTroopers · version 3.17 · <button type="button" class="linkbtn" id="newsBtn">nouveautés</button></footer>
 </div>
 
 <dialog id="news" aria-labelledby="newsTitle">
@@ -433,9 +433,9 @@ dialog .actions .spacer{flex:1}
 </dialog>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<script src="data.js?v=6"></script>
+<script src="data.js?v=7"></script>
 <script src="config.js?v=6"></script>
-<script src="nouveautes.js?v=11"></script>
+<script src="nouveautes.js?v=12"></script>
 
 <script>
 (function(){
@@ -460,7 +460,7 @@ const COMPO_HAB = Array.isArray(CFG.COMPO_HABITUELLE) ? CFG.COMPO_HABITUELLE : [
 const SKIP_HAB = CFG.SKIP_HABITUEL || "";
 const COMPO_ABS = CFG.COMPO_SI_ABSENT || {};
 // Joueurs autorisés à ajouter / modifier / supprimer des matchs, scores et compositions (config.js)
-const EDITEURS = Array.isArray(CFG.EDITEURS) ? CFG.EDITEURS : ["Pascal"];
+const EDITEURS = Array.isArray(CFG.EDITEURS) ? CFG.EDITEURS : [];
 const isEditor = () => !!me && EDITEURS.includes(me);
 // Si un mot de passe est défini côté Google (propriété CODE_CAPITAINE), il faut l'avoir saisi sur cet appareil
 const canEdit = () => isEditor() && (!state.capitaine || !!store.get("code",""));
@@ -692,7 +692,7 @@ function render(){
     $("#hint").innerHTML += ` <button type="button" class="btn small" data-act="unlock">🔒 Mot de passe pour modifier</button>`;
   renderVacances(); renderTeam(); renderStats();
   $("#secStats").hidden = CFG.AFFICHER_STATS === false || !canEdit();
-  // Légende masquée pour les éditeurs (Pascal) : Résultats, Statistiques puis Journal se suivent
+  // Légende masquée pour les éditeurs : Résultats, Statistiques puis Journal se suivent
   $("#secLegende").hidden = isEditor();
   // Le journal n'existe que si un mot de passe protège les modifications
   $("#secLog").hidden = !(canEdit() && state.capitaine);
