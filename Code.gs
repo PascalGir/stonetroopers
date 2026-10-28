@@ -10,7 +10,7 @@
  * Après chaque modification de ce script : Déployer > Gérer les déploiements > ✏️ > Nouvelle version.
  */
 
-// Mot de passe des éditeurs (Pascal) : il n'est PAS écrit ici (ce fichier est public sur GitHub).
+// Mot de passe des éditeurs : il n'est PAS écrit ici (ce fichier est public sur GitHub).
 // Il est rangé dans Apps Script > Paramètres du projet > Propriétés du script > CODE_CAPITAINE.
 // Sans cette propriété, tout le monde peut gérer les matchs, scores et compositions.
 const CODE_CAPITAINE = '';
@@ -368,7 +368,7 @@ function json_(obj) {
 
 function installer() {
   const ss = SpreadsheetApp.getActive();
-  const P = ['Suettania', 'Adélie', 'Océane', 'Jean-Pierre', 'Pascal'];
+  const P = ['Joueur 1', 'Joueur 2', 'Joueur 3', 'Joueur 4', 'Joueur 5'];  // à remplacer par les prénoms de l'équipe
   const M = [
     ['M001', '2026-10-06', '18:00', 'C', 'On-Line', 'Non', 'Oui', 'Oui', 'Non', 'Oui'],
     ['M002', '2026-10-22', '20:15', 'A', 'Tiguidou', 'Non', 'Non', 'Oui', 'Oui', 'Oui'],
