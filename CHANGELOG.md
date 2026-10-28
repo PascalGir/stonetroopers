@@ -1,11 +1,16 @@
 # Historique des versions — StoneTroopers - Planning
 
 Site : https://pascalgir.github.io/stonetroopers/
-Version actuelle : **3.12** (28 octobre 2026)
+Version actuelle : **3.13** (28 octobre 2026)
 
 Numérotation : le premier chiffre change lors d'une refonte importante, le second pour chaque série d'améliorations.
 
 ---
+
+## 3.13 — 28 octobre 2026 · Journal des présences
+- **Journal des présences** : chaque changement de réponse est enregistré (date et heure, joueur, match, avant → après) dans un nouvel onglet **Journal** du Google Sheet.
+- Bloc « Journal des présences » en bas de la page, visible **seulement par Pascal avec le mot de passe** ; le script refuse de le transmettre sans le mot de passe. Les 500 dernières modifications, les plus récentes en premier.
+- Une réponse identique à la précédente n'est pas enregistrée en double.
 
 ## 3.12 — 28 octobre 2026
 - Compteur des présences : « potentiel » ne compte plus que les joueurs **Incertain** (les confirmés ne sont plus comptés dedans) et n'apparaît que s'il y en a. Exemple : « 2 confirmés · 1 potentiel ».
