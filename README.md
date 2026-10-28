@@ -5,8 +5,8 @@ Page de l'équipe de curling : https://pascalgir.github.io/stonetroopers/
 ## Utilisation
 
 - Chacun choisit son nom dans **Je suis**, puis touche sa pastille pour répondre : vide → Oui → Incertain → Non.
-- **Pascal** (liste `EDITEURS` dans `config.js`) peut en plus ajouter / modifier / supprimer les matchs (bouton « + Match » et ✏️), saisir les scores et les compositions, et voit les statistiques. Ces modifications demandent un **mot de passe**, saisi une fois par appareil (bouton 🔒 sinon).
-- La page affiche le prochain match en grand, les matchs à venir, les matchs passés à compléter (pour Pascal) et les résultats en vue résumée (toucher une ligne pour le détail).
+- **L'administrateur** (liste `EDITEURS` dans `config.js`) peut en plus ajouter / modifier / supprimer les matchs (bouton « + Match » et ✏️), saisir les scores et les compositions, et voit les statistiques. Ces modifications demandent un **mot de passe**, saisi une fois par appareil (bouton 🔒 sinon).
+- La page affiche le prochain match en grand, les matchs à venir, les matchs passés à compléter (pour l'administrateur) et les résultats en vue résumée (toucher une ligne pour le détail).
 
 ## Fichiers
 
@@ -32,7 +32,7 @@ Page de l'équipe de curling : https://pascalgir.github.io/stonetroopers/
 
 Onglets **Matchs** (une colonne par joueur, puis Lanceur 1-4, Skip, Couleur notes), **Joueurs**, **Vacances**, et **Journal** (créé automatiquement : chaque changement de présence avec date, joueur, match, avant et après ; lisible sur la page seulement avec le mot de passe). On peut le modifier à la main en gardant les noms d'onglets et de colonnes.
 
-Le mot de passe de Pascal est rangé dans Apps Script : **Paramètres du projet → Propriétés du script → `CODE_CAPITAINE`** (jamais dans un fichier public). Pour le changer, modifier cette valeur puis enregistrer (pas besoin de redéployer). Supprimer la propriété retire le mot de passe.
+Le mot de passe de l'administrateur est rangé dans Apps Script : **Paramètres du projet → Propriétés du script → `CODE_CAPITAINE`** (jamais dans un fichier public). Pour le changer, modifier cette valeur puis enregistrer (pas besoin de redéployer). Supprimer la propriété retire le mot de passe.
 
 Le script garde les données en mémoire jusqu'à 1 h pour répondre plus vite ; cette mémoire est vidée à chaque enregistrement depuis la page et à chaque modification à la main dans le Sheet. La page, elle, affiche d'abord les dernières données reçues sur l'appareil puis se met à jour.
 
