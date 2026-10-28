@@ -1,6 +1,14 @@
 // Liste des nouveautés affichée sur la page (version publique : sans détails de sécurité ni noms de personnes)
 window.NOUVEAUTES = [
  {
+  "v": "3.11",
+  "date": "28 octobre 2026",
+  "titre": "Affichage plus rapide",
+  "items": [
+   "Les matchs s'affichent <b>tout de suite</b> à l'ouverture, puis se mettent à jour en arrière-plan."
+  ]
+ },
+ {
   "v": "3.10",
   "date": "28 octobre 2026",
   "titre": "",
