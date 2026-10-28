@@ -332,6 +332,7 @@ dialog .actions .spacer{flex:1}
   <div class="hint" id="hint"></div>
 
   <main id="main">
+    <section id="secReplan" hidden><h2>À replanifier</h2><div id="replan"></div></section>
     <section id="secNext"><h2>Prochain match</h2><div id="next"></div></section>
     <section id="secTodo" hidden><h2>À compléter</h2><div id="todo"></div></section>
     <section id="secUp"><h2>À venir</h2><div id="list"></div></section>
@@ -392,7 +393,7 @@ dialog .actions .spacer{flex:1}
   <div class="panel" id="log"><button type="button" class="btn" data-act="loadLog">Afficher le journal</button></div>
   </section>
 
-  <footer id="foot">StoneTroopers · version 3.18 · <button type="button" class="linkbtn" id="newsBtn">nouveautés</button></footer>
+  <footer id="foot">StoneTroopers · version 3.19 · <button type="button" class="linkbtn" id="newsBtn">nouveautés</button></footer>
 </div>
 
 <dialog id="news" aria-labelledby="newsTitle">
@@ -444,7 +445,7 @@ dialog .actions .spacer{flex:1}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="data.js?v=7"></script>
 <script src="config.js?v=6"></script>
-<script src="nouveautes.js?v=13"></script>
+<script src="nouveautes.js?v=14"></script>
 
 <script>
 (function(){
@@ -678,13 +679,17 @@ function render(){
   if (GRAPH.chargement && API && !loaded){
     // H · cartes grisées tant que le Google Sheet n'a pas répondu
     $("#secNext").hidden = false; $("#next").innerHTML = skelHTML(1);
-    $("#list").innerHTML = skelHTML(2); $("#secTodo").hidden = true; $("#secRes").hidden = true;
+    $("#list").innerHTML = skelHTML(2); $("#secTodo").hidden = true; $("#secRes").hidden = true; $("#secReplan").hidden = true;
   } else {
+  // Matchs à replanifier : tout en haut, puis le prochain match, puis les matchs planifiés
+  const replan = avenir.filter(m=>m.replanifier);
+  $("#secReplan").hidden = !replan.length;
+  $("#replan").innerHTML = replan.map(m=>cardHTML(m)).join("");
   $("#secNext").hidden = !nextM;
   $("#next").innerHTML = nextM ? cardHTML(nextM, {hero:true}) : "";
   $("#secTodo").hidden = !todo.length;
   $("#todo").innerHTML = todo.map(m=>cardHTML(m)).join("");
-  const rest = avenir.filter(m=>m!==nextM);
+  const rest = avenir.filter(m=>m!==nextM && !m.replanifier);
   let lastMonth = "";
   $("#list").innerHTML = rest.length ? rest.map(m=>{
     const mo = fmtMonth.format(parseDate(m.date));
