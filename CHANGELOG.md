@@ -1,11 +1,14 @@
 # Historique des versions — StoneTroopers - Planning
 
 Site : https://pascalgir.github.io/stonetroopers/
-Version actuelle : **3.18** (28 octobre 2026)
+Version actuelle : **3.19** (28 octobre 2026)
 
 Numérotation : le premier chiffre change lors d'une refonte importante, le second pour chaque série d'améliorations.
 
 ---
+
+## 3.19 — 28 octobre 2026
+- Nouvelle section **« À replanifier »** tout en haut de la page, puis « Prochain match », puis « À venir » (seulement les matchs planifiés).
 
 ## 3.18 — 28 octobre 2026 · Match à replanifier
 - Case **« À replanifier »** dans la fiche d'un match (réservée à l'administrateur), enregistrée dans une nouvelle colonne **Replanifier** du Google Sheet.
