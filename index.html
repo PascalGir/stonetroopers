@@ -5,14 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>StoneTroopers - Planning</title>
 <meta name="description" content="Matchs de curling et disponibilités de l'équipe StoneTroopers, saison 2026-27">
-<meta name="theme-color" content="#1d4e89">
+<meta name="theme-color" content="#dcecf8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0c1d30" media="(prefers-color-scheme: dark)">
+<link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23d6e9f5'/%3E%3Ccircle cx='16' cy='16' r='10' fill='%23c8323c'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%23fff'/%3E%3Ccircle cx='16' cy='16' r='2' fill='%231d4e89'/%3E%3C/svg%3E">
 <style>
 /* ============ Couleurs (clair / sombre) ============ */
 :root{
   --bg:#f1f5f9; --surface:#ffffff; --surface-2:#e9f0f6; --ink:#14202b; --muted:#5b6977;
   --line:#d6e0e8; --accent:#1d4e89; --accent-ink:#ffffff; --house:#c8323c;
-  --hero-a:#1d4e89; --hero-b:#0e2c52; --hero-ink:#ffffff; --hero-sub:#c9dcf0;
+  --hero-a:#f7fbff; --hero-b:#dcecf8; --hero-ink:#0e2c52; --hero-sub:#3d5a7a; --hero-mut:#5b6977;
+  --hero-line:#c7d9ea; --hero-ice:rgba(255,255,255,.55); --hero-hog:rgba(200,50,60,.5);
   --ok:#1f7a4d; --ok-bg:#dff3e8; --warn:#8a5a00; --warn-bg:#fff1cc;
   --bad:#a52a2a; --bad-bg:#fbe1df; --plus:#9a4a00; --plus-bg:#ffe5cc;
   --c-oui:#1f8a55; --c-oui-ink:#ffffff; --c-inc:#e2a514; --c-inc-ink:#2a1d00;
@@ -23,7 +26,8 @@
   :root:not([data-theme="light"]){
     --bg:#0c141b; --surface:#142029; --surface-2:#1b2935; --ink:#e7eef4; --muted:#95a5b3;
     --line:#26364a; --accent:#6aa7e8; --accent-ink:#0c141b; --house:#ec5f68;
-    --hero-a:#173a63; --hero-b:#0a1a2d; --hero-ink:#f2f7fb; --hero-sub:#a9c2dc;
+    --hero-a:#17324f; --hero-b:#0c1d30; --hero-ink:#f2f7fb; --hero-sub:#a9c2dc; --hero-mut:#8ea6bd;
+    --hero-line:#26364a; --hero-ice:rgba(255,255,255,.05); --hero-hog:rgba(236,95,104,.45);
     --ok:#6fd3a0; --ok-bg:#163a2a; --warn:#f2c35c; --warn-bg:#3a2f12;
     --bad:#f08a80; --bad-bg:#3d1c1a; --plus:#f5a35c; --plus-bg:#3d2714;
     --c-oui:#2fa56b; --c-oui-ink:#ffffff; --c-inc:#d8a428; --c-inc-ink:#1e1500;
@@ -34,7 +38,8 @@
 :root[data-theme="dark"]{
   --bg:#0c141b; --surface:#142029; --surface-2:#1b2935; --ink:#e7eef4; --muted:#95a5b3;
   --line:#26364a; --accent:#6aa7e8; --accent-ink:#0c141b; --house:#ec5f68;
-  --hero-a:#173a63; --hero-b:#0a1a2d; --hero-ink:#f2f7fb; --hero-sub:#a9c2dc;
+  --hero-a:#17324f; --hero-b:#0c1d30; --hero-ink:#f2f7fb; --hero-sub:#a9c2dc; --hero-mut:#8ea6bd;
+    --hero-line:#26364a; --hero-ice:rgba(255,255,255,.05); --hero-hog:rgba(236,95,104,.45);
   --ok:#6fd3a0; --ok-bg:#163a2a; --warn:#f2c35c; --warn-bg:#3a2f12;
   --bad:#f08a80; --bad-bg:#3d1c1a; --plus:#f5a35c; --plus-bg:#3d2714;
   --c-oui:#2fa56b; --c-oui-ink:#ffffff; --c-inc:#d8a428; --c-inc-ink:#1e1500;
@@ -64,12 +69,15 @@ footer a{color:inherit}
 .news-v.cur{border-color:var(--accent)}
 .news-v code{font-size:12.5px;background:var(--surface-2);padding:0 4px;border-radius:4px}
 
-/* ============ 1. En-tête ============ */
-.hero{color:var(--hero-ink);border-bottom:4px solid var(--house);
+/* ============ 1. En-tête « Glace » ============ */
+.hero{color:var(--hero-ink);border-bottom:1px solid var(--hero-line);position:relative;overflow:hidden;
   background:
-    radial-gradient(circle at calc(100% - 70px) 50%, rgba(255,255,255,.95) 0 8px, var(--house) 8px 22px, rgba(255,255,255,.9) 22px 34px, #6aa7e8 34px 48px, transparent 49px),
-    linear-gradient(135deg,var(--hero-a),var(--hero-b));}
-.hero-in{max-width:880px;margin:0 auto;padding:22px 150px 20px 16px;display:flex;gap:14px;align-items:center;min-height:116px}
+    linear-gradient(90deg,transparent 0 70%,var(--hero-hog) 70% calc(70% + 3px),transparent 0),
+    repeating-linear-gradient(100deg,transparent 0 18px,var(--hero-ice) 18px 19px),
+    linear-gradient(180deg,var(--hero-a),var(--hero-b));}
+.hero .house{position:absolute;right:-40px;top:50%;width:190px;height:190px;transform:translateY(-50%);pointer-events:none}
+.hero .sync{color:var(--hero-mut)}
+.hero-in{position:relative;z-index:1;max-width:880px;margin:0 auto;padding:22px 150px 20px 16px;display:flex;gap:14px;align-items:center;min-height:116px}
 .logo{width:54px;height:54px;flex:none;filter:drop-shadow(0 2px 6px rgba(0,0,0,.25))}
 .hero h1{font-size:26px;line-height:1.1;margin:0;letter-spacing:-.01em;font-weight:800}
 .hero .sub{color:var(--hero-sub);font-size:13.5px;margin-top:4px}
@@ -154,6 +162,42 @@ button.chip:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .score .res{font-weight:700}
 .win{color:var(--ok)} .loss{color:var(--bad)} .draw{color:var(--muted)}
 
+/* ============ Améliorations graphiques (réglages : const GRAPH plus bas) ============ */
+/* A · À toi de répondre */
+.todo-me{font-size:11.5px;font-weight:700;background:var(--accent);color:var(--accent-ink);padding:3px 9px;border-radius:99px;display:inline-flex;align-items:center;gap:5px}
+.todo-me::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.85}
+/* B · Jauge de réponses */
+.gauge{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--muted)}
+.gauge .bar{display:flex;gap:2px;width:84px;height:7px}
+.gauge .bar i{flex:1;border-radius:2px;background:var(--surface-2);box-shadow:inset 0 0 0 1px var(--line)}
+.gauge .bar i.g-oui{background:var(--c-oui);box-shadow:none}
+.gauge .bar i.g-incertain{background:var(--c-inc);box-shadow:none}
+.gauge .bar i.g-non{background:var(--c-non);box-shadow:none}
+/* C · Séparateurs par mois */
+.month{font-size:12px;font-weight:700;color:var(--accent);margin:16px 0 8px;display:flex;align-items:center;gap:10px;text-transform:capitalize}
+.month::after{content:"";flex:1;height:1px;background:var(--line)}
+.month:first-child{margin-top:0}
+/* D · Forme de l'équipe */
+.forme{display:flex;align-items:center;gap:6px;margin:-2px 0 10px;font-size:12.5px;font-weight:600;color:var(--muted);white-space:nowrap}
+.forme .f{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:800;color:#fff}
+.forme .f.win{background:var(--c-oui)} .forme .f.loss{background:var(--c-non)} .forme .f.draw{background:var(--muted)}
+/* E · Petit rebond de la capsule */
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.14)}100%{transform:scale(1)}}
+.chip.pop .av{animation:pop .28s ease-out}
+@media (prefers-reduced-motion: reduce){.chip.pop .av{animation:none}}
+/* G · Barre « Je suis » collée en haut */
+.toolbar.sticky{position:sticky;top:0;z-index:5;background:var(--bg);margin:0 -16px;padding:10px 16px}
+.toolbar.sticky.stuck{box-shadow:0 6px 12px -8px rgba(0,0,0,.25);border-bottom:1px solid var(--line)}
+/* H · Cartes grisées pendant le chargement */
+.skel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px;display:grid;grid-template-columns:64px 1fr;gap:14px}
+.skel i{display:block;border-radius:8px;background:linear-gradient(90deg,var(--surface-2) 0 40%,var(--line) 50%,var(--surface-2) 60%) 0 0/300% 100%;animation:shim 1.4s linear infinite}
+.skel .sd{height:64px}
+.skel .l1{height:18px;width:55%;margin-bottom:8px}
+.skel .l2{height:12px;width:80%;margin-bottom:14px}
+.skel .l3{height:26px;width:90%}
+@keyframes shim{to{background-position:-150% 0}}
+@media (prefers-reduced-motion: reduce){.skel i{animation:none}}
+
 /* ============ 4. Résultats (vue résumée) ============ */
 .results{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
 .res-row{display:grid;grid-template-columns:70px 1fr auto auto;gap:10px;align-items:center;width:100%;font:inherit;color:inherit;text-align:left;background:transparent;border:0;border-top:1px solid var(--line);padding:10px 14px;cursor:pointer}
@@ -215,9 +259,8 @@ dialog .actions .spacer{flex:1}
 /* ============ 3. Téléphone ============ */
 @media (max-width:560px){
   .hero-in{padding:18px 16px 16px;min-height:0;background:none}
-  .hero{background:
-    radial-gradient(circle at calc(100% + 10px) 0, rgba(255,255,255,.9) 0 8px, var(--house) 8px 22px, rgba(255,255,255,.85) 22px 34px, #6aa7e8 34px 50px, transparent 51px),
-    linear-gradient(135deg,var(--hero-a),var(--hero-b));}
+  .hero{background:repeating-linear-gradient(100deg,transparent 0 18px,var(--hero-ice) 18px 19px),linear-gradient(180deg,var(--hero-a),var(--hero-b))}
+  .hero .house{right:-55px;top:-55px;width:110px;height:110px;transform:none}
   .hero h1{font-size:21px}
   .logo{width:44px;height:44px}
   .card,.card.hero-card{grid-template-columns:1fr;gap:10px}
@@ -236,6 +279,7 @@ dialog .actions .spacer{flex:1}
 </head>
 <body>
 <header class="hero">
+  <svg class="house" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="49" fill="#6aa7e8" opacity=".9"/><circle cx="50" cy="50" r="36" fill="#fff"/><circle cx="50" cy="50" r="24" fill="#c8323c"/><circle cx="50" cy="50" r="10" fill="#fff"/><path d="M0 50H100M50 0V100" stroke="#0e2c52" stroke-opacity=".25" stroke-width="1"/></svg>
   <div class="hero-in">
     <svg class="logo" viewBox="0 0 48 48" aria-hidden="true">
       <circle cx="24" cy="24" r="23" fill="#d6e9f5"/><circle cx="24" cy="24" r="16" fill="#1d4e89"/>
@@ -264,7 +308,7 @@ dialog .actions .spacer{flex:1}
     <section id="secNext"><h2>Prochain match</h2><div id="next"></div></section>
     <section id="secTodo" hidden><h2>À compléter</h2><div id="todo"></div></section>
     <section id="secUp"><h2>À venir</h2><div id="list"></div></section>
-    <section id="secRes" hidden><h2>Résultats</h2><div class="results" id="results"></div></section>
+    <section id="secRes" hidden><h2>Résultats</h2><div id="forme"></div><div class="results" id="results"></div></section>
   </main>
 
   <!-- Sections masquées par défaut : pour les réafficher, mettre true dans config.js -->
@@ -313,7 +357,7 @@ dialog .actions .spacer{flex:1}
   <div class="panel" id="stats"></div>
   </section>
 
-  <footer id="foot">StoneTroopers · version 3.8 · <button type="button" class="linkbtn" id="newsBtn">nouveautés</button></footer>
+  <footer id="foot">StoneTroopers · version 3.9 · <button type="button" class="linkbtn" id="newsBtn">nouveautés</button></footer>
 </div>
 
 <dialog id="news" aria-labelledby="newsTitle">
@@ -364,7 +408,7 @@ dialog .actions .spacer{flex:1}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="data.js?v=6"></script>
 <script src="config.js?v=6"></script>
-<script src="nouveautes.js?v=3"></script>
+<script src="nouveautes.js?v=4"></script>
 
 <script>
 (function(){
@@ -399,6 +443,22 @@ const store = {
 };
 let state = { matches:[], vacances:[], joueurs:[], capitaine:false };
 let me = store.get("me","");
+// Améliorations graphiques : mettre false pour en désactiver une
+const GRAPH = {aRepondre:true, jauge:true, mois:true, forme:true, rebond:true, barreCollee:true, chargement:true};
+let loaded = false, popKey = "";
+const fmtMonth = new Intl.DateTimeFormat("fr-FR",{month:"long", year:"numeric"});
+function skelHTML(n){ return Array.from({length:n},()=>'<div class="skel" aria-hidden="true"><i class="sd"></i><div><i class="l1"></i><i class="l2"></i><i class="l3"></i></div></div>').join(""); }
+function gaugeHTML(m){
+  const ord = {"Oui":0,"Incertain":1,"Non":2,"":3};
+  const vals = PLAYERS.map(p=>m.dispo[p]||"").sort((a,b)=>ord[a]-ord[b]);
+  const rep = vals.filter(v=>v).length;
+  return `<span class="gauge" title="${rep} sur ${PLAYERS.length} ont répondu"><span class="bar">${vals.map(v=>`<i class="g-${v?v.toLowerCase():"vide"}"></i>`).join("")}</span>${rep}/${PLAYERS.length} ont répondu</span>`;
+}
+function formeHTML(passes){
+  const last = passes.filter(hasScore).slice(0,5);
+  if (!last.length) return "";
+  return `<div class="forme" title="Du plus récent (à gauche) au plus ancien"><span>Forme</span>${last.map(m=>{ const r=result(m); return `<span class="f ${r[0]}" title="${esc(r[1])} contre ${esc(m.adversaire)}">${r[2]}</span>`; }).join("")}</div>`;
+}
 const openRes = new Set();   // résultats dépliés
 
 function norm(v){
@@ -526,7 +586,7 @@ function chipHTML(m, p, past){
   const label = `${esc(p)} : ${v?LIBELLE[v].toLowerCase():"pas de réponse"}${vac?" (en congé)":""}`;
   const inner = `<span class="av">${esc(p)}<i class="ic" aria-hidden="true">${ICON[v]}</i></span>`;
   if (me===p && !past)
-    return `<button type="button" class="${cls}" data-id="${esc(m.id)}" data-p="${esc(p)}" aria-label="${label} — toucher pour changer" title="Toucher pour changer">${inner}</button>`;
+    return `<button type="button" class="${cls}${popKey===m.id+"|"+p?" pop":""}" data-id="${esc(m.id)}" data-p="${esc(p)}" aria-label="${label} — toucher pour changer" title="Toucher pour changer">${inner}</button>`;
   return `<div class="${cls}" role="img" aria-label="${label}">${inner}</div>`;
 }
 function cardHTML(m, opt){
@@ -540,6 +600,7 @@ function cardHTML(m, opt){
         <div class="top">
           <span class="opp">vs ${esc(m.adversaire)}</span>
           ${opt.hero?`<span class="countdown">${countdown(m.date)}</span>`:""}
+          ${GRAPH.aRepondre && me && PLAYERS.includes(me) && !past && !m.dispo[me]?'<span class="todo-me">À toi de répondre</span>':""}
           ${past&&!hasScore(m)&&canEdit()?'<span class="tag-score">Score à saisir</span>':""}
           <button type="button" class="icon-btn" data-act="ics" data-id="${esc(m.id)}" aria-label="Ajouter ce match à mon calendrier" title="Ajouter ce match à mon calendrier (.ics)">📅</button>
           ${canEdit()?`<button type="button" class="icon-btn" data-act="edit" data-id="${esc(m.id)}" aria-label="Modifier ce match" title="Modifier ce match">✏️</button>`:""}
@@ -547,6 +608,7 @@ function cardHTML(m, opt){
         <div class="meta">${fmtLong.format(d)} · ${esc(m.heure)} · Piste ${esc(m.piste)}${m.notes?` · <span class="note${m.notesCouleur==="rouge"?" rouge":""}">${esc(m.notes)}</span>`:""}</div>
         <div class="statusline">
           <span class="badge">${st.label}</span>
+          ${GRAPH.jauge && !past?gaugeHTML(m):""}
           <span class="counts">${st.yes} confirmé${st.yes>1?"s":""} · ${st.pot} potentiel${st.pot>1?"s":""}${vacList.length?" · En congé : "+vacList.map(esc).join(", "):""}</span>
         </div>
         <div class="players">${PLAYERS.map(p=>chipHTML(m,p,past)).join("")}</div>
@@ -574,14 +636,26 @@ function render(){
   const todo = canEdit() ? sorted.filter(m=>m.date<tIso && (!hasScore(m) || !hasCompo(m))) : [];
   const passes = sorted.filter(m=>m.date<tIso && !todo.includes(m)).reverse();
 
+  if (GRAPH.chargement && API && !loaded){
+    // H · cartes grisées tant que le Google Sheet n'a pas répondu
+    $("#secNext").hidden = false; $("#next").innerHTML = skelHTML(1);
+    $("#list").innerHTML = skelHTML(2); $("#secTodo").hidden = true; $("#secRes").hidden = true;
+  } else {
   $("#secNext").hidden = !nextM;
   $("#next").innerHTML = nextM ? cardHTML(nextM, {hero:true}) : "";
   $("#secTodo").hidden = !todo.length;
   $("#todo").innerHTML = todo.map(m=>cardHTML(m)).join("");
   const rest = avenir.slice(1);
-  $("#list").innerHTML = rest.length ? rest.map(m=>cardHTML(m)).join("") : '<div class="empty">Aucun autre match prévu.</div>';
+  let lastMonth = "";
+  $("#list").innerHTML = rest.length ? rest.map(m=>{
+    const mo = fmtMonth.format(parseDate(m.date));
+    const sep = GRAPH.mois && mo!==lastMonth ? `<h3 class="month">${mo}</h3>` : "";
+    lastMonth = mo; return sep + cardHTML(m);
+  }).join("") : '<div class="empty">Aucun autre match prévu.</div>';
   $("#secRes").hidden = !passes.length;
   $("#results").innerHTML = passes.map(resultRow).join("");
+  $("#forme").innerHTML = GRAPH.forme ? formeHTML(passes) : "";
+  }
 
   $("#addMatch").hidden = !canEdit();
   $("#hint").innerHTML = me
@@ -672,11 +746,11 @@ async function refresh(force){
     const data = await r.json();
     if (data.error) throw new Error(data.error);
     if (busy && !force) return;
-    applyData(data);
+    applyData(data); loaded = true;
     if (!askedOnce && isEditor() && state.capitaine && !store.get("code","")){ askedOnce = true; askCode(); }
     $("#maj").textContent = "À jour · " + new Date().toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"});
     render();
-  }catch(e){ $("#maj").textContent = "Hors ligne — dernières données connues"; }
+  }catch(e){ $("#maj").textContent = "Hors ligne — dernières données connues"; if (!loaded){ loaded = true; render(); } }
 }
 // Écriture avec attente (bouton bloqué), puis rechargement : utilisé pour les ajouts
 async function run(btn, fn, okMsg){
@@ -870,7 +944,7 @@ document.addEventListener("click", e=>{
   const m = state.matches.find(x=>x.id===id); if (!m) return;
   const before = m.dispo[p]||"";
   const after = CYCLE[(CYCLE.indexOf(before)+1)%CYCLE.length];
-  m.dispo[p] = after; busy++; render();
+  m.dispo[p] = after; busy++; if (GRAPH.rebond) popKey = id+"|"+p; render(); popKey = "";
   const els = document.querySelectorAll(`button.chip[data-id="${CSS.escape(id)}"]`);
   els.forEach(el=>el.classList.add("saving"));
   post({action:"setDispo", id, joueur:p, value:after})
@@ -906,6 +980,11 @@ document.addEventListener("submit", e=>{
 });
 
 const sel = $("#me");
+if (GRAPH.barreCollee){
+  const tb = $(".toolbar"); tb.classList.add("sticky");
+  const mark = document.createElement("div"); tb.before(mark);
+  if ("IntersectionObserver" in window) new IntersectionObserver(([e])=>tb.classList.toggle("stuck", !e.isIntersecting)).observe(mark);
+}
 sel.addEventListener("change", ()=>{ me=sel.value; store.set("me",me); render(); if (isEditor() && state.capitaine && !store.get("code","")) askCode(); });
 
 const DATA = window.PLANNING || {matches:[],vacances:[]};
