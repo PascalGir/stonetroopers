@@ -1,6 +1,14 @@
 // Liste des nouveautés affichée sur la page (version publique : sans détails de sécurité ni noms de personnes)
 window.NOUVEAUTES = [
  {
+  "v": "3.15",
+  "date": "28 octobre 2026",
+  "titre": "",
+  "items": [
+   "Journal des présences affiché directement."
+  ]
+ },
+ {
   "v": "3.14",
   "date": "28 octobre 2026",
   "titre": "",
