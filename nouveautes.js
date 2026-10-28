@@ -1,6 +1,14 @@
 // Liste des nouveautés affichée sur la page (version publique : sans détails de sécurité ni noms de personnes)
 window.NOUVEAUTES = [
  {
+  "v": "3.10",
+  "date": "28 octobre 2026",
+  "titre": "",
+  "items": [
+   "Couleurs <b>pastel</b> pour les capsules et les badges : la page est plus douce à l'œil."
+  ]
+ },
+ {
   "v": "3.9",
   "date": "28 octobre 2026",
   "titre": "Bannière Glace",
