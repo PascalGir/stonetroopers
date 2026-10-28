@@ -1,11 +1,14 @@
 # Historique des versions — StoneTroopers - Planning
 
 Site : https://pascalgir.github.io/stonetroopers/
-Version actuelle : **3.15** (28 octobre 2026)
+Version actuelle : **3.16** (28 octobre 2026)
 
 Numérotation : le premier chiffre change lors d'une refonte importante, le second pour chaque série d'améliorations.
 
 ---
+
+## 3.16 — 28 octobre 2026
+- Profil **Pascal** : la légende n'est plus affichée en bas de page ; l'ordre est Résultats, Statistiques, puis Journal des présences. Les autres joueurs voient toujours la légende.
 
 ## 3.15 — 28 octobre 2026
 - Journal des présences **ouvert d'office** (plus besoin de cliquer sur « Afficher le journal ») ; bouton « Actualiser » pour le recharger.
