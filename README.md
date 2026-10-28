@@ -36,4 +36,6 @@ Le mot de passe de l'administrateur est rangé dans Apps Script : **Paramètres 
 
 Le script garde les données en mémoire jusqu'à 1 h pour répondre plus vite ; cette mémoire est vidée à chaque enregistrement depuis la page et à chaque modification à la main dans le Sheet. La page, elle, affiche d'abord les dernières données reçues sur l'appareil puis se met à jour.
 
+**Sauvegarde** : chaque lundi vers 3 h, une copie du Sheet est rangée dans le dossier Drive « StoneTroopers - sauvegardes » (8 dernières gardées). Pour l'activer ou la réactiver : dans Apps Script, choisir la fonction `installerSauvegarde`, puis **Exécuter** et autoriser l'accès demandé par Google.
+
 Après une modification de `Code.gs` : dans Apps Script, coller le nouveau code, enregistrer, puis **Déployer → Gérer les déploiements → ✏️ → Nouvelle version → Déployer** (l'adresse ne change pas).
