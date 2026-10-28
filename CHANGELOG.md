@@ -1,11 +1,15 @@
 # Historique des versions — StoneTroopers - Planning
 
 Site : https://pascalgir.github.io/stonetroopers/
-Version actuelle : **3.9** (28 octobre 2026)
+Version actuelle : **3.10** (28 octobre 2026)
 
 Numérotation : le premier chiffre change lors d'une refonte importante, le second pour chaque série d'améliorations.
 
 ---
+
+## 3.10 — 28 octobre 2026
+- Couleurs **pastel** pour les capsules (Présent, Incertain, Absent) : fond clair teinté, texte coloré, rond de l'icône en couleur vive.
+- Badges « Demain » et « À toi de répondre » dans le même style, plus doux.
 
 ## 3.9 — 28 octobre 2026 · Bannière Glace
 - Nouvelle **bannière « Glace »** : fond bleu glace strié, ligne rouge et cible de curling (version bleu nuit en mode sombre).
