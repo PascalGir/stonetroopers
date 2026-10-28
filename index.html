@@ -242,15 +242,10 @@ th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);white
 tr:last-child td{border-bottom:0}
 th{font-size:12px;color:var(--muted);font-weight:600}
 td.num{font-variant-numeric:tabular-nums;text-align:right}
-.log-list{list-style:none;margin:0;padding:0}
-.log-list li{padding:9px 0;border-top:1px solid var(--line);display:grid;gap:4px}
-.log-list li:first-child{border-top:0;padding-top:0}
-.log-when{font-size:12px;color:var(--muted)}
-.log-when b{color:var(--ink);font-size:13.5px}
-.log-match{font-size:13.5px}
-.log-what{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
-.log-what .chip .av{font-size:11.5px;padding:2px 5px 2px 9px;gap:5px;border-width:1.5px}
-.log-what .chip .ic{width:15px;height:15px;font-size:9.5px}
+.log-m{font-size:13.5px;font-weight:700;margin-top:10px}
+.log-m:first-of-type{margin-top:0}
+.log-r{font-size:13px;color:var(--muted);padding:2px 0 2px 10px}
+.log-r b{color:var(--ink)}
 .log-head{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:13px;color:var(--muted)}
 .log-head .grow{flex:1}
 .stats-sum{font-size:14px;margin:0 0 10px;color:var(--ink)!important}
@@ -387,7 +382,7 @@ dialog .actions .spacer{flex:1}
   <div class="panel" id="log"><button type="button" class="btn" data-act="loadLog">Afficher le journal</button></div>
   </section>
 
-  <footer id="foot">StoneTroopers · version 3.13 · <button type="button" class="linkbtn" id="newsBtn">nouveautés</button></footer>
+  <footer id="foot">StoneTroopers · version 3.14 · <button type="button" class="linkbtn" id="newsBtn">nouveautés</button></footer>
 </div>
 
 <dialog id="news" aria-labelledby="newsTitle">
@@ -438,7 +433,7 @@ dialog .actions .spacer{flex:1}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="data.js?v=6"></script>
 <script src="config.js?v=6"></script>
-<script src="nouveautes.js?v=8"></script>
+<script src="nouveautes.js?v=9"></script>
 
 <script>
 (function(){
@@ -805,17 +800,20 @@ function later(fn, okMsg){
 function saveCache(){
   if (API) store.set("cache", {joueurs:state.joueurs, capitaine:state.capitaine, matches:state.matches, vacances:state.vacances});
 }
-// Journal des présences (demande le mot de passe au script)
-const LOG_CLS = {"Présent":"oui","Incertain":"incertain","Absent":"non","Pas de réponse":"vide"};
-const LOG_IC = {"Présent":"✓","Incertain":"…","Absent":"✕","Pas de réponse":"–"};
-function logChip(t){ return `<span class="chip v-${LOG_CLS[t]||"vide"}"><span class="av">${esc(t)}<i class="ic" aria-hidden="true">${LOG_IC[t]||"–"}</i></span></span>`; }
+// Journal des présences (demande le mot de passe au script), regroupé par match
+const court = t => String(t).replace(/^(\d\d\.\d\d)\.\d{4}/, "$1");
 async function loadLog(btn){
   if (btn) btn.disabled = true;
   try{
     const res = await postCapitaine({action:"getLog"});
     const L = res.journal || [];
-    $("#log").innerHTML = `<div class="log-head"><span class="grow">${L.length ? `${L.length} modification${L.length>1?"s":""} (les plus récentes en premier)` : "Aucune modification enregistrée pour l'instant."}</span><button type="button" class="btn small" data-act="loadLog">Actualiser</button></div>`
-      + (L.length ? `<ul class="log-list">${L.map(x=>`<li><span class="log-when">${esc(x.date)} · <b>${esc(x.joueur)}</b></span><span class="log-match">${esc(x.match)}</span><span class="log-what">${logChip(x.avant)}<span aria-hidden="true">→</span>${logChip(x.apres)}</span></li>`).join("")}</ul>` : "");
+    const groupes = new Map();
+    L.forEach(x=>{ if (!groupes.has(x.match)) groupes.set(x.match, []); groupes.get(x.match).push(x); });
+    let html = `<div class="log-head"><span class="grow">${L.length ? `${L.length} modification${L.length>1?"s":""}, les plus récentes en premier` : "Aucune modification enregistrée pour l'instant."}</span><button type="button" class="btn small" data-act="loadLog">Actualiser</button></div>`;
+    groupes.forEach((rows, match)=>{
+      html += `<div class="log-m">${esc(court(match))}</div>` + rows.map(x=>`<div class="log-r">${esc(court(x.date))} · <b>${esc(x.joueur)}</b> : ${esc(x.avant)} → ${esc(x.apres)}</div>`).join("");
+    });
+    $("#log").innerHTML = html;
   }catch(err){ toast("Journal indisponible : "+err.message); if (btn) btn.disabled = false; }
 }
 function applyData(data){
