@@ -370,7 +370,7 @@ dialog .actions .spacer{flex:1}
   <div class="panel" id="stats"></div>
   </section>
 
-  <footer id="foot">StoneTroopers · version 3.11 · <button type="button" class="linkbtn" id="newsBtn">nouveautés</button></footer>
+  <footer id="foot">StoneTroopers · version 3.12 · <button type="button" class="linkbtn" id="newsBtn">nouveautés</button></footer>
 </div>
 
 <dialog id="news" aria-labelledby="newsTitle">
@@ -421,7 +421,7 @@ dialog .actions .spacer{flex:1}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="data.js?v=6"></script>
 <script src="config.js?v=6"></script>
-<script src="nouveautes.js?v=6"></script>
+<script src="nouveautes.js?v=7"></script>
 
 <script>
 (function(){
@@ -511,7 +511,7 @@ function status(m){
     else if (pot>=3){cls="s-warn";label="❓ À confirmer";}
     else {cls="s-bad";label="⚠ Incomplet";}
   }
-  return {cls,label,yes,pot};
+  return {cls,label,yes,pot,inc:pot-yes};
 }
 function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
 
@@ -622,7 +622,7 @@ function cardHTML(m, opt){
         <div class="statusline">
           <span class="badge">${st.label}</span>
           ${GRAPH.jauge && !past?gaugeHTML(m):""}
-          <span class="counts">${st.yes} confirmé${st.yes>1?"s":""} · ${st.pot} potentiel${st.pot>1?"s":""}${vacList.length?" · En congé : "+vacList.map(esc).join(", "):""}</span>
+          <span class="counts">${st.yes} confirmé${st.yes>1?"s":""}${st.inc?` · ${st.inc} potentiel${st.inc>1?"s":""}`:""}${vacList.length?" · En congé : "+vacList.map(esc).join(", "):""}</span>
         </div>
         <div class="players">${PLAYERS.map(p=>chipHTML(m,p,past)).join("")}</div>
         ${played?scoreBlock(m)+compoBlock(m):""}
