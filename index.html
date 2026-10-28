@@ -20,6 +20,11 @@
   --bad:#a52a2a; --bad-bg:#fbe1df; --plus:#9a4a00; --plus-bg:#ffe5cc;
   --c-oui:#1f8a55; --c-oui-ink:#ffffff; --c-inc:#e2a514; --c-inc-ink:#2a1d00;
   --c-non:#d64545; --c-non-ink:#ffffff; --c-vide:#ffffff; --c-vide-ink:#8a97a3; --vac-bg:#cfd6dc;
+  /* Capsules pastel : fond, texte, contour */
+  --p-oui-bg:#dff3e8; --p-oui-ink:#1f6b45; --p-oui-line:#9fd4b6;
+  --p-inc-bg:#fff3d1; --p-inc-ink:#7a5600; --p-inc-line:#ecd08a; --p-inc-ic:#e2a514;
+  --p-non-bg:#fbe4e4; --p-non-ink:#a33636; --p-non-line:#eeb0b0;
+  --p-acc-bg:#e3ecf7; --p-acc-ink:#1d4e89;
   --shadow:0 1px 2px rgba(20,40,60,.06),0 6px 20px rgba(20,40,60,.07);
 }
 @media (prefers-color-scheme: dark){
@@ -32,6 +37,10 @@
     --bad:#f08a80; --bad-bg:#3d1c1a; --plus:#f5a35c; --plus-bg:#3d2714;
     --c-oui:#2fa56b; --c-oui-ink:#ffffff; --c-inc:#d8a428; --c-inc-ink:#1e1500;
     --c-non:#c74850; --c-non-ink:#ffffff; --c-vide:#142029; --c-vide-ink:#7f909f; --vac-bg:#3a4652;
+  --p-oui-bg:#163a2a; --p-oui-ink:#7fd8a8; --p-oui-line:#2c6b4c;
+  --p-inc-bg:#3a2f12; --p-inc-ink:#f2c35c; --p-inc-line:#6b5520; --p-inc-ic:#d8a428;
+  --p-non-bg:#3d1c1a; --p-non-ink:#f39a92; --p-non-line:#74322f;
+  --p-acc-bg:#1b2f48; --p-acc-ink:#9cc6f0;
     --shadow:none;
   }
 }
@@ -44,6 +53,10 @@
   --bad:#f08a80; --bad-bg:#3d1c1a; --plus:#f5a35c; --plus-bg:#3d2714;
   --c-oui:#2fa56b; --c-oui-ink:#ffffff; --c-inc:#d8a428; --c-inc-ink:#1e1500;
   --c-non:#c74850; --c-non-ink:#ffffff; --c-vide:#142029; --c-vide-ink:#7f909f; --vac-bg:#3a4652;
+  --p-oui-bg:#163a2a; --p-oui-ink:#7fd8a8; --p-oui-line:#2c6b4c;
+  --p-inc-bg:#3a2f12; --p-inc-ink:#f2c35c; --p-inc-line:#6b5520; --p-inc-ic:#d8a428;
+  --p-non-bg:#3d1c1a; --p-non-ink:#f39a92; --p-non-line:#74322f;
+  --p-acc-bg:#1b2f48; --p-acc-ink:#9cc6f0;
   --shadow:none;
 }
 
@@ -131,19 +144,19 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-
 .hero-card .datebox .n{font-size:32px}
 .hero-card .opp{font-size:21px;font-weight:750}
 .hero-card .badge{font-size:14px;padding:5px 12px}
-.countdown{font-size:12px;font-weight:700;background:var(--house);color:#fff;padding:3px 9px;border-radius:99px;text-transform:uppercase;letter-spacing:.04em}
+.countdown{font-size:12px;font-weight:700;background:var(--p-non-bg);color:var(--p-non-ink);padding:3px 9px;border-radius:99px;text-transform:uppercase;letter-spacing:.04em}
 
 /* ============ 3. Joueurs : pastilles ============ */
 .players{display:flex;flex-wrap:wrap;gap:6px}
 .chip{font:inherit;color:var(--ink);background:transparent;border:0;padding:0;display:inline-flex;min-width:0;border-radius:99px}
 .chip .av{display:inline-flex;align-items:center;gap:7px;border-radius:99px;padding:5px 7px 5px 13px;font-weight:650;font-size:13.5px;line-height:1.2;white-space:nowrap;background:var(--c-vide);color:var(--c-vide-ink);border:2px dashed var(--line);transition:transform .08s}
 .chip .ic{width:19px;height:19px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-style:normal;font-weight:800;background:var(--surface-2);color:var(--muted);flex:none}
-.chip.v-oui .av{background:var(--c-oui);color:var(--c-oui-ink);border:2px solid transparent}
-.chip.v-oui .ic{background:rgba(255,255,255,.9);color:var(--c-oui)}
-.chip.v-incertain .av{background:var(--c-inc);color:var(--c-inc-ink);border:2px solid transparent}
-.chip.v-incertain .ic{background:rgba(255,255,255,.75);color:var(--c-inc-ink)}
-.chip.v-non .av{background:var(--c-non);color:var(--c-non-ink);border:2px solid transparent}
-.chip.v-non .ic{background:rgba(255,255,255,.9);color:var(--c-non)}
+.chip.v-oui .av{background:var(--p-oui-bg);color:var(--p-oui-ink);border:2px solid var(--p-oui-line)}
+.chip.v-oui .ic{background:var(--c-oui);color:#fff}
+.chip.v-incertain .av{background:var(--p-inc-bg);color:var(--p-inc-ink);border:2px solid var(--p-inc-line)}
+.chip.v-incertain .ic{background:var(--p-inc-ic);color:#fff}
+.chip.v-non .av{background:var(--p-non-bg);color:var(--p-non-ink);border:2px solid var(--p-non-line)}
+.chip.v-non .ic{background:var(--c-non);color:#fff}
 .chip.vac .av{background:var(--vac-bg)}
 .chip.me .av{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--accent)}
 button.chip{cursor:pointer}
@@ -164,7 +177,7 @@ button.chip:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 
 /* ============ Améliorations graphiques (réglages : const GRAPH plus bas) ============ */
 /* A · À toi de répondre */
-.todo-me{font-size:11.5px;font-weight:700;background:var(--accent);color:var(--accent-ink);padding:3px 9px;border-radius:99px;display:inline-flex;align-items:center;gap:5px}
+.todo-me{font-size:11.5px;font-weight:700;background:var(--p-acc-bg);color:var(--p-acc-ink);padding:3px 9px;border-radius:99px;display:inline-flex;align-items:center;gap:5px}
 .todo-me::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.85}
 /* B · Jauge de réponses */
 .gauge{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--muted)}
@@ -357,7 +370,7 @@ dialog .actions .spacer{flex:1}
   <div class="panel" id="stats"></div>
   </section>
 
-  <footer id="foot">StoneTroopers · version 3.9 · <button type="button" class="linkbtn" id="newsBtn">nouveautés</button></footer>
+  <footer id="foot">StoneTroopers · version 3.10 · <button type="button" class="linkbtn" id="newsBtn">nouveautés</button></footer>
 </div>
 
 <dialog id="news" aria-labelledby="newsTitle">
@@ -408,7 +421,7 @@ dialog .actions .spacer{flex:1}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="data.js?v=6"></script>
 <script src="config.js?v=6"></script>
-<script src="nouveautes.js?v=4"></script>
+<script src="nouveautes.js?v=5"></script>
 
 <script>
 (function(){
