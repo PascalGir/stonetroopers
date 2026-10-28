@@ -1,11 +1,15 @@
 # Historique des versions — StoneTroopers - Planning
 
 Site : https://pascalgir.github.io/stonetroopers/
-Version actuelle : **3.10** (28 octobre 2026)
+Version actuelle : **3.11** (28 octobre 2026)
 
 Numérotation : le premier chiffre change lors d'une refonte importante, le second pour chaque série d'améliorations.
 
 ---
+
+## 3.11 — 28 octobre 2026 · Affichage plus rapide
+- **Affichage immédiat** : la page montre tout de suite les dernières données reçues sur l'appareil, puis se met à jour en arrière-plan (« Mise à jour… » puis « À jour · heure »). Les cartes grisées ne s'affichent plus qu'à la première visite.
+- Le script Google **garde les données en mémoire** (1 h au plus) au lieu de relire le Sheet à chaque visite ; la mémoire est vidée à chaque enregistrement depuis la page et à chaque modification à la main dans le Sheet.
 
 ## 3.10 — 28 octobre 2026
 - Couleurs **pastel** pour les capsules (Présent, Incertain, Absent) : fond clair teinté, texte coloré, rond de l'icône en couleur vive.
