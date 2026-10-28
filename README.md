@@ -34,4 +34,6 @@ Onglets **Matchs** (une colonne par joueur, puis Lanceur 1-4, Skip, Couleur note
 
 Le mot de passe de Pascal est rangé dans Apps Script : **Paramètres du projet → Propriétés du script → `CODE_CAPITAINE`** (jamais dans un fichier public). Pour le changer, modifier cette valeur puis enregistrer (pas besoin de redéployer). Supprimer la propriété retire le mot de passe.
 
+Le script garde les données en mémoire jusqu'à 1 h pour répondre plus vite ; cette mémoire est vidée à chaque enregistrement depuis la page et à chaque modification à la main dans le Sheet. La page, elle, affiche d'abord les dernières données reçues sur l'appareil puis se met à jour.
+
 Après une modification de `Code.gs` : dans Apps Script, coller le nouveau code, enregistrer, puis **Déployer → Gérer les déploiements → ✏️ → Nouvelle version → Déployer** (l'adresse ne change pas).
