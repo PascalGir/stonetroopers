@@ -1,6 +1,22 @@
 // Liste des nouveautés affichée sur la page (version publique : sans détails de sécurité ni noms de personnes)
 window.NOUVEAUTES = [
  {
+  "v": "3.9",
+  "date": "28 octobre 2026",
+  "titre": "Bannière Glace",
+  "items": [
+   "Nouvelle <b>bannière « Glace »</b> (version bleu nuit en mode sombre).",
+   "Badge <b>« À toi de répondre »</b> sur les matchs où tu n'as pas encore répondu.",
+   "<b>Jauge de réponses</b> sur chaque match à venir.",
+   "<b>Séparateurs par mois</b> dans « À venir ».",
+   "<b>Forme de l'équipe</b> : les 5 derniers résultats au-dessus des Résultats.",
+   "Petit <b>rebond</b> de la capsule quand on change sa réponse.",
+   "<b>Icône</b> pour l'écran d'accueil du téléphone.",
+   "Barre <b>« Je suis »</b> toujours visible en haut quand on fait défiler.",
+   "<b>Cartes grisées</b> pendant le chargement."
+  ]
+ },
+ {
   "v": "3.8",
   "date": "27 octobre 2026",
   "titre": "",
