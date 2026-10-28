@@ -21,6 +21,7 @@ function codeCapitaine_() {
 const ONGLET_MATCHS = 'Matchs';
 const ONGLET_JOUEURS = 'Joueurs';
 const ONGLET_VACANCES = 'Vacances';
+const ONGLET_JOURNAL = 'Journal';  // créé automatiquement au premier changement de présence
 const COLS_MATCH = ['ID', 'Date', 'Heure', 'Piste', 'Adversaire', 'Score nous', 'Score eux', 'Notes'];
 const REPONSES = ['', 'Oui', 'Incertain', 'Non'];
 const COLS_COMPO = ['Lanceur 1', 'Lanceur 2', 'Lanceur 3', 'Lanceur 4', 'Skip'];
@@ -111,7 +112,7 @@ function doPost(e) {
     lock.waitLock(10000);
     const res = action_(b);
     SpreadsheetApp.flush();
-    if (b.action !== 'checkCode') viderCache_();
+    if (b.action !== 'checkCode' && b.action !== 'getLog') viderCache_();
     return json_(Object.assign({ ok: true }, res || {}));
   } catch (err) {
     return json_({ ok: false, error: String(err.message || err) });
@@ -127,6 +128,7 @@ function action_(b) {
     case 'deleteVacances': return deleteVacances_(b);
     case 'setScore': capitaine_(b); return setScore_(b);
     case 'checkCode': capitaine_(b); return {};
+    case 'getLog': capitaine_(b); return getLog_();
     case 'saveMatch': capitaine_(b); return saveMatch_(b);
     case 'deleteMatch': capitaine_(b); return deleteMatch_(b);
     case 'savePlayer': capitaine_(b); return savePlayer_(b);
@@ -141,7 +143,41 @@ function setDispo_(b) {
   const col = entetes_(sh).indexOf(b.joueur) + 1;
   if (col <= COLS_MATCH.length) throw new Error('joueur inconnu');
   const row = ligneParId_(sh, b.id);
-  sh.getRange(row, col).setValue(b.value);
+  const cell = sh.getRange(row, col);
+  const avant = String(cell.getValue() || '');
+  if (avant === b.value) return;
+  cell.setValue(b.value);
+  journal_(b.joueur, sh, row, avant, b.value);
+}
+
+/* ---------- Journal des présences (lisible seulement avec le mot de passe) ---------- */
+const LIBELLES_ = { '': 'Pas de réponse', 'Oui': 'Présent', 'Incertain': 'Incertain', 'Non': 'Absent' };
+function journal_(joueur, sh, row, avant, apres) {
+  try {
+    const ss = SpreadsheetApp.getActive();
+    let j = ss.getSheetByName(ONGLET_JOURNAL);
+    if (!j) {
+      j = ss.insertSheet(ONGLET_JOURNAL);
+      j.appendRow(['Date', 'Joueur', 'Match', 'Avant', 'Après']);
+      j.getRange(1, 1, 1, 5).setFontWeight('bold');
+    }
+    const m = sh.getRange(row, 1, 1, 5).getValues()[0];  // ID, Date, Heure, Piste, Adversaire
+    const tz = ss.getSpreadsheetTimeZone();
+    const dm = m[1] instanceof Date ? Utilities.formatDate(m[1], tz, 'dd.MM.yyyy') : String(m[1]);
+    j.appendRow([new Date(), joueur, dm + ' vs ' + m[4], LIBELLES_[avant] || avant, LIBELLES_[apres] || apres]);
+  } catch (x) {}
+}
+function getLog_() {
+  const ss = SpreadsheetApp.getActive();
+  const j = ss.getSheetByName(ONGLET_JOURNAL);
+  if (!j || j.getLastRow() < 2) return { journal: [] };
+  const n = Math.min(500, j.getLastRow() - 1);
+  const tz = ss.getSpreadsheetTimeZone();
+  const rows = j.getRange(j.getLastRow() - n + 1, 1, n, 5).getValues().reverse();
+  return { journal: rows.map(function (r) {
+    return { date: r[0] instanceof Date ? Utilities.formatDate(r[0], tz, 'dd.MM.yyyy HH:mm') : String(r[0]),
+             joueur: String(r[1]), match: String(r[2]), avant: String(r[3]), apres: String(r[4]) };
+  }) };
 }
 
 function saveMatch_(b) {
