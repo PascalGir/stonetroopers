@@ -1,11 +1,14 @@
 # Historique des versions — StoneTroopers - Planning
 
 Site : https://pascalgir.github.io/stonetroopers/
-Version actuelle : **3.11** (28 octobre 2026)
+Version actuelle : **3.12** (28 octobre 2026)
 
 Numérotation : le premier chiffre change lors d'une refonte importante, le second pour chaque série d'améliorations.
 
 ---
+
+## 3.12 — 28 octobre 2026
+- Compteur des présences : « potentiel » ne compte plus que les joueurs **Incertain** (les confirmés ne sont plus comptés dedans) et n'apparaît que s'il y en a. Exemple : « 2 confirmés · 1 potentiel ».
 
 ## 3.11 — 28 octobre 2026 · Affichage plus rapide
 - **Affichage immédiat** : la page montre tout de suite les dernières données reçues sur l'appareil, puis se met à jour en arrière-plan (« Mise à jour… » puis « À jour · heure »). Les cartes grisées ne s'affichent plus qu'à la première visite.
