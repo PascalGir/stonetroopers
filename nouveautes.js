@@ -1,6 +1,14 @@
 // Liste des nouveautés affichée sur la page (version publique : sans détails de sécurité ni noms de personnes)
 window.NOUVEAUTES = [
  {
+  "v": "3.18",
+  "date": "28 octobre 2026",
+  "titre": "",
+  "items": [
+   "Les matchs <b>à replanifier</b> sont signalés clairement, avec leur date initiale barrée."
+  ]
+ },
+ {
   "v": "3.17",
   "date": "28 octobre 2026",
   "titre": "",
