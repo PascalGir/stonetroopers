@@ -366,6 +366,33 @@ function json_(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
 }
 
+/* ---------- Sauvegarde automatique du Google Sheet ---------- */
+// Une copie complète du Sheet est rangée chaque lundi vers 3 h dans le dossier Drive ci-dessous.
+// Les 8 sauvegardes les plus récentes sont gardées ; les plus anciennes vont dans la corbeille de Drive.
+// Mise en route : dans l'éditeur, choisir « installerSauvegarde » puis Exécuter (une seule fois) et autoriser.
+const SAUVEGARDE_DOSSIER = 'StoneTroopers - sauvegardes';
+const SAUVEGARDE_GARDER = 8;
+function sauvegarder() {
+  const ss = SpreadsheetApp.getActive();
+  const it = DriveApp.getFoldersByName(SAUVEGARDE_DOSSIER);
+  const dossier = it.hasNext() ? it.next() : DriveApp.createFolder(SAUVEGARDE_DOSSIER);
+  const nom = ss.getName() + ' - sauvegarde ' + Utilities.formatDate(new Date(), ss.getSpreadsheetTimeZone(), 'yyyy-MM-dd HH:mm');
+  DriveApp.getFileById(ss.getId()).makeCopy(nom, dossier);
+  const fichiers = [];
+  const f = dossier.getFiles();
+  while (f.hasNext()) fichiers.push(f.next());
+  fichiers.sort(function (a, b) { return b.getDateCreated() - a.getDateCreated(); });
+  fichiers.slice(SAUVEGARDE_GARDER).forEach(function (x) { x.setTrashed(true); });
+  return nom;
+}
+function installerSauvegarde() {
+  ScriptApp.getProjectTriggers().forEach(function (t) {
+    if (t.getHandlerFunction() === 'sauvegarder') ScriptApp.deleteTrigger(t);
+  });
+  ScriptApp.newTrigger('sauvegarder').timeBased().onWeekDay(ScriptApp.WeekDay.MONDAY).atHour(3).create();
+  Logger.log('Sauvegarde hebdomadaire installée. Première copie : ' + sauvegarder());
+}
+
 /* ---------- Installation (à lancer une seule fois depuis l'éditeur) ---------- */
 
 function installer() {
