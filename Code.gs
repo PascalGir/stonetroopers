@@ -83,6 +83,7 @@ function lireTout_() {
         notes: String(o['Notes'] || ''),
         notesCouleur: String(o['Couleur notes'] || '').trim().toLowerCase(),
         replanifier: String(o['Replanifier'] || '').trim() !== '',
+        forfait: String(o['Forfait'] || '').trim().toLowerCase(),
         lanceurs: [1, 2, 3, 4].map(function (k) { return String(o['Lanceur ' + k] || '').trim(); }),
         skip: String(o['Skip'] || '').trim(),
         dispo: dispo
@@ -186,7 +187,7 @@ function saveMatch_(b) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(m.date || '')) throw new Error('date invalide');
   if (!m.adversaire) throw new Error('adversaire manquant');
   const sh = feuille_(ONGLET_MATCHS);
-  const h = colonnes_(sh, ['Couleur notes', 'Replanifier']);
+  const h = colonnes_(sh, ['Couleur notes', 'Replanifier', 'Forfait']);
   const p = m.date.split('-').map(Number);
   const champs = {
     'Date': new Date(p[0], p[1] - 1, p[2]),
@@ -197,7 +198,8 @@ function saveMatch_(b) {
     'Score eux': m.scoreEux === undefined ? undefined : String(m.scoreEux),
     'Notes': m.notes === undefined ? undefined : String(m.notes),
     'Couleur notes': m.notesCouleur === undefined ? undefined : (m.notesCouleur === 'rouge' ? 'rouge' : ''),
-    'Replanifier': m.replanifier === undefined ? undefined : (m.replanifier ? 'Oui' : '')
+    'Replanifier': m.replanifier === undefined ? undefined : (m.replanifier ? 'Oui' : ''),
+    'Forfait': m.forfait === undefined ? undefined : ((m.forfait === 'nous' || m.forfait === 'eux') ? m.forfait : '')
   };
   let row, id = m.id;
   if (id) {
