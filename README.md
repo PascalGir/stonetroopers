@@ -30,7 +30,7 @@ Page de l'équipe de curling : https://pascalgir.github.io/stonetroopers/
 
 ## Le Google Sheet « StoneTroopers »
 
-Onglets **Matchs** (une colonne par joueur, puis Lanceur 1-4, Skip, Couleur notes), **Joueurs**, **Vacances**, et **Journal** (créé automatiquement : chaque changement de présence avec date, joueur, match, avant et après ; lisible sur la page seulement avec le mot de passe). On peut le modifier à la main en gardant les noms d'onglets et de colonnes.
+Onglets **Matchs** (une colonne par joueur, puis Lanceur 1-4, Skip, Couleur notes, Replanifier, Forfait — `eux` ou `nous`), **Joueurs**, **Vacances**, et **Journal** (créé automatiquement : chaque changement de présence avec date, joueur, match, avant et après ; lisible sur la page seulement avec le mot de passe). On peut le modifier à la main en gardant les noms d'onglets et de colonnes.
 
 Le mot de passe de l'administrateur est rangé dans Apps Script : **Paramètres du projet → Propriétés du script → `CODE_CAPITAINE`** (jamais dans un fichier public). Pour le changer, modifier cette valeur puis enregistrer (pas besoin de redéployer). Supprimer la propriété retire le mot de passe.
 
