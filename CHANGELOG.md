@@ -1,11 +1,16 @@
 # Historique des versions — StoneTroopers - Planning
 
 Site : https://pascalgir.github.io/stonetroopers/
-Version actuelle : **3.22** (28 octobre 2026)
+Version actuelle : **3.23** (30 octobre 2026)
 
 Numérotation : le premier chiffre change lors d'une refonte importante, le second pour chaque série d'améliorations.
 
 ---
+
+## 3.23 — 30 octobre 2026 · Forfait
+- Liste **« Forfait »** dans la fiche d'un match (réservée à l'administrateur) : Aucun / Forfait de l'adversaire (victoire) / Forfait StoneTroopers (défaite). Enregistrée dans une nouvelle colonne **Forfait** du Google Sheet (`eux` ou `nous`).
+- Visible par tous : le match passe directement dans « Résultats » (même si sa date est à venir) avec « Forfait » et V ou D ; la carte affiche un badge **Forfait adverse** (vert) ou **Forfait StoneTroopers** (rouge) et « Résultat : … · Victoire/Défaite », sans réponses ni composition.
+- Compté dans la forme, les statistiques (victoires/défaites) ; exclu de « À venir », « À compléter » et de l'export calendrier.
 
 ## 3.22 — 28 octobre 2026
 - **Choix direct de la réponse** : toucher sa capsule ouvre un petit menu Présent / Incertain / Absent / Pas de réponse (au lieu de faire défiler les réponses à chaque toucher). Le menu se ferme en touchant ailleurs ou avec Échap.
