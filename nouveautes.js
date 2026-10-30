@@ -1,6 +1,14 @@
 // Liste des nouveautés affichée sur la page (version publique : sans détails de sécurité ni noms de personnes)
 window.NOUVEAUTES = [
  {
+  "v": "3.23",
+  "date": "30 octobre 2026",
+  "titre": "Nouveautés",
+  "items": [
+   "Un match peut être déclaré <b>forfait</b> (par nous ou par l'adversaire) : il apparaît dans les résultats avec « Forfait » et V ou D."
+  ]
+ },
+ {
   "v": "3.22",
   "date": "28 octobre 2026",
   "titre": "Nouveautés",
