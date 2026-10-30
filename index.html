@@ -277,6 +277,10 @@ dialog label{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:v
 dialog label.check{flex-direction:row;align-items:center;gap:8px;font-size:14px;color:var(--ink)}
 dialog label.check input{width:18px;height:18px;margin:0}
 /* Match à replanifier */
+/* Forfait */
+.forfait-tag{font-size:12px;font-weight:700;padding:2px 9px;border-radius:99px;border:1.5px solid}
+.forfait-tag.win{background:var(--p-oui-bg);color:var(--p-oui-ink);border-color:var(--p-oui-line)}
+.forfait-tag.loss{background:var(--p-non-bg);color:var(--p-non-ink);border-color:var(--p-non-line)}
 .replan-tag{font-size:12px;font-weight:700;background:var(--p-inc-bg);color:var(--p-inc-ink);border:1.5px solid var(--p-inc-line);padding:2px 9px;border-radius:99px}
 .card.replan::before{background:var(--c-inc)}
 .card.replan .datebox{opacity:.55}
@@ -399,7 +403,7 @@ dialog .actions .spacer{flex:1}
   <div class="panel" id="log"><button type="button" class="btn" data-act="loadLog">Afficher le journal</button></div>
   </section>
 
-  <footer id="foot">StoneTroopers · version 3.22 · <button type="button" class="linkbtn" id="newsBtn">nouveautés</button></footer>
+  <footer id="foot">StoneTroopers · version 3.23 · <button type="button" class="linkbtn" id="newsBtn">nouveautés</button></footer>
 </div>
 
 <dialog id="news" aria-labelledby="newsTitle">
@@ -425,6 +429,7 @@ dialog .actions .spacer{flex:1}
       <label>Couleur<select name="notesCouleur"><option value="">Noir</option><option value="rouge">Rouge</option></select></label>
     </div>
     <label class="check"><input type="checkbox" name="replanifier"> À replanifier (date à revoir)</label>
+    <label>Forfait<select name="forfait"><option value="">Aucun — match joué normalement</option><option value="eux">Forfait de l'adversaire → victoire</option><option value="nous">Forfait StoneTroopers → défaite</option></select></label>
     <div class="actions">
       <button type="button" class="btn danger" id="delMatch">Supprimer</button>
       <span class="spacer"></span>
@@ -451,7 +456,7 @@ dialog .actions .spacer{flex:1}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="data.js?v=7"></script>
 <script src="config.js?v=6"></script>
-<script src="nouveautes.js?v=17"></script>
+<script src="nouveautes.js?v=18"></script>
 
 <script>
 (function(){
@@ -526,8 +531,11 @@ function countdown(dateStr){
 function onVacation(player, dateStr){
   return state.vacances.some(v => v.joueur===player && v.debut && v.fin && dateStr>=v.debut && dateStr<=v.fin);
 }
-function hasScore(m){ return String(m.scoreNous)!=="" && String(m.scoreEux)!==""; }
-function result(m){ const a=Number(m.scoreNous), b=Number(m.scoreEux); return a>b?["win","Victoire","V"]:a<b?["loss","Défaite","D"]:["draw","Égalité","N"]; }
+// Forfait : « nous » = StoneTroopers déclaré forfait (défaite), « eux » = l'adversaire (victoire)
+function forfait(m){ return m.forfait==="nous"||m.forfait==="eux" ? m.forfait : ""; }
+function hasScore(m){ return !!forfait(m) || (String(m.scoreNous)!=="" && String(m.scoreEux)!==""); }
+function result(m){ const f=forfait(m); if (f) return f==="eux"?["win","Victoire","V"]:["loss","Défaite","D"];
+  const a=Number(m.scoreNous), b=Number(m.scoreEux); return a>b?["win","Victoire","V"]:a<b?["loss","Défaite","D"]:["draw","Égalité","N"]; }
 function status(m){
   const vals = PLAYERS.map(p=>m.dispo[p]||"");
   const yes = vals.filter(v=>v==="Oui").length;
@@ -584,6 +592,8 @@ function compoBlock(m){
     </form>`;
 }
 function scoreBlock(m){
+  const f = forfait(m);
+  if (f) return `<div class="score"><span>Résultat :</span><span class="res ${f==="eux"?"win":"loss"}">${f==="eux"?"Forfait de l'adversaire · Victoire":"Forfait StoneTroopers · Défaite"}</span></div>`;
   if (hasScore(m) && !editingScore.has(m.id)){
     const [cls,txt] = result(m);
     return `<div class="score"><span>Score :</span><span class="res ${cls}">${Number(m.scoreNous)} – ${Number(m.scoreEux)} · ${txt}</span>
@@ -603,7 +613,7 @@ function scoreBlock(m){
 // Statistiques simples, calculées à partir des scores et compositions saisis
 function renderStats(){
   const joues = state.matches.filter(hasScore);
-  const res = m => Math.sign(Number(m.scoreNous) - Number(m.scoreEux));
+  const res = m => ({win:1, loss:-1, draw:0})[result(m)[0]];
   const v = joues.filter(m=>res(m)>0).length, d = joues.filter(m=>res(m)<0).length, n = joues.length - v - d;
   let html = `<p class="stats-sum"><b>${joues.length}</b> match${joues.length>1?"s":""} joué${joues.length>1?"s":""} · <b>${v}</b> victoire${v>1?"s":""} · <b>${d}</b> défaite${d>1?"s":""}${n?` · <b>${n}</b> nul${n>1?"s":""}`:""}</p>`;
   const avecCompo = state.matches.filter(hasCompo);
@@ -635,8 +645,9 @@ function chipHTML(m, p, past){
 function cardHTML(m, opt){
   opt = opt || {};
   const tIso = iso(today());
-  const rp = !!m.replanifier;  // match à replanifier : reste « à venir », date barrée
-  const d = parseDate(m.date), past = m.date<tIso && !rp, played = m.date<=tIso && !rp, st = status(m);
+  const ff = forfait(m);       // match forfait : terminé, même si la date est à venir
+  const rp = !!m.replanifier && !ff;  // match à replanifier : reste « à venir », date barrée
+  const d = parseDate(m.date), past = (m.date<tIso || !!ff) && !rp, played = (m.date<=tIso || !!ff) && !rp, st = status(m);
   const vacList = PLAYERS.filter(p=>onVacation(p,m.date));
   return `<article class="card ${st.cls} ${opt.hero?"hero-card":""} ${rp?"replan":""}">
       <div class="datebox"><div class="d">${fmtDay.format(d)}</div><div class="n">${d.getDate()}</div><div class="m">${fmtMon.format(d)}</div></div>
@@ -644,20 +655,21 @@ function cardHTML(m, opt){
         <div class="top">
           <span class="opp">vs ${esc(m.adversaire)}</span>
           ${rp?'<span class="replan-tag">⟳ À replanifier</span>':""}
+          ${ff?`<span class="forfait-tag ${ff==="eux"?"win":"loss"}">Forfait ${ff==="eux"?"adverse":"StoneTroopers"}</span>`:""}
           ${opt.hero&&!rp?`<span class="countdown">${countdown(m.date)}</span>`:""}
           ${GRAPH.aRepondre && !rp && me && PLAYERS.includes(me) && !past && !m.dispo[me]?'<span class="todo-me">À toi de répondre</span>':""}
           ${past&&!hasScore(m)&&canEdit()?'<span class="tag-score">Score à saisir</span>':""}
-          ${rp?"":`<button type="button" class="icon-btn" data-act="ics" data-id="${esc(m.id)}" aria-label="Ajouter ce match à mon calendrier" title="Ajouter ce match à mon calendrier (.ics)">📅</button>`}
+          ${rp||ff?"":`<button type="button" class="icon-btn" data-act="ics" data-id="${esc(m.id)}" aria-label="Ajouter ce match à mon calendrier" title="Ajouter ce match à mon calendrier (.ics)">📅</button>`}
           ${canEdit()?`<button type="button" class="icon-btn" data-act="edit" data-id="${esc(m.id)}" aria-label="Modifier ce match" title="Modifier ce match">✏️</button>`:""}
         </div>
         <div class="meta">${rp?`Initialement prévu le <s>${fmtLong.format(d)} · ${esc(m.heure)}</s>`:`${fmtLong.format(d)} · ${esc(m.heure)}`} · Piste ${esc(m.piste)}${m.notes?` · <span class="note${m.notesCouleur==="rouge"?" rouge":""}">${esc(m.notes)}</span>`:""}</div>
-        <div class="statusline">
+        ${ff?"":`<div class="statusline">
           <span class="badge">${st.label}</span>
           ${GRAPH.jauge && !past?gaugeHTML(m):""}
           <span class="counts">${st.yes} confirmé${st.yes>1?"s":""}${st.inc?` · ${st.inc} potentiel${st.inc>1?"s":""}`:""}${vacList.length?" · En congé : "+vacList.map(esc).join(", "):""}</span>
         </div>
-        <div class="players">${PLAYERS.map(p=>chipHTML(m,p,past)).join("")}</div>
-        ${played?scoreBlock(m)+compoBlock(m):""}
+        <div class="players">${PLAYERS.map(p=>chipHTML(m,p,past)).join("")}</div>`}
+        ${played?scoreBlock(m)+(ff?"":compoBlock(m)):""}
       </div>
     </article>`;
 }
@@ -667,7 +679,7 @@ function resultRow(m){
   return `<button type="button" class="res-row" data-act="toggleRes" data-id="${esc(m.id)}" aria-expanded="${open}">
       <span class="rd">${fmtShort.format(d)}</span>
       <span class="ro">vs ${esc(m.adversaire)}</span>
-      <span class="rs ${sc?sc[0]:"draw"}">${sc?`${Number(m.scoreNous)} – ${Number(m.scoreEux)}`:"—"}</span>
+      <span class="rs ${sc?sc[0]:"draw"}">${forfait(m)?"Forfait":sc?`${Number(m.scoreNous)} – ${Number(m.scoreEux)}`:"—"}</span>
       <span class="rb ${sc?sc[0]:"draw"}">${sc?sc[2]:"·"}</span>
     </button>${open?`<div class="res-detail">${cardHTML(m)}</div>`:""}`;
 }
@@ -676,11 +688,12 @@ function render(){
   const tIso = iso(today());
   const sorted = [...state.matches].sort((a,b)=>a.date.localeCompare(b.date));
   // Les matchs à replanifier restent dans « À venir » (même si la date initiale est passée) et ne sont jamais « Prochain match »
-  const avenir = sorted.filter(m=>m.date>=tIso || m.replanifier);
+  // Un match forfait est terminé : il passe directement dans « Résultats », même si sa date est à venir
+  const avenir = sorted.filter(m=>!forfait(m) && (m.date>=tIso || m.replanifier));
   const nextM = avenir.find(m=>!m.replanifier);
   // Matchs passés à compléter (score ou composition manquants) : visibles pour les éditeurs
-  const todo = canEdit() ? sorted.filter(m=>m.date<tIso && !m.replanifier && (!hasScore(m) || !hasCompo(m))) : [];
-  const passes = sorted.filter(m=>m.date<tIso && !m.replanifier && !todo.includes(m)).reverse();
+  const todo = canEdit() ? sorted.filter(m=>m.date<tIso && !m.replanifier && !forfait(m) && (!hasScore(m) || !hasCompo(m))) : [];
+  const passes = sorted.filter(m=>forfait(m) || (m.date<tIso && !m.replanifier && !todo.includes(m))).reverse();
 
   if (GRAPH.chargement && API && !loaded){
     // H · cartes grisées tant que le Google Sheet n'a pas répondu
@@ -931,7 +944,7 @@ function icsDownload(ms, nom){
 }
 const fileSafe = s => String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^A-Za-z0-9]+/g,"-").replace(/^-|-$/g,"");
 $("#icsAll").addEventListener("click", ()=>{
-  const ms = state.matches.filter(m=>!m.replanifier).sort((a,b)=>a.date.localeCompare(b.date));
+  const ms = state.matches.filter(m=>!m.replanifier && !forfait(m)).sort((a,b)=>a.date.localeCompare(b.date));
   if (!ms.length){ toast("Aucun match à exporter"); return; }
   icsDownload(ms, "StoneTroopers-matchs.ics");
   toast(ms.length+" match"+(ms.length>1?"s":"")+" exporté"+(ms.length>1?"s":""));
@@ -951,6 +964,7 @@ function openMatch(m){
   mf.notes.value = m ? (m.notes||"") : "";
   mf.notesCouleur.value = m && m.notesCouleur==="rouge" ? "rouge" : "";
   mf.replanifier.checked = !!(m && m.replanifier);
+  mf.forfait.value = (m && forfait(m)) || "";
   const del = $("#delMatch");
   del.hidden = !m; del.classList.remove("armed"); del.textContent = "Supprimer";
   if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open","");
@@ -962,11 +976,11 @@ $("#cancelDlg").addEventListener("click", closeMatch);
 mf.addEventListener("submit", async e=>{
   e.preventDefault();
   const match = { id: editId||undefined, date: mf.date.value, heure: mf.heure.value, piste: mf.piste.value,
-    adversaire: mf.adversaire.value.trim(), notes: mf.notes.value.trim(), notesCouleur: mf.notesCouleur.value, replanifier: mf.replanifier.checked };
+    adversaire: mf.adversaire.value.trim(), notes: mf.notes.value.trim(), notesCouleur: mf.notesCouleur.value, replanifier: mf.replanifier.checked, forfait: mf.forfait.value };
   if (!match.date || !match.adversaire) return;
   if (editId){
     const m = state.matches.find(x=>x.id===editId);
-    if (m) Object.assign(m, {date:match.date, heure:match.heure, piste:match.piste, adversaire:match.adversaire, notes:match.notes, notesCouleur:match.notesCouleur, replanifier:match.replanifier});
+    if (m) Object.assign(m, {date:match.date, heure:match.heure, piste:match.piste, adversaire:match.adversaire, notes:match.notes, notesCouleur:match.notesCouleur, replanifier:match.replanifier, forfait:match.forfait});
     closeMatch(); render();
     later(()=>postCapitaine({action:"saveMatch", match}), "Match modifié");
   } else {
