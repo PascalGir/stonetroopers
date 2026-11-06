@@ -1,6 +1,14 @@
 // Liste des nouveautés affichée sur la page (version publique : sans détails de sécurité ni noms de personnes)
 window.NOUVEAUTES = [
  {
+  "v": "3.25",
+  "date": "6 novembre 2026",
+  "titre": "Corrections",
+  "items": [
+   "Le renfort ne s'efface plus quand on saisit la composition juste après."
+  ]
+ },
+ {
   "v": "3.24",
   "date": "6 novembre 2026",
   "titre": "Nouveautés",

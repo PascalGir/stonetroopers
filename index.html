@@ -407,7 +407,7 @@ dialog .actions .spacer{flex:1}
   <div class="panel" id="log"><button type="button" class="btn" data-act="loadLog">Afficher le journal</button></div>
   </section>
 
-  <footer id="foot">StoneTroopers · version 3.24 · <button type="button" class="linkbtn" id="newsBtn">nouveautés</button></footer>
+  <footer id="foot">StoneTroopers · version 3.25 · <button type="button" class="linkbtn" id="newsBtn">nouveautés</button></footer>
 </div>
 
 <dialog id="news" aria-labelledby="newsTitle">
@@ -462,7 +462,7 @@ dialog .actions .spacer{flex:1}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="data.js?v=7"></script>
 <script src="config.js?v=6"></script>
-<script src="nouveautes.js?v=19"></script>
+<script src="nouveautes.js?v=20"></script>
 
 <script>
 (function(){
@@ -840,11 +840,15 @@ async function run(btn, fn, okMsg){
 }
 // 11. Écriture instantanée : l'écran est mis à jour tout de suite, l'envoi se fait en arrière-plan.
 // En cas d'échec, message d'erreur et retour aux données du Sheet.
+// Les écritures partent l'une après l'autre (file d'attente) : ex. le renfort est enregistré avant la composition qui l'utilise
+let writeQueue = Promise.resolve();
 function later(fn, okMsg){
   busy++;
-  fn().then(()=>{ saveCache(); if (okMsg) toast(okMsg + " ✓"); })
-      .catch(err=>{ toast("Pas enregistré : "+err.message); refresh(true); })
-      .finally(()=>{ busy=Math.max(0,busy-1); });
+  writeQueue = writeQueue
+    .then(()=>fn())
+    .then(()=>{ saveCache(); if (okMsg) toast(okMsg + " ✓"); },
+          err=>{ toast("Pas enregistré : "+err.message); refresh(true); })
+    .finally(()=>{ busy=Math.max(0,busy-1); });
 }
 
 // Dernières données connues, gardées sur l'appareil pour un affichage immédiat à la prochaine visite

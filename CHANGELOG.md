@@ -1,11 +1,14 @@
 # Historique des versions — StoneTroopers - Planning
 
 Site : https://pascalgir.github.io/stonetroopers/
-Version actuelle : **3.24** (6 novembre 2026)
+Version actuelle : **3.25** (6 novembre 2026)
 
 Numérotation : le premier chiffre change lors d'une refonte importante, le second pour chaque série d'améliorations.
 
 ---
+
+## 3.25 — 6 novembre 2026
+- Correction : les enregistrements partent désormais l'un après l'autre. Avant, une composition saisie juste après avoir ajouté un renfort pouvait arriver au serveur avant le renfort, être refusée (« joueur inconnu ») et le renfort semblait s'effacer au rechargement.
 
 ## 3.24 — 6 novembre 2026 · Renfort
 - Champ **« Renfort (autre équipe) »** dans la fiche d'un match (réservé à l'administrateur) : prénom de la personne venue d'une autre équipe pour compléter l'effectif ; plusieurs prénoms séparés par une virgule. Enregistré dans une nouvelle colonne **Renfort** du Google Sheet.
