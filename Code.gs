@@ -84,6 +84,7 @@ function lireTout_() {
         notesCouleur: String(o['Couleur notes'] || '').trim().toLowerCase(),
         replanifier: String(o['Replanifier'] || '').trim() !== '',
         forfait: String(o['Forfait'] || '').trim().toLowerCase(),
+        renfort: String(o['Renfort'] || '').trim(),
         lanceurs: [1, 2, 3, 4].map(function (k) { return String(o['Lanceur ' + k] || '').trim(); }),
         skip: String(o['Skip'] || '').trim(),
         dispo: dispo
@@ -187,7 +188,7 @@ function saveMatch_(b) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(m.date || '')) throw new Error('date invalide');
   if (!m.adversaire) throw new Error('adversaire manquant');
   const sh = feuille_(ONGLET_MATCHS);
-  const h = colonnes_(sh, ['Couleur notes', 'Replanifier', 'Forfait']);
+  const h = colonnes_(sh, ['Couleur notes', 'Replanifier', 'Forfait', 'Renfort']);
   const p = m.date.split('-').map(Number);
   const champs = {
     'Date': new Date(p[0], p[1] - 1, p[2]),
@@ -199,7 +200,8 @@ function saveMatch_(b) {
     'Notes': m.notes === undefined ? undefined : String(m.notes),
     'Couleur notes': m.notesCouleur === undefined ? undefined : (m.notesCouleur === 'rouge' ? 'rouge' : ''),
     'Replanifier': m.replanifier === undefined ? undefined : (m.replanifier ? 'Oui' : ''),
-    'Forfait': m.forfait === undefined ? undefined : ((m.forfait === 'nous' || m.forfait === 'eux') ? m.forfait : '')
+    'Forfait': m.forfait === undefined ? undefined : ((m.forfait === 'nous' || m.forfait === 'eux') ? m.forfait : ''),
+    'Renfort': m.renfort === undefined ? undefined : String(m.renfort).split(',').map(function (x) { return x.trim(); }).filter(String).join(', ').slice(0, 60)
   };
   let row, id = m.id;
   if (id) {
@@ -257,14 +259,16 @@ function setCompo_(b) {
   const l = (b.lanceurs || []).map(function (x) { return String(x || '').trim(); }).slice(0, 4);
   while (l.length < 4) l.push('');
   const pris = l.filter(function (x) { return x; });
-  const joueurs = lignes_(ONGLET_JOUEURS).map(function (o) { return String(o['Nom']).trim(); });
+  const sh = feuille_(ONGLET_MATCHS);
+  const h = colonnes_(sh, COLS_COMPO.concat(['Renfort']));
+  const row = ligneParId_(sh, b.id);
+  // Joueurs de l'équipe + renfort(s) d'une autre équipe inscrit(s) sur ce match
+  const renforts = String(sh.getRange(row, h.indexOf('Renfort') + 1).getValue() || '').split(',').map(function (x) { return x.trim(); }).filter(String);
+  const joueurs = lignes_(ONGLET_JOUEURS).map(function (o) { return String(o['Nom']).trim(); }).concat(renforts);
   if (pris.some(function (x) { return joueurs.indexOf(x) < 0; })) throw new Error('joueur inconnu');
   if (new Set(pris).size !== pris.length) throw new Error('un joueur apparaît deux fois');
   const skip = String(b.skip || '').trim();
   if (pris.length && pris.indexOf(skip) < 0) throw new Error('le skip doit faire partie des lanceurs');
-  const sh = feuille_(ONGLET_MATCHS);
-  const h = colonnes_(sh, COLS_COMPO);
-  const row = ligneParId_(sh, b.id);
   l.concat([pris.length ? skip : '']).forEach(function (v, i) {
     sh.getRange(row, h.indexOf(COLS_COMPO[i]) + 1).setValue(v);
   });

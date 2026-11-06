@@ -1,6 +1,14 @@
 // Liste des nouveautés affichée sur la page (version publique : sans détails de sécurité ni noms de personnes)
 window.NOUVEAUTES = [
  {
+  "v": "3.24",
+  "date": "6 novembre 2026",
+  "titre": "Nouveautés",
+  "items": [
+   "Un <b>renfort</b> venu d'une autre équipe peut être indiqué sur un match : il apparaît à côté des joueurs, compte dans l'effectif et peut figurer dans la composition."
+  ]
+ },
+ {
   "v": "3.23",
   "date": "30 octobre 2026",
   "titre": "Nouveautés",

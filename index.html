@@ -158,6 +158,10 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-
 .chip.v-non .av{background:var(--p-non-bg);color:var(--p-non-ink);border:2px solid var(--p-non-line)}
 .chip.v-non .ic{background:var(--c-non);color:#fff}
 .chip.vac .av{background:var(--vac-bg)}
+/* Renfort d'une autre équipe */
+.chip.v-renfort .av{background:var(--p-acc-bg);color:var(--p-acc-ink);border:2px solid var(--p-acc-ink)}
+.chip.v-renfort .ic{background:var(--p-acc-ink);color:var(--surface)}
+.chip.v-renfort small{font-weight:600;opacity:.8}
 .chip.me .av{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--accent)}
 button.chip{cursor:pointer}
 button.chip:hover .av{transform:scale(1.04)}
@@ -403,7 +407,7 @@ dialog .actions .spacer{flex:1}
   <div class="panel" id="log"><button type="button" class="btn" data-act="loadLog">Afficher le journal</button></div>
   </section>
 
-  <footer id="foot">StoneTroopers · version 3.23 · <button type="button" class="linkbtn" id="newsBtn">nouveautés</button></footer>
+  <footer id="foot">StoneTroopers · version 3.24 · <button type="button" class="linkbtn" id="newsBtn">nouveautés</button></footer>
 </div>
 
 <dialog id="news" aria-labelledby="newsTitle">
@@ -429,6 +433,8 @@ dialog .actions .spacer{flex:1}
       <label>Couleur<select name="notesCouleur"><option value="">Noir</option><option value="rouge">Rouge</option></select></label>
     </div>
     <label class="check"><input type="checkbox" name="replanifier"> À replanifier (date à revoir)</label>
+    <label>Renfort (autre équipe)<input type="text" name="renfort" maxlength="60" list="renfortList" autocomplete="off" placeholder="ex. Daniel — si 2 : Daniel, Marc"></label>
+    <datalist id="renfortList"></datalist>
     <label>Forfait<select name="forfait"><option value="">Aucun — match joué normalement</option><option value="eux">Forfait de l'adversaire → victoire</option><option value="nous">Forfait StoneTroopers → défaite</option></select></label>
     <div class="actions">
       <button type="button" class="btn danger" id="delMatch">Supprimer</button>
@@ -456,7 +462,7 @@ dialog .actions .spacer{flex:1}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="data.js?v=7"></script>
 <script src="config.js?v=6"></script>
-<script src="nouveautes.js?v=18"></script>
+<script src="nouveautes.js?v=19"></script>
 
 <script>
 (function(){
@@ -536,11 +542,14 @@ function forfait(m){ return m.forfait==="nous"||m.forfait==="eux" ? m.forfait : 
 function hasScore(m){ return !!forfait(m) || (String(m.scoreNous)!=="" && String(m.scoreEux)!==""); }
 function result(m){ const f=forfait(m); if (f) return f==="eux"?["win","Victoire","V"]:["loss","Défaite","D"];
   const a=Number(m.scoreNous), b=Number(m.scoreEux); return a>b?["win","Victoire","V"]:a<b?["loss","Défaite","D"]:["draw","Égalité","N"]; }
+// Renfort(s) d'une autre équipe : prénoms séparés par une virgule ; comptés comme présents
+function renforts(m){ return String(m.renfort||"").split(",").map(x=>x.trim()).filter(x=>x && !PLAYERS.includes(x)); }
 function status(m){
   const vals = PLAYERS.map(p=>m.dispo[p]||"");
-  const yes = vals.filter(v=>v==="Oui").length;
+  const nr = renforts(m).length;
+  const yes = vals.filter(v=>v==="Oui").length + nr;
   const pot = yes + vals.filter(v=>v==="Incertain").length;
-  const any = vals.some(v=>v);
+  const any = vals.some(v=>v) || nr>0;
   let cls="s-none", label="En attente";
   if (any){
     if (yes>=5){cls="s-plus";label="➕ Surplus (5)";}
@@ -549,7 +558,7 @@ function status(m){
     else if (pot>=3){cls="s-warn";label="❓ À confirmer";}
     else {cls="s-bad";label="⚠ Incomplet";}
   }
-  return {cls,label,yes,pot,inc:pot-yes};
+  return {cls,label,yes,pot,inc:pot-yes,nr};
 }
 function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
 
@@ -558,7 +567,7 @@ function hasCompo(m){ return (m.lanceurs||[]).some(x=>x); }
 // Proposition : ordre habituel parmi les « Oui », les autres « Oui » (ex. remplaçant) prennent les places libres
 // Si un joueur prévu dans COMPO_SI_ABSENT est absent, on part de la formation de remplacement
 function proposeCompo(m){
-  const oui = PLAYERS.filter(p=>m.dispo[p]==="Oui");
+  const oui = PLAYERS.filter(p=>m.dispo[p]==="Oui").concat(renforts(m));
   const absent = Object.keys(COMPO_ABS).find(p=>!oui.includes(p));
   const base = absent ? (COMPO_ABS[absent].ordre||[]) : COMPO_HAB;
   const skipVoulu = absent ? (COMPO_ABS[absent].skip||"") : SKIP_HAB;
@@ -578,7 +587,7 @@ function compoBlock(m){
     return `<div class="compo"><span>Composition :</span><span class="res">${txt}</span>${canEdit()?`<button type="button" class="btn small" data-act="editCompo" data-id="${esc(m.id)}">Modifier</button>`:""}</div>`;
   }
   if (!canEdit()) return "";
-  const oui = PLAYERS.filter(p=>m.dispo[p]==="Oui"), autres = PLAYERS.filter(p=>m.dispo[p]!=="Oui");
+  const oui = PLAYERS.filter(p=>m.dispo[p]==="Oui").concat(renforts(m)), autres = PLAYERS.filter(p=>m.dispo[p]!=="Oui");
   const noms = [...oui, ...autres, ...L.filter(p=>p && !PLAYERS.includes(p))];
   const opts = v => '<option value="">—</option>' + noms.map(p=>`<option${p===v?" selected":""}>${esc(p)}</option>`).join("");
   const prop = hasCompo(m) ? null : proposeCompo(m);
@@ -625,7 +634,7 @@ function renderStats(){
       const ms = avecCompo.filter(m=>m.lanceurs.includes(p));
       const vic = ms.filter(m=>hasScore(m) && res(m)>0).length;
       const sk = ms.filter(m=>m.skip===p).length;
-      return `<tr><td>${esc(p)}</td><td class="num">${ms.length}</td><td class="num">${sk}</td><td class="num">${vic}</td></tr>`;
+      return `<tr><td>${esc(p)}${PLAYERS.includes(p)?"":' <small style="opacity:.7">(renfort)</small>'}</td><td class="num">${ms.length}</td><td class="num">${sk}</td><td class="num">${vic}</td></tr>`;
     }).join("");
     html += `<div class="tablewrap"><table><thead><tr><th>Joueur</th><th style="text-align:right">Matchs joués</th><th style="text-align:right">Skip</th><th style="text-align:right">Victoires</th></tr></thead><tbody>${rows}</tbody></table></div>`;
   }
@@ -666,9 +675,9 @@ function cardHTML(m, opt){
         ${ff?"":`<div class="statusline">
           <span class="badge">${st.label}</span>
           ${GRAPH.jauge && !past?gaugeHTML(m):""}
-          <span class="counts">${st.yes} confirmé${st.yes>1?"s":""}${st.inc?` · ${st.inc} potentiel${st.inc>1?"s":""}`:""}${vacList.length?" · En congé : "+vacList.map(esc).join(", "):""}</span>
+          <span class="counts">${st.yes} confirmé${st.yes>1?"s":""}${st.nr?` (dont ${st.nr} renfort${st.nr>1?"s":""})`:""}${st.inc?` · ${st.inc} potentiel${st.inc>1?"s":""}`:""}${vacList.length?" · En congé : "+vacList.map(esc).join(", "):""}</span>
         </div>
-        <div class="players">${PLAYERS.map(p=>chipHTML(m,p,past)).join("")}</div>`}
+        <div class="players">${PLAYERS.map(p=>chipHTML(m,p,past)).join("")}${renforts(m).map(r=>`<div class="chip v-renfort" role="img" aria-label="${esc(r)} : renfort d'une autre équipe"><span class="av">${esc(r)} <small>· renfort</small><i class="ic" aria-hidden="true">✓</i></span></div>`).join("")}</div>`}
         ${played?scoreBlock(m)+(ff?"":compoBlock(m)):""}
       </div>
     </article>`;
@@ -965,6 +974,10 @@ function openMatch(m){
   mf.notesCouleur.value = m && m.notesCouleur==="rouge" ? "rouge" : "";
   mf.replanifier.checked = !!(m && m.replanifier);
   mf.forfait.value = (m && forfait(m)) || "";
+  mf.renfort.value = (m && m.renfort) || "";
+  // Suggestions : prénoms de renfort déjà utilisés
+  const deja = [...new Set(state.matches.flatMap(x=>renforts(x)))].sort((a,b)=>a.localeCompare(b,"fr"));
+  $("#renfortList").innerHTML = deja.map(n=>`<option value="${esc(n)}">`).join("");
   const del = $("#delMatch");
   del.hidden = !m; del.classList.remove("armed"); del.textContent = "Supprimer";
   if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open","");
@@ -976,11 +989,12 @@ $("#cancelDlg").addEventListener("click", closeMatch);
 mf.addEventListener("submit", async e=>{
   e.preventDefault();
   const match = { id: editId||undefined, date: mf.date.value, heure: mf.heure.value, piste: mf.piste.value,
-    adversaire: mf.adversaire.value.trim(), notes: mf.notes.value.trim(), notesCouleur: mf.notesCouleur.value, replanifier: mf.replanifier.checked, forfait: mf.forfait.value };
+    adversaire: mf.adversaire.value.trim(), notes: mf.notes.value.trim(), notesCouleur: mf.notesCouleur.value, replanifier: mf.replanifier.checked, forfait: mf.forfait.value,
+      renfort: mf.renfort.value.split(",").map(x=>x.trim()).filter(Boolean).join(", ") };
   if (!match.date || !match.adversaire) return;
   if (editId){
     const m = state.matches.find(x=>x.id===editId);
-    if (m) Object.assign(m, {date:match.date, heure:match.heure, piste:match.piste, adversaire:match.adversaire, notes:match.notes, notesCouleur:match.notesCouleur, replanifier:match.replanifier, forfait:match.forfait});
+    if (m) Object.assign(m, {date:match.date, heure:match.heure, piste:match.piste, adversaire:match.adversaire, notes:match.notes, notesCouleur:match.notesCouleur, replanifier:match.replanifier, forfait:match.forfait, renfort:match.renfort});
     closeMatch(); render();
     later(()=>postCapitaine({action:"saveMatch", match}), "Match modifié");
   } else {
