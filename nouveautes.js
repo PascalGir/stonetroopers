@@ -1,6 +1,14 @@
 // Liste des nouveautés affichée sur la page (version publique : sans détails de sécurité ni noms de personnes)
 window.NOUVEAUTES = [
  {
+  "v": "3.26",
+  "date": "9 novembre 2026",
+  "titre": "Nouveautés",
+  "items": [
+   "Bouton <b>« Partager sur WhatsApp »</b> sur le prochain match : un message tout prêt avec qui vient et qui n'a pas encore répondu."
+  ]
+ },
+ {
   "v": "3.25",
   "date": "6 novembre 2026",
   "titre": "Corrections",

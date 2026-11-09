@@ -111,6 +111,12 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-
 .btn.danger.armed{background:var(--bad);color:#fff}
 .btn.small{font-size:13px;padding:4px 9px}
 .btn:disabled{opacity:.5;cursor:default}
+/* Partage WhatsApp du prochain match */
+.share{margin-top:10px}
+.btn.wa{display:inline-flex;align-items:center;gap:7px;text-decoration:none;font-weight:650;background:#e3f6ea;color:#16683d;border-color:#9fd8b4}
+.btn.wa svg{width:17px;height:17px;flex:none}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .btn.wa{background:#163626;color:#8fe0b0;border-color:#2f6b4a} }
+:root[data-theme="dark"] .btn.wa{background:#163626;color:#8fe0b0;border-color:#2f6b4a}
 .icon-btn{margin-left:auto;font:inherit;border:0;background:transparent;color:var(--muted);cursor:pointer;padding:2px 6px;border-radius:6px;font-size:15px;line-height:1}
 .icon-btn:hover{background:var(--surface-2);color:var(--ink)}
 .icon-btn + .icon-btn{margin-left:0}
@@ -407,7 +413,7 @@ dialog .actions .spacer{flex:1}
   <div class="panel" id="log"><button type="button" class="btn" data-act="loadLog">Afficher le journal</button></div>
   </section>
 
-  <footer id="foot">StoneTroopers · version 3.25 · <button type="button" class="linkbtn" id="newsBtn">nouveautés</button></footer>
+  <footer id="foot">StoneTroopers · version 3.26 · <button type="button" class="linkbtn" id="newsBtn">nouveautés</button></footer>
 </div>
 
 <dialog id="news" aria-labelledby="newsTitle">
@@ -462,7 +468,7 @@ dialog .actions .spacer{flex:1}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="data.js?v=7"></script>
 <script src="config.js?v=6"></script>
-<script src="nouveautes.js?v=20"></script>
+<script src="nouveautes.js?v=21"></script>
 
 <script>
 (function(){
@@ -651,6 +657,26 @@ function chipHTML(m, p, past){
     return `<button type="button" class="${cls}${popKey===m.id+"|"+p?" pop":""}" data-id="${esc(m.id)}" data-p="${esc(p)}" aria-label="${label} — toucher pour choisir" aria-haspopup="menu" title="Toucher pour choisir ta réponse">${inner}</button>`;
   return `<div class="${cls}" role="img" aria-label="${label}">${inner}</div>`;
 }
+// Message tout prêt pour WhatsApp : date, lieu, statut et qui vient
+function waText(m){
+  const st = status(m), d = parseDate(m.date);
+  const liste = v => PLAYERS.filter(p=>(m.dispo[p]||"")===v && !(v!=="Non" && onVacation(p,m.date)));
+  const pres = liste("Oui").concat(renforts(m).map(r=>r+" (renfort)"));
+  const inc = liste("Incertain");
+  const abs = PLAYERS.filter(p=>m.dispo[p]==="Non" || onVacation(p,m.date)).map(p=>onVacation(p,m.date)?p+" (congé)":p);
+  const rien = PLAYERS.filter(p=>!m.dispo[p] && !onVacation(p,m.date));
+  const fmt = fmtLong.format(d);
+  const l = [`🥌 *StoneTroopers — prochain match*`, `${fmt.charAt(0).toUpperCase()+fmt.slice(1)} · ${m.heure} · Piste ${m.piste}`, `vs ${m.adversaire}`, ``, `${st.label}`];
+  if (pres.length) l.push(`✅ Présents : ${pres.join(", ")}`);
+  if (inc.length) l.push(`❔ Incertains : ${inc.join(", ")}`);
+  if (abs.length) l.push(`❌ Absents : ${abs.join(", ")}`);
+  if (rien.length) l.push(`⏳ Pas encore répondu : ${rien.join(", ")}`);
+  if (m.notes) l.push(``, `📝 ${m.notes}`);
+  l.push(``, `👉 ${location.origin + location.pathname}`);
+  return l.join("\n");
+}
+const WA_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>';
+
 function cardHTML(m, opt){
   opt = opt || {};
   const tIso = iso(today());
@@ -679,6 +705,7 @@ function cardHTML(m, opt){
         </div>
         <div class="players">${PLAYERS.map(p=>chipHTML(m,p,past)).join("")}${renforts(m).map(r=>`<div class="chip v-renfort" role="img" aria-label="${esc(r)} : renfort d'une autre équipe"><span class="av">${esc(r)} <small>· renfort</small><i class="ic" aria-hidden="true">✓</i></span></div>`).join("")}</div>`}
         ${played?scoreBlock(m)+(ff?"":compoBlock(m)):""}
+        ${opt.hero && !rp && !ff ? `<div class="share"><a class="btn small wa" href="https://wa.me/?text=${encodeURIComponent(waText(m))}" target="_blank" rel="noopener">${WA_ICON}Partager sur WhatsApp</a></div>` : ""}
       </div>
     </article>`;
 }
