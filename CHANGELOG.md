@@ -1,11 +1,14 @@
 # Historique des versions — StoneTroopers - Planning
 
 Site : https://pascalgir.github.io/stonetroopers/
-Version actuelle : **3.26** (9 novembre 2026)
+Version actuelle : **3.27** (9 novembre 2026)
 
 Numérotation : le premier chiffre change lors d'une refonte importante, le second pour chaque série d'améliorations.
 
 ---
+
+## 3.27 — 9 novembre 2026
+- Message WhatsApp amélioré : titre « StoneTroopers vs adversaire », compte à rebours (Ce soir / Demain / Dans x jours) avant la date, phrase selon la situation (« 💪 On est au complet ! » ou « ⚠️ Il nous manque x joueur(s) ! » suivi de « Merci de répondre : … »), puis une ligne par joueur (✅ présents et renforts, ❔ incertains, ❌ absents / congés, ⏳ sans réponse).
 
 ## 3.26 — 9 novembre 2026 · Partage WhatsApp
 - Bouton **« Partager sur WhatsApp »** en bas de la carte « Prochain match » (visible par tous) : ouvre WhatsApp avec un message tout prêt — date, heure, piste, adversaire, statut, présents (renforts compris), incertains, absents (congés indiqués), pas encore répondu, note éventuelle et lien du site.

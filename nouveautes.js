@@ -1,6 +1,14 @@
 // Liste des nouveautés affichée sur la page (version publique : sans détails de sécurité ni noms de personnes)
 window.NOUVEAUTES = [
  {
+  "v": "3.27",
+  "date": "9 novembre 2026",
+  "titre": "Améliorations",
+  "items": [
+   "Message WhatsApp plus clair : compte à rebours, « au complet » ou « il manque x joueurs », et une ligne par joueur."
+  ]
+ },
+ {
   "v": "3.26",
   "date": "9 novembre 2026",
   "titre": "Nouveautés",
